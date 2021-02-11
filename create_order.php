@@ -1,6 +1,6 @@
 <?PHP
-include ("inc/detail.php");
-include ('navbar.php');
+include('inc/detail.php');
+include('inc/navbar.php');
 ?>
 
 <?php
