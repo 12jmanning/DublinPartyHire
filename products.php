@@ -67,7 +67,7 @@ if (isset($_GET['id'])) {
 <div class="product content-wrapper">
     <img src="imgs/<?=$product['img']?>" width="500" height="500" alt="<?=$product['name']?>">
     <div>
-        <h1 class="name"><?=$product['name']?></h1>
+        <h1 class="name"><?=$product['db_productName']?></h1>
         <span class="price">
             &dollar;<?=$product['db_productPrice']?>
         </span>
@@ -76,9 +76,6 @@ if (isset($_GET['id'])) {
             <input type="hidden" name="product_id" value="<?=$product['id']?>">
             <input type="submit" value="Add To Cart">
         </form>
-        <div class="description">
-            <?=$product['desc']?>
-        </div>
     </div>
 </div>
 
