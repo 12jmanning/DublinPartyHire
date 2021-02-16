@@ -114,7 +114,7 @@
 
             if($valid==true)
             {
-                $_SESSION['db_customerID']=$db_customerID;
+                $_SESSION['customerID']=$db_customerID;
                 header('Location: secondary_homepage.php');
             }
             else{
