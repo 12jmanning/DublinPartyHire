@@ -92,27 +92,9 @@ $customer_ID_Err = "";
 $delivery_date_Err = "";
 $collection_date_Err = "";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+include(registerorder.php);
 
-$customer_ID = $_POST['customerID'];
-$delivery_date = $_POST['delivery_date'];
-$collection_date = $_POST['collection_date'];
-
-
-
-if($customer_ID_Err == "" && $delivery_date_Err == "" && $collection_date_Err == "" ){
-
-$q  = "INSERT INTO orders (";
-$q .= "db_customerID, db_deliveryDatetime, db_collectionDatetime";
-$q .= ") VALUES (";
-$q .= "'$customer_ID', '$delivery_date', '$collection_date')";
-
-$result = $db->query($q);
-
-// header("Location: member_home.php");
-// exit;
-}
-}
+header("Location: index.php");
 ?>
 
 <?=template_header('Cart')?>
@@ -154,8 +136,8 @@ $result = $db->query($q);
                     <td class="price">&dollar;<?=$product['db_productPrice'] * $products_in_cart[$product['db_productID']]?></td>
                 </tr>
                 <tr>
-                  <td><label for="customerID">Customer ID:</label></td>
-                  <td><input type="number" name="customerID" id="customerID" size="30" maxlength="30" required></td>
+                  <td><label for="customer_ID">Customer ID:</label></td>
+                  <td><input type="number" name="customer_ID" id="customer_ID" size="30" maxlength="30" required></td>
                 </tr>
                 <tr>
                   <td><label for="delivery_date">Delivery Date:</label></td>
