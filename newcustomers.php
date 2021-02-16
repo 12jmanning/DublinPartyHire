@@ -80,14 +80,14 @@
 <?php
     session_start();
     // define variables and set to empty values
-    $nameErr = $addressErr = $countyErr = $db_cumstomerEmailErr = $eircodeErr = $phoneErr ="";
-    $db_customerName = $db_customerAddress = $db_county = $db_cumstomerEmail = $db_cumstomerEircode = $db_customerPhone = "";
+    $nameErr = $addressErr = $countyErr = $db_customerEmailErr = $eircodeErr = $phoneErr ="";
+    $db_customerName = $db_customerAddress = $db_county = $db_customerEmail = $db_cumstomerEircode = $db_customerPhone = "";
     $valid=true;
       //This if statement is executed after the form has been submitted and the contents of the statement execute the form data validation. Each of the inputs are checked if they are null and appropriate error messages are assigned
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (empty($_POST["db_customerName"])) {
-           $nameErr = "First name is required";
+           $nameErr = "Name is required";
            $valid=false;
         } 
         //This ensures the name only contsains valid characters
@@ -100,46 +100,51 @@
         }
 
       if (empty($_POST["db_customerAddress"])) {
-        $addressErr = "Second name is required";
+        $addressErr = "Address is required";
         $valid=false;
-      } 
-      //This ensures the name only contsains valid characters
-      else {
-        $db_customerAddress = test_input($_POST["db_customerAddress"]);
-        if (!preg_match("/^[a-zA-Z-' ]*$/",$db_customerAddress)) {
-          $addressErr = "Only letters and white space allowed";
-          $valid=false;
-        }
       }  
 
       if (empty($_POST["db_county"])) {
-        $countyErr = "Student number is required";
+        $countyErr = "County is required";
         $valid=false;
       } 
       //This ensures the student number input only contains numeric values
       else {
         $db_county = test_input($_POST["db_county"]);
-        if (!is_numeric($db_county)) {
-          $countyErr = "Only numbers allowed";
+        if (!preg_match("/^[a-zA-Z-' ]*$/",$db_county)) {
+          $countyErr = "Only letters and white space allowed";
           $valid=false;
         }
-      }    
+      } 
      
-      if (empty($_POST["student_db_cumstomerEmail"])) {
-        $db_cumstomerEmailErr = "db_cumstomerEmail is required";
+      if (empty($_POST["db_customerEmail"])) {
+        $db_customerEmailErr = "db_customerEmail is required";
         $valid=false;
       } 
-      //This ensures the db_cumstomerEmail is correctly formatted
+      //This ensures the db_customerEmail is correctly formatted
       else {
-        $db_cumstomerEmail = test_input($_POST["student_db_cumstomerEmail"]);
-        if (!filter_var($db_cumstomerEmail, FILTER_VALIDATE_db_cumstomerEmail)) {
-          $db_cumstomerEmailErr = "Invalid db_cumstomerEmail format";
+        $db_customerEmail = test_input($_POST["db_customerEmail"]);
+        if (!filter_var($db_customerEmail, FILTER_VALIDATE_db_customerEmail)) {
+          $db_customerEmailErr = "Invalid db_customerEmail format";
           $valid=false;
         }
       }
 
+      if (empty($_POST["db_customerPhone"])) {
+        $phoneErr = "Student number is required";
+        $valid=false;
+      } 
+      //This ensures the student number input only contains numeric values
+      else {
+        $db_customerPhone = test_input($_POST["db_customerPhone"]);
+        if (!is_numeric($db_customerPhone)) {
+          $phoneErr = "Only numbers allowed";
+          $valid=false;
+        }
+      }   
+
       if (empty($_POST["db_cumstomerEircode"])) {
-        $eircodeErr = "Student course is required";
+        $eircodeErr = "Eircode is required";
         $valid=false;
       } 
       //This ensures the course code only contsains valid characters
@@ -157,7 +162,7 @@
         include 'register_members.php';
       //Here, a query is run to obtain the member_id of the newly added member and this will be stored as a session varibale which is a super global variable
         $found=false;
-        $query ="select * from members";
+        $query ="select * from customers";
         $result = $db->query($query);
         $num_results = mysqli_num_rows($result);
         $i=0;
@@ -165,16 +170,16 @@
         while($i<$num_results&&$found<>true)
         {
             $row = mysqli_fetch_assoc($result); 
-            if($row['student_db_cumstomerEmail']==$db_cumstomerEmail&&$row['student_id']==$db_county)
+            if($row['db_customerEmail']==$db_customerEmail&&$row['db_customerName']==$db_customerName)
             {
-                $found_member_id=$row['member_id'];
+                $found_customer_id=$row['db_customerID'];
                 $found=true;
             }
             $i++;
         }
         if($found==true)
         {
-            $_SESSION['member_id']=$found_member_id;
+            $_SESSION['db_customerID']=$found_customer_id;
         }
         //This will then move the user to the mai menu where they have accesss to the member section and the admin section
         header('Location: secondary_homepage.php');
@@ -215,31 +220,36 @@
   <br> <br>
   <!-- This is the member form where they input their information and it calls itself in the action attribute in order to perform the validations -->
 <div class="boxed">
-<h1>New Members:</h1>
+<h1>New Customers:</h1>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"> 
-        <label for ="members">First Name:</label>
+        <label for ="members">Customer Name:</label>
         <input type="text" name="db_customerName" size = 30>  
         <span class='error'> <?php echo $nameErr ?> <span>
         <br> <br> 
 
-        <label for ="members">Second Name:</label>
+        <label for ="members">Address:</label>
         <input type="text" name="db_customerAddress" size = 30>
         <span class='error'> <?php echo $addressErr ?> <span>
         <br> <br> 
 
-        <label for ="members">Student Number:</label>
+        <label for ="members">County:</label>
         <input type="text" name="db_county" id="db_county" size = 10> 
         <span class='error'> <?php echo $countyErr ?> <span>
         <br> <br>
 
-        <label for ="members">Student db_cumstomerEmail:</label>
-        <input type="text" name="student_db_cumstomerEmail" id="student_db_cumstomerEmail" size = 20> 
-        <span class='error'> <?php echo $db_cumstomerEmailErr ?> <span>
-        <br> <br>
-
-        <label for ="members">Course Code:</label>
+        <label for ="members">Eirode:</label>
         <input type="text" name="db_cumstomerEircode" id="db_cumstomerEircode" size = 20> 
         <span class='error'> <?php echo $eircodeErr ?> <span>
+        <br> <br>
+
+        <label for ="members">Email:</label>
+        <input type="text" name="db_customerEmail" id="db_customerEmail" size = 20> 
+        <span class='error'> <?php echo $db_customerEmailErr ?> <span>
+        <br> <br>
+
+        <label for ="members">Phone Number:</label>
+        <input type="text" name="db_customerPhone" id="db_cumstomerPhone" size = 20> 
+        <span class='error'> <?php echo $phoneErr ?> <span>
         <br> <br>
 
         <input type="submit" value = "Submit">
