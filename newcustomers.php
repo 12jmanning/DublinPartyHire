@@ -159,7 +159,7 @@
     // If the validation is accepted then this if statement is executed which will firstly call the register_members php file 
       if($valid<>false)
       {
-        include 'register_members.php';
+        include 'registernewcustomer.php';
       //Here, a query is run to obtain the member_id of the newly added member and this will be stored as a session varibale which is a super global variable
         $found=false;
         $query ="select * from customers";
@@ -261,7 +261,7 @@
   
 
     <div class="center">
-    <button onclick="window.location.href='homepage.html';" class="button button1">Homepage</button>
+    <button onclick="window.location.href='index.php';" class="button button1">Homepage</button>
     </div>
     <div class="center2">
     <button onclick="window.location.href='existing_members.php';" class="button button2">Existing Memeber</button>
