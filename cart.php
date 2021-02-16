@@ -91,8 +91,9 @@ if ($products_in_cart) {
 $customer_ID_Err = "";
 $delivery_date_Err = "";
 $collection_date_Err = "";
-
-include("registerorder.php");
+$Output = $_POST['customer_ID'];
+echo $Output;
+//include("registerorder.php");
 
 ?>
 
@@ -100,7 +101,7 @@ include("registerorder.php");
 
 <div class="cart content-wrapper">
     <h1>Shopping Cart</h1>
-    <form method="post" action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"  name="order_form" id="order_form">
+    <form method="post" action = "registerorder.php"  name="order_form" id="order_form">
         <table>
             <thead>
                 <tr>
