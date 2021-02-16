@@ -94,7 +94,6 @@ $collection_date_Err = "";
 
 include("registerorder.php");
 
-header("Location: index.php");
 ?>
 
 <?=template_header('Cart')?>
