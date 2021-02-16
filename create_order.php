@@ -18,7 +18,7 @@ $collection_date = $_POST['collection_date'];
 
 if($customer_ID_Err == "" && $delivery_date_Err == "" && $collection_date_Err == "" ){
 
-$q  = "INSERT INTO orders (";
+$q = "INSERT INTO orders (";
 $q .= "db_customerID, db_deliveryDatetime, db_collectionDatetime";
 $q .= ") VALUES (";
 $q .= "'$customer_ID', '$delivery_date', '$collection_date')";
