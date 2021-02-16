@@ -91,9 +91,6 @@ if ($products_in_cart) {
 $customer_ID_Err = "";
 $delivery_date_Err = "";
 $collection_date_Err = "";
-$Output = $_POST['customer_ID'];
-echo $Output;
-//include("registerorder.php");
 
 ?>
 
