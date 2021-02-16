@@ -8,25 +8,11 @@ $customer_ID_Err = "";
 $delivery_date_Err = "";
 $collection_date_Err = "";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-$customer_ID = $_POST['customer_ID'];
-$delivery_date = $_POST['delivery_date'];
-$collection_date = $_POST['collection_date'];
+include(registerorder.php);
 
+header("Location: index.php");
 
-
-if($customer_ID_Err == "" && $delivery_date_Err == "" && $collection_date_Err == "" ){
-
-$q  = "INSERT INTO orders (";
-$q .= "db_customerID, db_deliveryDatetime, db_collectionDatetime";
-$q .= ") VALUES (";
-$q .= "'$customer_ID', '$delivery_date', '$collection_date')";
-
-$result = $db->query($q);
-
-// header("Location: member_home.php");
-// exit;
 }
 }
 ?>
