@@ -4,11 +4,12 @@ session_start();
 
 include ("detail.php"); 
 
-$student_id = $_POST['student_number'];
-$first_name = $_POST['first_name'];
-$last_name = $_POST['second_name'];
-$student_email = $_POST['student_email'];
-$student_course = $_POST['student_course'];
+$db_customerName = $_POST['db_customerName'];
+$db_customerAddress = $_POST['db_customerAddress'];
+$db_county = $_POST['db_county'];
+$db_customerEircode = $_POST['db_customerEircode'];
+$db_customerEmail = $_POST['db_customerEmail'];
+$db_customerPhone = $_POST['db_customerPhone'];
 
 $q  = "INSERT INTO customers (";
 $q .= "db_customerName, db_customerAddress, db_county, db_customerEircode, db_customerEmail, db_customerPhone";
