@@ -238,7 +238,7 @@
         <br> <br>
 
         <label for ="members">Eirode:</label>
-        <input type="text" name="db_cumstomerEircode" id="db_cumstomerEircode" size = 20> 
+        <input type="text" name="db_customerEircode" id="db_customerEircode" size = 20> 
         <span class='error'> <?php echo $eircodeErr ?> <span>
         <br> <br>
 
