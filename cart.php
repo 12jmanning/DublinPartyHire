@@ -177,7 +177,7 @@ $result = $db->query($q);
         </div>
         <div class="buttons">
             <input type="submit" value="Update" name="update">
-            <input type="submit" value="Place Order" name="placeorder">
+            <input type="submit" value="Place Order" name="placeorder" >
         </div>
     </form>
 </div>
