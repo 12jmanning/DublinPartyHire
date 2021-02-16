@@ -22,14 +22,11 @@ $total_products = $pdo->query('SELECT * FROM products')->rowCount();
     <p><?=$total_products?> Products</p>
     <div class="products-wrapper">
         <?php foreach ($products as $product): ?>
-        <a href="index.php?page=product&id=<?=$product['id']?>" class="product">
-            <img src="imgs/<?=$product['img']?>" width="200" height="200" alt="<?=$product['name']?>">
-            <span class="name"><?=$product['name']?></span>
+        <a href="index.php?page=product&id=<?=$product['db_productID']?>" class="product">
+            <img src="imgs/<?=$product['db_imageLink']?>" width="200" height="200" alt="<?=$product['name']?>">
+            <span class="name"><?=$product['db_productName']?></span>
             <span class="price">
-                &dollar;<?=$product['price']?>
-                <?php if ($product['rrp'] > 0): ?>
-                <span class="rrp">&dollar;<?=$product['rrp']?></span>
-                <?php endif; ?>
+                &dollar;<?=$product['db_productPrice']?>
             </span>
         </a>
         <?php endforeach; ?>
