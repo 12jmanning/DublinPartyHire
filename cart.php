@@ -100,7 +100,7 @@ include("registerorder.php");
 
 <div class="cart content-wrapper">
     <h1>Shopping Cart</h1>
-    <form action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" name="order_form" id="order_form">
+    <form method="post" action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"  name="order_form" id="order_form">
         <table>
             <thead>
                 <tr>
@@ -136,16 +136,16 @@ include("registerorder.php");
                 </tr>
                 <tr>
                   <td><label for="customer_ID">Customer ID:</label></td>
-                  <td><input type="number" name="customer_ID" id="customer_ID" size="30" maxlength="30" required></td>
+                  <td><input type="number" name="customer_ID" id="customer_ID" size="30" maxlength="30" ></td>
                 </tr>
                 <tr>
                   <td><label for="delivery_date">Delivery Date:</label></td>
-                  <td><input type="date" name="delivery_date" id="delivery_date" required><br><br></td>
+                  <td><input type="date" name="delivery_date" id="delivery_date" ><br><br></td>
                 </tr>
 
                 <tr>
                   <td><label for="collection_date">Collection Date:</label></td>
-                  <td><input type="date" name="collection_date" id="collection_date" required><br><br></td>
+                  <td><input type="date" name="collection_date" id="collection_date" ><br><br></td>
                 </tr>
                 <?php endforeach; ?>
                 <?php endif; ?>
