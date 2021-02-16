@@ -115,7 +115,7 @@
             if($valid==true)
             {
                 $_SESSION['customerID']=$db_customerID;
-                header('Location: secondary_homepage.php');
+                header('Location: products.php');
             }
             else{
                 echo 'Please enter a valid customer ID';
