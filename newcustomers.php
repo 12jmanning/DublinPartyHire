@@ -182,7 +182,7 @@
             $_SESSION['customerID']=$found_customer_id;
         }
         //This will then move the user to the mai menu where they have accesss to the member section and the admin section
-        header('Location: secondary_homepage.php');
+        header('Location: index.php');
       }
       
     }
