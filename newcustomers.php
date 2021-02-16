@@ -124,8 +124,8 @@
       //This ensures the db_customerEmail is correctly formatted
       else {
         $db_customerEmail = test_input($_POST["db_customerEmail"]);
-        if (!filter_var($db_customerEmail, FILTER_VALIDATE_db_customerEmail)) {
-          $db_customerEmailErr = "Invalid db_customerEmail format";
+        if (!filter_var($db_customerEmail, FILTER_VALIDATE_EMAIL)) {
+          $db_customerEmailErr = "Invalid email format";
           $valid=false;
         }
       }
