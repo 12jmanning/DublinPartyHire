@@ -2,6 +2,12 @@
 include('inc/detail.php');
 
 
+$customer_ID_Err = "";
+$delivery_date_Err = "";
+$collection_date_Err = "";
+
+include("registerorder.php");
+
 
 
 // If the user clicked the add to cart button on the product page we can check for the form data
@@ -61,10 +67,7 @@ if (isset($_POST['update']) && isset($_SESSION['cart'])) {
 }
 
 // Send the user to the place order page if they click the Place Order button, also the cart should not be empty
-if (isset($_POST['placeorder']) && isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
-    header('Location: index.php?page=placeorder');
-    exit;
-}
+
 
 // Check the session variable for products in cart
 $products_in_cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : array();
@@ -88,19 +91,13 @@ if ($products_in_cart) {
 
 
 
-$customer_ID_Err = "";
-$delivery_date_Err = "";
-$collection_date_Err = "";
-
-include("registerorder.php");
-
 ?>
 
 <?=template_header('Cart')?>
 
 <div class="cart content-wrapper">
     <h1>Shopping Cart</h1>
-    <form action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" name="order_form" id="order_form">
+    <form action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" >
         <table>
             <thead>
                 <tr>
@@ -135,20 +132,22 @@ include("registerorder.php");
                     <td class="price">&dollar;<?=$product['db_productPrice'] * $products_in_cart[$product['db_productID']]?></td>
                 </tr>
                 <tr>
-                  <td><label for="customer_ID">Customer ID:</label></td>
-                  <td><input type="number" name="customer_ID" id="customer_ID" size="30" maxlength="30" required></td>
-                </tr>
-                <tr>
-                  <td><label for="delivery_date">Delivery Date:</label></td>
-                  <td><input type="date" name="delivery_date" id="delivery_date" required><br><br></td>
-                </tr>
 
-                <tr>
-                  <td><label for="collection_date">Collection Date:</label></td>
-                  <td><input type="date" name="collection_date" id="collection_date" required><br><br></td>
-                </tr>
                 <?php endforeach; ?>
                 <?php endif; ?>
+
+                <td><label for="customer_ID">Customer ID:</label></td>
+                <td><input type="number" name="customer_ID" id="customer_ID" size="30" maxlength="30" required></td>
+              </tr>
+              <tr>
+                <td><label for="delivery_date">Delivery Date:</label></td>
+                <td><input type="date" name="delivery_date" id="delivery_date" required><br><br></td>
+              </tr>
+
+              <tr>
+                <td><label for="collection_date">Collection Date:</label></td>
+                <td><input type="date" name="collection_date" id="collection_date" required><br><br></td>
+              </tr>
             </tbody>
         </table>
         <div class="subtotal">
