@@ -70,14 +70,14 @@ if ($products_in_cart) {
     // There are products in the cart so we need to select those products from the database
     // Products in cart array to question mark string array, we need the SQL statement to include IN (?,?,?,...etc)
     $array_to_question_marks = implode(',', array_fill(0, count($products_in_cart), '?'));
-    $stmt = $pdo->prepare('SELECT * FROM products WHERE id IN (' . $array_to_question_marks . ')');
+    $stmt = $pdo->prepare('SELECT * FROM products WHERE db_productID IN (' . $array_to_question_marks . ')');
     // We only need the array keys, not the values, the keys are the id's of the products
     $stmt->execute(array_keys($products_in_cart));
     // Fetch the products from the database and return the result as an Array
     $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     // Calculate the subtotal
     foreach ($products as $product) {
-        $subtotal += (float)$product['dp_productPrice'] * (int)$products_in_cart[$product['db_productID']];
+        $subtotal += (float)$product['db_productPrice'] * (int)$products_in_cart[$product['db_productID']];
     }
 }
 ?>
@@ -106,7 +106,7 @@ if ($products_in_cart) {
                 <tr>
                     <td class="img">
                         <a href="index.php?page=product&id=<?=$product['db_productID']?>">
-                            <img src="imgs/<?=$product['db_imageLink']?>" width="50" height="50" alt="<?=$product['db_productName']?>">
+                            <img src="img/<?=$product['db_imageLink']?>" width="50" height="50" alt="<?=$product['db_productName']?>">
                         </a>
                     </td>
                     <td>
