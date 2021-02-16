@@ -1,3 +1,8 @@
+<?PHP
+include('inc/detail.php');
+?>
+
+
 <?php
 // If the user clicked the add to cart button on the product page we can check for the form data
 if (isset($_POST['product_id'], $_POST['quantity']) && is_numeric($_POST['product_id']) && is_numeric($_POST['quantity'])) {
@@ -82,11 +87,40 @@ if ($products_in_cart) {
 }
 ?>
 
+
+<?php
+$customer_ID_Err = "";
+$delivery_date_Err = "";
+$collection_date_Err = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+$customer_ID = $_POST['customerID'];
+$delivery_date = $_POST['delivery_date'];
+$collection_date = $_POST['collection_date'];
+
+
+
+if($customer_ID_Err == "" && $delivery_date_Err == "" && $collection_date_Err == "" ){
+
+$q  = "INSERT INTO orders (";
+$q .= "db_customerID, db_deliveryDatetime, db_collectionDatetime";
+$q .= ") VALUES (";
+$q .= "'$customer_ID', '$delivery_date', '$collection_date')";
+
+$result = $db->query($q);
+
+// header("Location: member_home.php");
+// exit;
+}
+}
+?>
+
 <?=template_header('Cart')?>
 
 <div class="cart content-wrapper">
     <h1>Shopping Cart</h1>
-    <form action="index.php?page=cart" method="post">
+    <form action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" name="order_form" id="order_form">
         <table>
             <thead>
                 <tr>
@@ -119,6 +153,19 @@ if ($products_in_cart) {
                         <input type="number" name="quantity-<?=$product['db_productID']?>" value="<?=$products_in_cart[$product['db_productID']]?>" min="1" max="<?=$product['db_quantity']?>" placeholder="Quantity" required>
                     </td>
                     <td class="price">&dollar;<?=$product['db_productPrice'] * $products_in_cart[$product['db_productID']]?></td>
+                </tr>
+                <tr>
+                  <td><label for="customerID">Customer ID:</label></td>
+                  <td><input type="number" name="customerID" id="customerID" size="30" maxlength="30" required></td>
+                </tr>
+                <tr>
+                  <td><label for="delivery_date">Delivery Date:</label></td>
+                  <td><input type="date" name="delivery_date" id="delivery_date" required><br><br></td>
+                </tr>
+
+                <tr>
+                  <td><label for="collection_date">Collection Date:</label></td>
+                  <td><input type="date" name="collection_date" id="collection_date" required><br><br></td>
                 </tr>
                 <?php endforeach; ?>
                 <?php endif; ?>
