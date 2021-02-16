@@ -92,9 +92,8 @@ $customer_ID_Err = "";
 $delivery_date_Err = "";
 $collection_date_Err = "";
 
-include(registerorder.php);
+include("registerorder.php");
 
-header("Location: index.php");
 ?>
 
 <?=template_header('Cart')?>
