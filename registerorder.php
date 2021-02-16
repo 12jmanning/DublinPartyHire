@@ -15,5 +15,5 @@ $q .= "'$customer_ID', '$delivery_date', '$collection_date')";
 
 echo $q;
 $result = $db->query($q);
-
+header('location: index.php');
 ?>

@@ -81,7 +81,7 @@
     session_start();
     // define variables and set to empty values
     $nameErr = $addressErr = $countyErr = $db_customerEmailErr = $eircodeErr = $phoneErr ="";
-    $db_customerName = $db_customerAddress = $db_county = $db_customerEmail = $db_cumstomerEircode = $db_customerPhone = "";
+    $db_customerName = $db_customerAddress = $db_county = $db_customerEmail = $db_customerEircode = $db_customerPhone = "";
     $valid=true;
       //This if statement is executed after the form has been submitted and the contents of the statement execute the form data validation. Each of the inputs are checked if they are null and appropriate error messages are assigned
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -143,14 +143,14 @@
         }
       }   
 
-      if (empty($_POST["db_cumstomerEircode"])) {
+      if (empty($_POST["db_customerEircode"])) {
         $eircodeErr = "Eircode is required";
         $valid=false;
       } 
       //This ensures the course code only contsains valid characters
       else {
-        $db_cumstomerEircode = test_input($_POST["db_cumstomerEircode"]);
-        if (!preg_match("/([A-Za-z0-9])+/",$db_cumstomerEircode)) {
+        $db_customerEircode = test_input($_POST["db_customerEircode"]);
+        if (!preg_match("/([A-Za-z0-9])+/",$db_customerEircode)) {
         $eircodeErr = "Only numbers, letters and white space allowed";
         $valid=false;
         }
@@ -238,7 +238,7 @@
         <br> <br>
 
         <label for ="members">Eirode:</label>
-        <input type="text" name="db_cumstomerEircode" id="db_cumstomerEircode" size = 20> 
+        <input type="text" name="db_customerEircode" id="db_customerEircode" size = 20> 
         <span class='error'> <?php echo $eircodeErr ?> <span>
         <br> <br>
 
@@ -248,7 +248,7 @@
         <br> <br>
 
         <label for ="members">Phone Number:</label>
-        <input type="text" name="db_customerPhone" id="db_cumstomerPhone" size = 20> 
+        <input type="text" name="db_customerPhone" id="db_customerPhone" size = 20> 
         <span class='error'> <?php echo $phoneErr ?> <span>
         <br> <br>
 
