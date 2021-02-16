@@ -264,7 +264,7 @@
     <button onclick="window.location.href='index.php';" class="button button1">Homepage</button>
     </div>
     <div class="center2">
-    <button onclick="window.location.href='existing_members.php';" class="button button2">Existing Memeber</button>
+    <button onclick="window.location.href='existing_members.php';" class="button button2">Existing Customer</button>
     </div>
     <br></br>
 </body>
