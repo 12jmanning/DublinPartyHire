@@ -87,11 +87,6 @@ if ($products_in_cart) {
 }
 
 
-
-$customer_ID_Err = "";
-$delivery_date_Err = "";
-$collection_date_Err = "";
-
 ?>
 
 <?=template_header('Cart')?>
@@ -132,10 +127,7 @@ $collection_date_Err = "";
                     </td>
                     <td class="price">&dollar;<?=$product['db_productPrice'] * $products_in_cart[$product['db_productID']]?></td>
                 </tr>
-                <tr>
-                  <td><label for="customer_ID">Customer ID:</label></td>
-                  <td><input type="number" name="customer_ID" id="customer_ID" size="30" maxlength="30" ></td>
-                </tr>
+               
                 <tr>
                   <td><label for="delivery_date">Delivery Date:</label></td>
                   <td><input type="date" name="delivery_date" id="delivery_date" ><br><br></td>
