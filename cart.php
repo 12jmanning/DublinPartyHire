@@ -228,7 +228,7 @@ function dateDiffInDays($date1, $date2)
     <form method="post" action = "registerorder.php"  name="order_form" id="order_form">
 
         <div class="subtotal">
-            <span class="text">Subtotal</span>
+            <span class="text">Rent Subtotal</span>
             <span class="price">&dollar;<?php $dateDiff = ceil(dateDiffInDays($_SESSION['delivery_date'], $_SESSION['collection_date'])/2)*$_SESSION['subtotal']; 
  echo $dateDiff;?></span>
         </div>
@@ -261,6 +261,15 @@ function dateDiffInDays($date1, $date2)
             { 
                 $delivery_price=0; echo $delivery_price;
             }
+            ?>
+        </span>
+        </div>
+        <div class="subtotal">
+            <span class="text">Overall Order Price</span>
+            <span class="price">&dollar;<?php 
+            $overall_total = $dateDiff+ $delivery_price +$set_up_cost;
+            $_SESSION['order_total']=$overall_total;
+            echo $overall_total;
             ?>
         </span>
         </div>
