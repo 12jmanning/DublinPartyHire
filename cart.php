@@ -93,7 +93,7 @@ if ($products_in_cart) {
 
 <div class="cart content-wrapper">
     <h1>Shopping Cart</h1>
-    <form method="post" action = "registerorder.php"  name="order_form" id="order_form">
+    <form method="post" action = "confirmorder.php"  name="order_form" id="order_form">
         <table>
             <thead>
                 <tr>
@@ -127,7 +127,7 @@ if ($products_in_cart) {
                     </td>
                     <td class="price">&dollar;<?=$product['db_productPrice'] * $products_in_cart[$product['db_productID']]?></td>
                 </tr>
-               
+
                 <tr>
                   <td><label for="delivery_date">Delivery Date:</label></td>
                   <td><input type="date" name="delivery_date" id="delivery_date" ><br><br></td>
@@ -163,8 +163,8 @@ if ($products_in_cart) {
             <span class="price">&dollar;<?=$subtotal?></span>
         </div>
         <div class="buttons">
-            <input type="submit" value="Update" name="update">
-            <input type="submit" value="Place Order" name="placeorder" >
+            <!-- <input type="submit" value="Confirm Order" name="update"> -->
+            <input type="submit" value="Confirm Order" name="placeorder" >
         </div>
     </form>
 </div>
