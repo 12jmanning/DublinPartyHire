@@ -3,7 +3,6 @@
 session_start();
 if (isset($_SESSION['db_customerID'])) {
     include ("inc/detail.php");
-    include ("cart.php");
 
     $customer_ID = $_SESSION['db_customerID'];
     $delivery_date = $_POST['delivery_date'];
