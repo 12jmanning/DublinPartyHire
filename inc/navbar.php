@@ -22,9 +22,9 @@
 
 
 <!-- Navbar -->
-<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar sticky-top navbar-expand-lg navbar-light">
 <a class="navbar-brand" href="/group_6/index.html">
-  <img src="img/logo.png" width="30" height="30" alt="">
+  <img src="img/logo.png" width="50" height="50" alt="">
   Dublin Party Hire</a>
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
   <span class="navbar-toggler-icon"></span>
@@ -42,6 +42,7 @@
   <a class="btn btn-danger" style="margin-left: 4px;"role="button" href="log-out.php">Log Out</a>
 </div>
 </nav>
+
 
 
 </body>
