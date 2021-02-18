@@ -27,19 +27,21 @@ if (isset($_SESSION['db_customerID'])) {
         $collection= "collection";
         $delivery= "delivery";
 
-        $q  = "INSERT INTO transit (";
-        $q .= "db_orderID, db_transitType";
-        $q .= ") VALUES (";
-        $q .= "'$order_ID', '$collection')";
+        $q2  = "INSERT INTO transit (";
+        $q2 .= "db_orderID, db_transitType";
+        $q2 .= ") VALUES (";
+        $q2 .= "'$order_ID', '$collection')";
+        $result_collection = $db->query($q2);
         
-        $q  = "INSERT INTO transit (";
-        $q .= "db_orderID, db_transitType";
-        $q .= ") VALUES (";
-        $q .= "'$order_ID', '$delivery')";
+        $q1  = "INSERT INTO transit (";
+        $q1 .= "db_orderID, db_transitType";
+        $q1 .= ") VALUES (";
+        $q1 .= "'$order_ID', '$delivery')";
+        $result_delivery = $db->query($q1);
 
         $_SESSION['db_orderID']= $order_ID;
     }
-    echo $q;
+    echo $result;
 
 
 
