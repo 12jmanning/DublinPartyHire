@@ -26,26 +26,6 @@ if (isset($_SESSION['db_customerID'])) {
         $result = $db->query($get_order_ID);
         $row = mysqli_fetch_assoc($result); 
         $found_order_id=$row['db_orderID'];
-        
-       /* $i=0;
-        $found_order_id="";
-        while($i<$num_results&&$found<>true)
-        {
-            $row = mysqli_fetch_assoc($result); 
-            if($row['db_customerID']==$db_customerID&&$row['db_deliveryDatetime']==$delivery_date)
-            {
-                $found_order_id=$row['db_orderID'];
-                $found=true;
-            }
-            $i++;
-        }
-        if($found==true)
-        {
-            $_SESSION['db_orderID']=$found_order_id;
-        }
-
-
-        //$order_ID = $row['db_orderID'];*/
         $order_ID=$found_order_id;
         $collection= "collection";
         $delivery= "delivery";
