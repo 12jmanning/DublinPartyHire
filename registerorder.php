@@ -49,5 +49,4 @@ else{
     header('location: existingcustomers.php');
 }
 
-
 ?>
