@@ -140,7 +140,15 @@ if ($products_in_cart) {
 
                 <tr>
                   <td><label>Do you want your order to be delivered and collected?</label></td>
-                  <td><select id = "myList">
+                  <td><select name="delivery_and_collection" id = "delivery_and_collection">
+                    <option value = "Yes">Yes</option>
+                    <option value = "No">No</option>
+                </select><br><br></td>
+                </tr>
+
+                <tr>
+                  <td><label>Do you want your delivery items to be set up?</label></td>
+                  <td><select name = "set_up" id = "set_up">
                     <option value = "Yes">Yes</option>
                     <option value = "No">No</option>
                 </select><br><br></td>
