@@ -1,16 +1,37 @@
 
 
-#navbarNav {
+
+/* OUR CUSTOM CSS */
+
+/* For Navbar */
+#navbarNav-general {
   background-color: #cfebff;
 }
 
-.navbar {
+.navbar-general {
   background-color: #cfebff;
 }
 
 .homepage-icons{
   padding-bottom: 30px;
 }
+
+/* For Login/Logout */
+.table-forms{
+  margin-left: auto;
+  margin-right: auto;
+  width: 30%;
+  background-color: #e8e8e8;
+}
+
+.form-heading{
+  text-align: center;
+  margin-top: 3%;
+  margin-bottom: 3%;
+}
+
+
+/* FROM SHOPPING CART PACKAGE */
 
 * {
 	box-sizing: border-box;
