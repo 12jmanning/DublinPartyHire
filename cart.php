@@ -101,23 +101,23 @@ if ($products_in_cart) {
   //   $sql_u = "SELECT db_countyPrice FROM delivery_costs WHERE db_county=$customer_county";
   //   $res_u = mysqli_query($db, $sql_u);
   //   $delivery_price = $res_u;
-    /*if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // // ATtemping delivery costs:
-        $set_up_preference = $_POST['set_up'];
-        $delivery_preference = $_POST['delivery_and_collection'];
-        $customer_ID = $_SESSION['db_customerID'];
-        $delivery_date = $_POST['delivery_date'];
-        $collection_date = $_POST['collection_date'];
 
-        $sql_v = "SELECT delivery_costs.db_countyPrice FROM delivery_costs, customers WHERE db_customerID = $customer_ID AND customers.db_county = delivery_costs.db_county";
-        $res_v = $db ->($sql_v);
-        $row = mysqli_fetch_assoc($res_v);
-        $delivery_price = $row['db_countyPrice'];
-    }*/
   }
 
 
-  $set_up_preference = $_POST['set_up'];
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // // ATtemping delivery costs:
+    $set_up_preference = $_POST['set_up'];
+    $delivery_preference = $_POST['delivery_and_collection'];
+    $customer_ID = $_SESSION['db_customerID'];
+    $delivery_date = $_POST['delivery_date'];
+    $collection_date = $_POST['collection_date'];
+
+    $sql_v = "SELECT delivery_costs.db_countyPrice FROM delivery_costs, customers WHERE db_customerID = $customer_ID AND customers.db_county = delivery_costs.db_county";
+    $res_v = $db ->query($sql_v);
+    $row = mysqli_fetch_assoc($res_v);
+    $delivery_price = $row['db_countyPrice'];
+}
 
 
 
@@ -204,7 +204,10 @@ if ($products_in_cart) {
         </div>
         <div class="subtotal">
             <span class="text">Delivery Price</span>
-            <span class="price">&dollar;<?=$delivery_price?></span>
+            <span class="price">&dollar;<?php $customer_ID = $_SESSION['db_customerID']; $sql_v = "SELECT delivery_costs.db_countyPrice FROM delivery_costs, customers WHERE db_customerID = $customer_ID AND customers.db_county = delivery_costs.db_county";
+    $res_v = $db ->query($sql_v);
+    $row = mysqli_fetch_assoc($res_v);
+    $delivery_price = $row['db_countyPrice']; ?></span>
         </div>
         <div class="buttons">
             <input type="submit" value="Update" name="update">
@@ -287,6 +290,10 @@ if ($products_in_cart) {
             <span class="text">Set Up Cost</span>
             <span class="price">&dollar;<?=$setup2?></span>
         </div>
+        <div class="subtotal">
+            <span class="text">Delivery Price</span>
+            <span class="price">&dollar;<?=$delivery_price?></span>
+        </div>
         <div class="buttons">
             <input type="submit" value="Update" name="update">
             <input type="submit" value="Confirm Order" name="placeorder" >
@@ -296,7 +303,10 @@ if ($products_in_cart) {
 
 <?php
 echo $setup2;
-echo $set_up_preference?>
+echo $set_up_preference;
+echo $delivery_price;
+?>
+
 
 
 <?=template_footer()?>
