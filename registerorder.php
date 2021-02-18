@@ -27,6 +27,7 @@ if (isset($_SESSION['db_customerID'])) {
         $row = mysqli_fetch_assoc($result); 
         $found_order_id=$row['db_orderID'];
         $order_ID=$found_order_id;
+        $_SESSION['order_ID']=$order_ID;
         $collection= "collection";
         $delivery= "delivery";
 
