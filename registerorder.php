@@ -19,7 +19,7 @@ if (isset($_SESSION['db_customerID'])) {
 
     if($delivery_and_collection == "Yes")
     {
-        $get_order_ID = "SELECT db_orderID FROM orders WHERE db_customerID == $customer_ID AND db_deliveryDatetime = $delivery_date  AND db_collectionDatetime = $collection_date" ;
+        $get_order_ID = ("SELECT db_orderID FROM orders WHERE db_customerID = $customer_ID AND db_deliveryDatetime = $delivery_date  AND db_collectionDatetime = $collection_date") ;
         $result = $db->query($get_order_ID);
         $num_results = mysqli_num_rows($result);
         $row = mysqli_fetch_assoc($result);
