@@ -17,13 +17,33 @@ if (isset($_SESSION['db_customerID'])) {
 
     $result_1 = $db->query($q);
 
-    if($delivery_and_collection == "Yes")
+   /* if($delivery_and_collection == "Yes")
     {
-        $get_order_ID = ("SELECT db_orderID FROM orders WHERE db_customerID = $customer_ID AND db_deliveryDatetime = $delivery_date  AND db_collectionDatetime = $collection_date") ;
+        //$get_order_ID = ("SELECT db_orderID FROM orders WHERE db_customerID = $customer_ID AND db_deliveryDatetime = $delivery_date  AND db_collectionDatetime = $collection_date") ;
+        $get_order_ID = 'SELECT * FROM orders';
         $result = $db->query($get_order_ID);
         $num_results = mysqli_num_rows($result);
-        $row = mysqli_fetch_assoc($result);
-        $order_ID = $row['db_orderID'];
+
+        $i=0;
+        $found_order_id="";
+        while($i<$num_results&&$found<>true)
+        {
+            $row = mysqli_fetch_assoc($result); 
+            if($row['db_customerID']==$db_customerID&&$row['db_deliveryDatetime']==$delivery_date)
+            {
+                $found_order_id=$row['db_orderID'];
+                $found=true;
+            }
+            $i++;
+        }
+        if($found==true)
+        {
+            $_SESSION['db_orderID']=$found_order_id;
+        }
+
+
+        //$order_ID = $row['db_orderID'];
+        $order_ID=$_SESSION['db_orderID'];
         $collection= "collection";
         $delivery= "delivery";
 
@@ -41,7 +61,7 @@ if (isset($_SESSION['db_customerID'])) {
 
         $_SESSION['db_orderID']= $order_ID;
     }
-    echo $result;
+    echo $result;*/
 
 
 
