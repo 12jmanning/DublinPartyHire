@@ -11,9 +11,9 @@ if (isset($_SESSION['db_customerID'])) {
     $set_up = $_SESSION['set_up_preference']
 
     $q  = "INSERT INTO orders (";
-    $q .= "db_customerID, db_deliveryDatetime, db_collectionDatetime";
+    $q .= "db_customerID, db_deliveryDatetime, db_collectionDatetime, db_setUp, db_deliveryPreference";
     $q .= ") VALUES (";
-    $q .= "'$customer_ID', '$delivery_date', '$collection_date')";
+    $q .= "'$customer_ID', '$delivery_date', '$collection_date', '$set_up', '$delivery_and_collection')";
 
     $result_1 = $db->query($q);
 
