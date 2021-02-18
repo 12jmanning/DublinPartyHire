@@ -16,12 +16,20 @@ if (isset($_SESSION['db_customerID'])) {
     $q .= "'$customer_ID', '$delivery_date', '$collection_date')";
 
     echo $q;
-    $result = $db->query($q);
+    $result_1 = $db->query($q);
 
     if($delivery_and_collection == "Yes")
     {
         $get_order_ID = "SELECT db_orderID FROM orders WHERE db_customerID == $customer_ID AND db_deliveryDatetime = $delivery_date  AND db_collectionDatetime = $collection_date" ;
-        
+        $result = $db->query($get_order_ID);
+        $num_results = mysqli_num_rows($result);
+        $row = mysqli_fetch_assoc($result);
+        $order_ID = $row['db_orderID'];
+
+        $q  = "INSERT INTO orders (";
+        $q .= "db_customerID, db_deliveryDatetime, db_collectionDatetime";
+        $q .= ") VALUES (";
+        $q .= "'$customer_ID', '$delivery_date', '$collection_date')";
     }
 
 
