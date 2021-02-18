@@ -234,16 +234,35 @@ function dateDiffInDays($date1, $date2)
         </div>
         <div class="subtotal">
             <span class="text">Set Up Cost</span>
-            <span class="price">&dollar;<?=$setup2?></span>
+            <span class="price">&dollar;<?php 
+            if($_SESSION['set_up_preference']=="Yes" && $_SESSION['delivery_preference']=="Yes") 
+            {
+                $set_up_cost = $setup2;
+                echo $set_up_cost;
+            }
+            else
+            {
+                $set_up_cost=0;
+                echo $set_up_cost;    
+            }    
+            ?></span>
         </div>
         <div class="subtotal">
             <span class="text">Delivery Price</span>
-            <span class="price">&dollar;<?php $customer_ID = $_SESSION['db_customerID']; $sql_v = "SELECT delivery_costs.db_countyPrice FROM delivery_costs, customers WHERE db_customerID = $customer_ID AND customers.db_county = delivery_costs.db_county";
-    $res_v = $db ->query($sql_v);
-    $row = mysqli_fetch_assoc($res_v);
-    $delivery_price = $row['db_countyPrice']; echo $delivery_price;
- ?>
-</span>
+            <span class="price">&dollar;<?php 
+            if($_SESSION['delivery_preference']=="Yes") 
+            {
+                $customer_ID = $_SESSION['db_customerID']; $sql_v = "SELECT delivery_costs.db_countyPrice FROM delivery_costs, customers WHERE db_customerID = $customer_ID AND customers.db_county = delivery_costs.db_county";
+                $res_v = $db ->query($sql_v);
+                $row = mysqli_fetch_assoc($res_v);
+                $delivery_price = $row['db_countyPrice']; echo $delivery_price;
+            }
+            else
+            { 
+                $delivery_price=0; echo $delivery_price;
+            }
+            ?>
+        </span>
         </div>
         <div class="buttons">
             <input type="submit" value="Confirm Order" name="placeorder" >
