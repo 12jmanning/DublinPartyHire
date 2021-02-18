@@ -229,7 +229,7 @@ function dateDiffInDays($date1, $date2)
 
         <div class="subtotal">
             <span class="text">Rent Subtotal</span>
-            <span class="price">&dollar;<?php $dateDiff = ceil(dateDiffInDays($_SESSION['delivery_date'], $_SESSION['collection_date'])/2)*$_SESSION['subtotal'];
+            <span class="price">&dollar;<?php $dateDiff = ceil(dateDiffInDays($_SESSION['delivery_date'], $_SESSION['collection_date'])/2)*$_SESSION['subtotal']; $_SESSION['rental_price']=$dateDiff;
  echo $dateDiff;?></span>
         </div>
         <div class="subtotal">
@@ -245,6 +245,7 @@ function dateDiffInDays($date1, $date2)
                 $set_up_cost=0;
                 echo $set_up_cost;
             }
+            $_SESSION['set_up_cost']=$set_up_cost;
             ?></span>
         </div>
         <div class="subtotal">
@@ -261,6 +262,7 @@ function dateDiffInDays($date1, $date2)
             {
                 $delivery_price=0; echo $delivery_price;
             }
+            $_SESSION['delivery_price']=$delivery_price;
             ?>
         </span>
         </div>

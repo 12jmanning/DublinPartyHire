@@ -9,21 +9,24 @@ if (isset($_SESSION['db_customerID'])) {
     $collection_date = $_SESSION['collection_date']
     $delivery_and_collection = $_SESSION['delivery_preference']
     $set_up = $_SESSION['set_up_preference']
+    $set_up_price =  $_SESSION['set_up_cost'];
+    $rental_price = $_SESSION['rental_price'];
+    $delivery_price = $_SESSION['delivery_price'];
 
     $q  = "INSERT INTO orders (";
-    $q .= "db_customerID, db_deliveryDatetime, db_collectionDatetime, db_setUp, db_deliveryPreference";
+    $q .= "db_customerID, db_deliveryDatetime, db_collectionDatetime, db_setUp, db_deliveryPreference,db_setUpPrice, db_rentalPrice, db_deliveryPrice";
     $q .= ") VALUES (";
-    $q .= "'$customer_ID', '$delivery_date', '$collection_date', '$set_up', '$delivery_and_collection')";
+    $q .= "'$customer_ID', '$delivery_date', '$collection_date', '$set_up', '$delivery_and_collection','$set_up_price', '$rental_price','$delivery_price')";
 
     $result_1 = $db->query($q);
 
     if($delivery_and_collection == "Yes")
     {
-        //$get_order_ID = ("SELECT db_orderID FROM orders WHERE db_customerID = $customer_ID AND db_deliveryDatetime = $delivery_date  AND db_collectionDatetime = $collection_date") ;
-        $get_order_ID = "SELECT * FROM orders";
+        $get_order_ID = ("SELECT orders.db_orderID FROM orders WHERE orders.db_customerID = $customer_ID AND db_deliveryDatetime = '$delivery_date'") ;
         $result = $db->query($get_order_ID);
-        $num_results = mysqli_num_rows($result);
-
+        $row = mysqli_fetch_assoc($result); 
+        $found_order_id=$row['db_orderID'];
+        /*
         $i=0;
         $found_order_id="";
         while($i<$num_results&&$found<>true)
@@ -39,11 +42,11 @@ if (isset($_SESSION['db_customerID'])) {
         if($found==true)
         {
             $_SESSION['db_orderID']=$found_order_id;
-        }
+        }*/
 
 
         //$order_ID = $row['db_orderID'];
-        $order_ID=$_SESSION['db_orderID'];
+        $order_ID=$found_order_id;
         $collection= "collection";
         $delivery= "delivery";
 
@@ -62,14 +65,6 @@ if (isset($_SESSION['db_customerID'])) {
         $_SESSION['db_orderID']= $order_ID;
     }
     echo $result;
-
-
-
-
-
-
-
-
 }
 else{
     header('location: existingcustomers.php');
