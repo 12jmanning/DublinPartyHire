@@ -55,6 +55,8 @@ if (isset($_POST['update']) && isset($_SESSION['cart'])) {
             }
         }
     }
+    $set_up_preference = $_POST['set_up'];
+
     // Prevent form resubmission...
     header('location: index.php?page=cart');
     exit;
@@ -83,8 +85,29 @@ if ($products_in_cart) {
     // Calculate the subtotal
     foreach ($products as $product) {
         $subtotal += (float)$product['db_productPrice'] * (int)$products_in_cart[$product['db_productID']];
+        $setup2 += (float)$product['db_setUpPrice'] * (int)$products_in_cart[$product['db_productID']];
     }
-}
+  //
+  // // ATtemping delivery costs:
+  //   $customer_ID = $_SESSION['db_customerID'];
+  //   $sql_v = "SELECT db_county FROM customers WHERE db_customerID =$customer_ID";
+  //   $res_v = mysqli_query($db, $sql_v);
+  //
+  //
+  //   $customer_county = $res_v;
+  //
+  //
+  //
+  //   $sql_u = "SELECT db_countyPrice FROM delivery_costs WHERE db_county=$customer_county";
+  //   $res_u = mysqli_query($db, $sql_u);
+  //   $delivery_price = $res_u;
+  }
+
+
+  $set_up_preference = $_POST['set_up'];
+
+
+
 
 
 ?>
@@ -93,7 +116,7 @@ if ($products_in_cart) {
 
 <div class="cart content-wrapper">
     <h1>Shopping Cart</h1>
-    <form method="post" action = "registerorder.php"  name="order_form" id="order_form">
+    <form method="post" action = ""  name="order_form" id="order_form">
         <table>
             <thead>
                 <tr>
@@ -127,7 +150,7 @@ if ($products_in_cart) {
                     </td>
                     <td class="price">&dollar;<?=$product['db_productPrice'] * $products_in_cart[$product['db_productID']]?></td>
                 </tr>
-               
+
                 <tr>
                   <td><label for="delivery_date">Delivery Date:</label></td>
                   <td><input type="date" name="delivery_date" id="delivery_date" ><br><br></td>
@@ -162,11 +185,105 @@ if ($products_in_cart) {
             <span class="text">Subtotal</span>
             <span class="price">&dollar;<?=$subtotal?></span>
         </div>
+        <div class="subtotal">
+            <span class="text">Set Up Cost</span>
+            <span class="price">&dollar;<?=$setup2?></span>
+        </div>
+        <div class="subtotal">
+            <span class="text">Delivery Price</span>
+            <span class="price">&dollar;<?=$delivery_price?></span>
+        </div>
         <div class="buttons">
             <input type="submit" value="Update" name="update">
-            <input type="submit" value="Place Order" name="placeorder" >
         </div>
     </form>
 </div>
+
+<div class="cart content-wrapper">
+    <h1>Shopping Cart</h1>
+    <form method="post" action = "index.php?page=cart"  name="order_form" id="order_form">
+        <table>
+            <thead>
+                <tr>
+                    <td colspan="2">Product</td>
+                    <td>Price Per 48 Hrs</td>
+                    <td>Quantity</td>
+                    <td>Total</td>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($products)): ?>
+                <tr>
+                    <td colspan="5" style="text-align:center;">You have no products added in your Shopping Cart</td>
+                </tr>
+                <?php else: ?>
+                <?php foreach ($products as $product): ?>
+                <tr>
+                    <td class="img">
+                        <a href="index.php?page=product&id=<?=$product['db_productID']?>">
+                            <img src="img/<?=$product['db_imageLink']?>" width="50" height="50" alt="<?=$product['db_productName']?>">
+                        </a>
+                    </td>
+                    <td>
+                        <a href="index.php?page=product&id=<?=$product['db_productID']?>"><?=$product['db_productName']?></a>
+                        <br>
+                        <a href="index.php?page=cart&remove=<?=$product['db_productID']?>" class="remove">Remove</a>
+                    </td>
+                    <td class="price">&dollar;<?=$product['db_productPrice']?></td>
+                    <td class="quantity">
+                        <input type="number" name="quantity-<?=$product['db_productID']?>" value="<?=$products_in_cart[$product['db_productID']]?>" min="1" max="<?=$product['db_quantity']?>" placeholder="Quantity" required>
+                    </td>
+                    <td class="price">&dollar;<?=$product['db_productPrice'] * $products_in_cart[$product['db_productID']]?></td>
+                </tr>
+
+                <tr>
+                  <td><label for="delivery_date">Delivery Date:</label></td>
+                  <td><input type="date" name="delivery_date" id="delivery_date" ><br><br></td>
+                </tr>
+
+                <tr>
+                  <td><label for="collection_date">Collection Date:</label></td>
+                  <td><input type="date" name="collection_date" id="collection_date" ><br><br></td>
+                </tr>
+
+                <tr>
+                  <td><label>Do you want your order to be delivered and collected?</label></td>
+                  <td><select name="delivery_and_collection" id = "delivery_and_collection">
+                    <option value = "Yes">Yes</option>
+                    <option value = "No">No</option>
+                </select><br><br></td>
+                </tr>
+
+                <tr>
+                  <td><label>Do you want your delivery items to be set up?</label></td>
+                  <td><select name = "set_up" id = "set_up">
+                    <option value = "Yes">Yes</option>
+                    <option value = "No">No</option>
+                </select><br><br></td>
+                </tr>
+
+                <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+        <div class="subtotal">
+            <span class="text">Subtotal</span>
+            <span class="price">&dollar;<?=$subtotal?></span>
+        </div>
+        <div class="subtotal">
+            <span class="text">Set Up Cost</span>
+            <span class="price">&dollar;<?=$setup2?></span>
+        </div>
+        <div class="buttons">
+            <input type="submit" value="Update" name="update">
+            <input type="submit" value="Confirm Order" name="placeorder" >
+        </div>
+    </form>
+</div>
+
+<?php
+echo $setup2;
+echo $set_up_preference?>
+
 
 <?=template_footer()?>
