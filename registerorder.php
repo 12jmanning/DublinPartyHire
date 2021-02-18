@@ -15,7 +15,6 @@ if (isset($_SESSION['db_customerID'])) {
     $q .= ") VALUES (";
     $q .= "'$customer_ID', '$delivery_date', '$collection_date')";
 
-    echo $q;
     $result_1 = $db->query($q);
 
     if($delivery_and_collection == "Yes")
@@ -40,8 +39,13 @@ if (isset($_SESSION['db_customerID'])) {
 
         $_SESSION['db_orderID']= $order_ID;
     }
+    echo $q;
 
-    
+
+
+
+
+
 
 
 }
