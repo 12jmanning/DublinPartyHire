@@ -5,10 +5,10 @@ if (isset($_SESSION['db_customerID'])) {
     include ("inc/detail.php");
 
     $customer_ID = $_SESSION['db_customerID'];
-    $delivery_date = $_POST['delivery_date'];
-    $collection_date = $_POST['collection_date'];
-    $delivery_and_collection = $_POST['delivery_and_collection'];
-    $set_up = $_POST['set_up'];
+    $delivery_date = $_SESSION['delivery_date']
+    $collection_date = $_SESSION['collection_date']
+    $delivery_and_collection = $_SESSION['delivery_preference']
+    $set_up = $_SESSION['set_up_preference']
 
     $q  = "INSERT INTO orders (";
     $q .= "db_customerID, db_deliveryDatetime, db_collectionDatetime";
