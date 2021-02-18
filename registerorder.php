@@ -17,10 +17,10 @@ if (isset($_SESSION['db_customerID'])) {
 
     $result_1 = $db->query($q);
 
-   /* if($delivery_and_collection == "Yes")
+    if($delivery_and_collection == "Yes")
     {
         //$get_order_ID = ("SELECT db_orderID FROM orders WHERE db_customerID = $customer_ID AND db_deliveryDatetime = $delivery_date  AND db_collectionDatetime = $collection_date") ;
-        $get_order_ID = 'SELECT * FROM orders';
+        $get_order_ID = "SELECT * FROM orders";
         $result = $db->query($get_order_ID);
         $num_results = mysqli_num_rows($result);
 
@@ -61,7 +61,7 @@ if (isset($_SESSION['db_customerID'])) {
 
         $_SESSION['db_orderID']= $order_ID;
     }
-    echo $result;*/
+    echo $result;
 
 
 
