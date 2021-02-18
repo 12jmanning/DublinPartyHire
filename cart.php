@@ -55,7 +55,15 @@ if (isset($_POST['update']) && isset($_SESSION['cart'])) {
             }
         }
     }
-    $set_up_preference = $_POST['set_up'];
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // // ATtemping delivery costs:
+        $_SESSION['set_up_preference'] = $_POST['set_up'];
+        $_SESSION['delivery_preference'] = $_POST['delivery_and_collection'];
+        $_SESSION['delivery_date'] = $_POST['delivery_date'];
+        $_SESSION['collection_date'] = $_POST['collection_date'];
+
+    }
+    
 
     // Prevent form resubmission...
     header('location: index.php?page=cart');
@@ -86,6 +94,7 @@ if ($products_in_cart) {
     foreach ($products as $product) {
         $subtotal += (float)$product['db_productPrice'] * (int)$products_in_cart[$product['db_productID']];
         $setup2 += (float)$product['db_setUpPrice'] * (int)$products_in_cart[$product['db_productID']];
+        $_SESSION['subtotal']=$subtotal;
     }
   //
   // // ATtemping delivery costs:
@@ -118,8 +127,23 @@ if ($products_in_cart) {
     $row = mysqli_fetch_assoc($res_v);
     $delivery_price = $row['db_countyPrice'];
 }
+$set_up_preference = $_POST['set_up'];
+$delivery_preference = $_POST['delivery_and_collection'];
+$customer_ID = $_SESSION['db_customerID'];
+$delivery_date = $_POST['delivery_date'];
+$collection_date = $_POST['collection_date'];
 
-
+// Function to find the difference  
+// between two dates. 
+function dateDiffInDays($date1, $date2)  
+{ 
+    // Calculating the difference in timestamps 
+    $diff = strtotime($date2) - strtotime($date1); 
+      
+    // 1 day = 24 hours 
+    // 24 * 60 * 60 = 86400 seconds 
+    return abs(round($diff / 86400)); 
+} 
 
 
 
@@ -129,7 +153,7 @@ if ($products_in_cart) {
 
 <div class="cart content-wrapper">
     <h1>Shopping Cart</h1>
-    <form method="post" action = ""  name="order_form" id="order_form">
+    <form method="post" action = "index.php?page=cart"  name="order_form" id="order_form">
         <table>
             <thead>
                 <tr>
@@ -205,7 +229,8 @@ if ($products_in_cart) {
 
         <div class="subtotal">
             <span class="text">Subtotal</span>
-            <span class="price">&dollar;<?=$subtotal?></span>
+            <span class="price">&dollar;<?php $dateDiff = ceil(dateDiffInDays($_SESSION['delivery_date'], $_SESSION['collection_date'])/2)*$_SESSION['subtotal']; 
+ echo $dateDiff;?></span>
         </div>
         <div class="subtotal">
             <span class="text">Set Up Cost</span>
@@ -230,6 +255,8 @@ if ($products_in_cart) {
 echo $setup2;
 echo $set_up_preference;
 echo $delivery_price;
+echo $collection_date;
+echo $delivery_date;
 ?>
 
 
