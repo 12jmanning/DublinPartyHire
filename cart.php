@@ -55,7 +55,15 @@ if (isset($_POST['update']) && isset($_SESSION['cart'])) {
             }
         }
     }
-    $set_up_preference = $_POST['set_up'];
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // // ATtemping delivery costs:
+        $_SESSION['set_up_preference'] = $_POST['set_up'];
+        $_SESSION['delivery_preference'] = $_POST['delivery_and_collection'];
+        $_SESSION['delivery_date'] = $_POST['delivery_date'];
+        $_SESSION['collection_date'] = $_POST['collection_date'];
+
+    }
+
 
     // Prevent form resubmission...
     header('location: index.php?page=cart');
@@ -86,6 +94,7 @@ if ($products_in_cart) {
     foreach ($products as $product) {
         $subtotal += (float)$product['db_productPrice'] * (int)$products_in_cart[$product['db_productID']];
         $setup2 += (float)$product['db_setUpPrice'] * (int)$products_in_cart[$product['db_productID']];
+        $_SESSION['subtotal']=$subtotal;
     }
   //
   // // ATtemping delivery costs:
@@ -118,8 +127,23 @@ if ($products_in_cart) {
     $row = mysqli_fetch_assoc($res_v);
     $delivery_price = $row['db_countyPrice'];
 }
+$set_up_preference = $_POST['set_up'];
+$delivery_preference = $_POST['delivery_and_collection'];
+$customer_ID = $_SESSION['db_customerID'];
+$delivery_date = $_POST['delivery_date'];
+$collection_date = $_POST['collection_date'];
 
+// Function to find the difference
+// between two dates.
+function dateDiffInDays($date1, $date2)
+{
+    // Calculating the difference in timestamps
+    $diff = strtotime($date2) - strtotime($date1);
 
+    // 1 day = 24 hours
+    // 24 * 60 * 60 = 86400 seconds
+    return abs(round($diff / 86400));
+}
 
 
 
@@ -129,7 +153,7 @@ if ($products_in_cart) {
 
 <div class="cart content-wrapper">
     <h1>Shopping Cart</h1>
-    <form method="post" action = ""  name="order_form" id="order_form">
+    <form method="post" action = "index.php?page=cart"  name="order_form" id="order_form">
         <table>
             <thead>
                 <tr>
@@ -204,21 +228,50 @@ if ($products_in_cart) {
     <form method="post" action = "registerorder.php"  name="order_form" id="order_form">
 
         <div class="subtotal">
-            <span class="text">Subtotal</span>
-            <span class="price">&dollar;<?=$subtotal?></span>
+            <span class="text">Rent Subtotal</span>
+            <span class="price">&dollar;<?php $dateDiff = ceil(dateDiffInDays($_SESSION['delivery_date'], $_SESSION['collection_date'])/2)*$_SESSION['subtotal'];
+ echo $dateDiff;?></span>
         </div>
         <div class="subtotal">
             <span class="text">Set Up Cost</span>
-            <span class="price">&dollar;<?=$setup2?></span>
+            <span class="price">&dollar;<?php
+            if($_SESSION['set_up_preference']=="Yes" && $_SESSION['delivery_preference']=="Yes")
+            {
+                $set_up_cost = $setup2;
+                echo $set_up_cost;
+            }
+            else
+            {
+                $set_up_cost=0;
+                echo $set_up_cost;
+            }
+            ?></span>
         </div>
         <div class="subtotal">
             <span class="text">Delivery Price</span>
-            <span class="price">&dollar;<?php $customer_ID = $_SESSION['db_customerID']; $sql_v = "SELECT delivery_costs.db_countyPrice FROM delivery_costs, customers WHERE db_customerID = $customer_ID AND customers.db_county = delivery_costs.db_county";
-    $res_v = $db ->query($sql_v);
-    $row = mysqli_fetch_assoc($res_v);
-    $delivery_price = $row['db_countyPrice']; echo $delivery_price;
- ?>
-</span>
+            <span class="price">&dollar;<?php
+            if($_SESSION['delivery_preference']=="Yes")
+            {
+                $customer_ID = $_SESSION['db_customerID']; $sql_v = "SELECT delivery_costs.db_countyPrice FROM delivery_costs, customers WHERE db_customerID = $customer_ID AND customers.db_county = delivery_costs.db_county";
+                $res_v = $db ->query($sql_v);
+                $row = mysqli_fetch_assoc($res_v);
+                $delivery_price = $row['db_countyPrice']; echo $delivery_price;
+            }
+            else
+            {
+                $delivery_price=0; echo $delivery_price;
+            }
+            ?>
+        </span>
+        </div>
+        <div class="subtotal">
+            <span class="text">Overall Order Price</span>
+            <span class="price">&dollar;<?php
+            $overall_total = $dateDiff+ $delivery_price +$set_up_cost;
+            $_SESSION['order_total']=$overall_total;
+            echo $overall_total;
+            ?>
+        </span>
         </div>
         <div class="buttons">
             <input type="submit" value="Confirm Order" name="placeorder" >
@@ -230,6 +283,8 @@ if ($products_in_cart) {
 echo $setup2;
 echo $set_up_preference;
 echo $delivery_price;
+echo $collection_date;
+echo $delivery_date;
 ?>
 
 
