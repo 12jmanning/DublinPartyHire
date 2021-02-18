@@ -37,7 +37,11 @@ if (isset($_SESSION['db_customerID'])) {
         $q .= "db_orderID, db_transitType";
         $q .= ") VALUES (";
         $q .= "'$order_ID', '$delivery')";
+
+        $_SESSION['db_orderID']= $order_ID;
     }
+
+    
 
 
 }
