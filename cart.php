@@ -63,7 +63,11 @@ if (isset($_POST['update']) && isset($_SESSION['cart'])) {
         $_SESSION['collection_date'] = $_POST['collection_date'];
 
     }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 78a10aec5c53d359ffbb6286410b45aba2367e09
 
     // Prevent form resubmission...
     header('location: index.php?page=cart');
@@ -133,6 +137,7 @@ $customer_ID = $_SESSION['db_customerID'];
 $delivery_date = $_POST['delivery_date'];
 $collection_date = $_POST['collection_date'];
 
+<<<<<<< HEAD
 // Function to find the difference
 // between two dates.
 function dateDiffInDays($date1, $date2)
@@ -144,6 +149,19 @@ function dateDiffInDays($date1, $date2)
     // 24 * 60 * 60 = 86400 seconds
     return abs(round($diff / 86400));
 }
+=======
+// Function to find the difference  
+// between two dates. 
+function dateDiffInDays($date1, $date2)  
+{ 
+    // Calculating the difference in timestamps 
+    $diff = strtotime($date2) - strtotime($date1); 
+      
+    // 1 day = 24 hours 
+    // 24 * 60 * 60 = 86400 seconds 
+    return abs(round($diff / 86400)); 
+} 
+>>>>>>> 78a10aec5c53d359ffbb6286410b45aba2367e09
 
 
 
@@ -229,13 +247,22 @@ function dateDiffInDays($date1, $date2)
 
         <div class="subtotal">
             <span class="text">Rent Subtotal</span>
+<<<<<<< HEAD
             <span class="price">&dollar;<?php $dateDiff = ceil(dateDiffInDays($_SESSION['delivery_date'], $_SESSION['collection_date'])/2)*$_SESSION['subtotal'];
+=======
+            <span class="price">&dollar;<?php $dateDiff = ceil(dateDiffInDays($_SESSION['delivery_date'], $_SESSION['collection_date'])/2)*$_SESSION['subtotal']; 
+>>>>>>> 78a10aec5c53d359ffbb6286410b45aba2367e09
  echo $dateDiff;?></span>
         </div>
         <div class="subtotal">
             <span class="text">Set Up Cost</span>
+<<<<<<< HEAD
             <span class="price">&dollar;<?php
             if($_SESSION['set_up_preference']=="Yes" && $_SESSION['delivery_preference']=="Yes")
+=======
+            <span class="price">&dollar;<?php 
+            if($_SESSION['set_up_preference']=="Yes" && $_SESSION['delivery_preference']=="Yes") 
+>>>>>>> 78a10aec5c53d359ffbb6286410b45aba2367e09
             {
                 $set_up_cost = $setup2;
                 echo $set_up_cost;
@@ -243,14 +270,24 @@ function dateDiffInDays($date1, $date2)
             else
             {
                 $set_up_cost=0;
+<<<<<<< HEAD
                 echo $set_up_cost;
             }
+=======
+                echo $set_up_cost;    
+            }    
+>>>>>>> 78a10aec5c53d359ffbb6286410b45aba2367e09
             ?></span>
         </div>
         <div class="subtotal">
             <span class="text">Delivery Price</span>
+<<<<<<< HEAD
             <span class="price">&dollar;<?php
             if($_SESSION['delivery_preference']=="Yes")
+=======
+            <span class="price">&dollar;<?php 
+            if($_SESSION['delivery_preference']=="Yes") 
+>>>>>>> 78a10aec5c53d359ffbb6286410b45aba2367e09
             {
                 $customer_ID = $_SESSION['db_customerID']; $sql_v = "SELECT delivery_costs.db_countyPrice FROM delivery_costs, customers WHERE db_customerID = $customer_ID AND customers.db_county = delivery_costs.db_county";
                 $res_v = $db ->query($sql_v);
@@ -258,7 +295,11 @@ function dateDiffInDays($date1, $date2)
                 $delivery_price = $row['db_countyPrice']; echo $delivery_price;
             }
             else
+<<<<<<< HEAD
             {
+=======
+            { 
+>>>>>>> 78a10aec5c53d359ffbb6286410b45aba2367e09
                 $delivery_price=0; echo $delivery_price;
             }
             ?>
@@ -266,7 +307,11 @@ function dateDiffInDays($date1, $date2)
         </div>
         <div class="subtotal">
             <span class="text">Overall Order Price</span>
+<<<<<<< HEAD
             <span class="price">&dollar;<?php
+=======
+            <span class="price">&dollar;<?php 
+>>>>>>> 78a10aec5c53d359ffbb6286410b45aba2367e09
             $overall_total = $dateDiff+ $delivery_price +$set_up_cost;
             $_SESSION['order_total']=$overall_total;
             echo $overall_total;
