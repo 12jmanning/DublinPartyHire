@@ -137,6 +137,15 @@ if ($products_in_cart) {
                   <td><label for="collection_date">Collection Date:</label></td>
                   <td><input type="date" name="collection_date" id="collection_date" ><br><br></td>
                 </tr>
+
+                <tr>
+                  <td><label>Do you want your order to be delivered and collected?</label></td>
+                  <td><select id = "myList">
+                    <option value = "Yes">Yes</option>
+                    <option value = "No">No</option>
+                </select><br><br></td>
+                </tr>
+
                 <?php endforeach; ?>
                 <?php endif; ?>
             </tbody>
