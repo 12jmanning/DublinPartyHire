@@ -25,11 +25,18 @@ if (isset($_SESSION['db_customerID'])) {
         $num_results = mysqli_num_rows($result);
         $row = mysqli_fetch_assoc($result);
         $order_ID = $row['db_orderID'];
+        $collection= "collection";
+        $delivery= "delivery";
 
-        $q  = "INSERT INTO orders (";
-        $q .= "db_customerID, db_deliveryDatetime, db_collectionDatetime";
+        $q  = "INSERT INTO transit (";
+        $q .= "db_orderID, db_transitType";
         $q .= ") VALUES (";
-        $q .= "'$customer_ID', '$delivery_date', '$collection_date')";
+        $q .= "'$order_ID', '$collection')";
+        
+        $q  = "INSERT INTO transit (";
+        $q .= "db_orderID, db_transitType";
+        $q .= ") VALUES (";
+        $q .= "'$order_ID', '$delivery')";
     }
 
 
