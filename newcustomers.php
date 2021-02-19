@@ -179,10 +179,10 @@
         }
         if($found==true)
         {
-            $_SESSION['customerID']=$found_customer_id;
+            $_SESSION['db_customerID']=$found_customer_id;
         }
         //This will then move the user to the mai menu where they have accesss to the member section and the admin section
-        header('Location: products.php');
+        header('Location: index.php');
       }
       
     }
