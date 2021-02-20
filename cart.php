@@ -96,20 +96,6 @@ if ($products_in_cart) {
         $setup2 += (float)$product['db_setUpPrice'] * (int)$products_in_cart[$product['db_productID']];
         $_SESSION['subtotal']=$subtotal;
     }
-  //
-  // // ATtemping delivery costs:
-  //   $customer_ID = $_SESSION['db_customerID'];
-  //   $sql_v = "SELECT db_county FROM customers WHERE db_customerID =$customer_ID";
-  //   $res_v = mysqli_query($db, $sql_v);
-  //
-  //
-  //   $customer_county = $res_v;
-  //
-  //
-  //
-  //   $sql_u = "SELECT db_countyPrice FROM delivery_costs WHERE db_county=$customer_county";
-  //   $res_u = mysqli_query($db, $sql_u);
-  //   $delivery_price = $res_u;
 
   }
 
