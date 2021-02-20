@@ -45,7 +45,7 @@ if (isset($_SESSION['db_customerID'])) {
         $_SESSION['db_orderID']= $order_ID;
     }
 
-    //Here the product order table is 
+    //Here the product order table is going to be populated 
 }
 else{
     header('location: existingcustomers.php');
