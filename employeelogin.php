@@ -43,9 +43,9 @@ include('inc/navbar.php');
             }*/
             if($valid)
             {
-              $db_customerName=$_POST['db_customerName'];
-              $db_customerEmail=$_POST['db_customerEmail'];
-              $query ="select * from customers";
+              $db_employeeID=$_POST['db_employeeID'];
+              $db_employeeName=$_POST['db_employeeName'];
+              $query ="select * from employees";
               $result = $db->query($query);
               $num_results = mysqli_num_rows($result);
               if($num_results==0)
@@ -58,13 +58,24 @@ include('inc/navbar.php');
                   while($i<$num_results&&$valid1<>true)
                   {
                       $row = mysqli_fetch_assoc($result);
-                      if($row['db_customerName']==$db_customerName&&$row['db_customerEmail']==$db_customerEmail)
+                      if($row['db_employeeName']==$db_employeeName&&$row['db_employeeID']==$db_employeeID)
                       {
-                        $_SESSION['db_customerID']=$row['db_customerID'];
+                        $_SESSION['db_employeeID']=$row['db_employeeID'];
+                        $_SESSION['db_employeeName']=$row['db_employeeName'];
+                        $_SESSION['db_jobTitle']=$row['db_jobTitle'];
                         $valid1=true;
                         header('Location: index.php');
                       }
                       $i++;
+                  }
+                  $admin="admin";
+                  $employee="employee";
+
+                  if($_SESSION['db_jobTitle']=$admin){
+                    header('Location: index.php');
+                  }
+                  else{
+                    header('Location: index.php');
                   }
               }
             }
@@ -80,20 +91,15 @@ include('inc/navbar.php');
     <form class="table-forms" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
     <table class="table-forms">
       <tr>
-        <td><label for ="members">Your Name:</label></td>
-        <td><input type="text" name="db_customerName" size = 30><span class='error'> <?php echo $nameErr ?> <span></td>
+        <td><label for ="members">Your Employee ID:</label></td>
+        <td><input type="text" name="db_employeeID" size = 30><span class='error'> <?php echo $nameErr ?> <span></td>
       </tr>
       <tr>
-        <td><label for ="members">Your Email:</label></td>
-        <td><input type="text" name="db_customerEmail" id="db_customerEmail" size = 20>
+        <td><label for ="members">Your Name:</label></td>
+        <td><input type="text" name="db_employeeName" id="db_employeeName" size = 20>
         <span class='error'> <?php echo $db_customerEmailErr ?> <span></td>
       </tr>
     </table>
-
-
-
-
-
 
         <br> <br>
 
@@ -106,9 +112,6 @@ include('inc/navbar.php');
 
     <div class="center">
     <button onclick="window.location.href='index.php';" class="button button1">Homepage</button>
-    </div>
-    <div class="center2">
-    <button onclick="window.location.href='newcustomers.php';" class="button button2">Create New Cusomer</button>
     </div>
     <br></br>
 </body>
