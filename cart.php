@@ -146,7 +146,7 @@ function dateDiffInDays($date1, $date2)
             <thead>
                 <tr>
                     <td colspan="2">Product</td>
-                    <td>Price</td>
+                    <td>Price Per 48 Hrs</td>
                     <td>Quantity</td>
                     <td>Total</td>
                 </tr>
@@ -169,11 +169,11 @@ function dateDiffInDays($date1, $date2)
                         <br>
                         <a href="index.php?page=cart&remove=<?=$product['db_productID']?>" class="remove">Remove</a>
                     </td>
-                    <td class="price">&dollar;<?=$product['db_productPrice']?></td>
+                    <td class="price">&euro;<?=$product['db_productPrice']?> per 48 hrs</td>
                     <td class="quantity">
                         <input type="number" name="quantity-<?=$product['db_productID']?>" value="<?=$products_in_cart[$product['db_productID']]?>" min="1" max="<?=$product['db_quantity']?>" placeholder="Quantity" required>
                     </td>
-                    <td class="price">&dollar;<?=$product['db_productPrice'] * $products_in_cart[$product['db_productID']]?></td>
+                    <td class="price">&euro;<?=$product['db_productPrice'] * $products_in_cart[$product['db_productID']]?></td>
                 </tr>
                 <?php endforeach; ?>
                 <?php endif; ?>
@@ -226,12 +226,12 @@ function dateDiffInDays($date1, $date2)
 
         <div class="subtotal">
             <span class="text">Rent Subtotal</span>
-            <span class="price">&dollar;<?php $dateDiff = ceil(dateDiffInDays($_SESSION['delivery_date'], $_SESSION['collection_date'])/2)*$_SESSION['subtotal']; $_SESSION['rental_price']=$dateDiff;
+            <span class="price">&euro;<?php $dateDiff = ceil(dateDiffInDays($_SESSION['delivery_date'], $_SESSION['collection_date'])/2)*$_SESSION['subtotal']; $_SESSION['rental_price']=$dateDiff;
  echo $dateDiff;?></span>
         </div>
         <div class="subtotal">
             <span class="text">Set Up Cost</span>
-            <span class="price">&dollar;<?php
+            <span class="price">&euro;<?php
             if($_SESSION['set_up_preference']=="Yes" && $_SESSION['delivery_preference']=="Yes")
             {
                 $set_up_cost = $setup2;
@@ -247,7 +247,7 @@ function dateDiffInDays($date1, $date2)
         </div>
         <div class="subtotal">
             <span class="text">Delivery Price</span>
-            <span class="price">&dollar;<?php
+            <span class="price">&euro;<?php
             if($_SESSION['delivery_preference']=="Yes")
             {
                 $customer_ID = $_SESSION['db_customerID']; $sql_v = "SELECT delivery_costs.db_countyPrice FROM delivery_costs, customers WHERE db_customerID = $customer_ID AND customers.db_county = delivery_costs.db_county";
@@ -265,7 +265,7 @@ function dateDiffInDays($date1, $date2)
         </div>
         <div class="subtotal">
             <span class="text">Overall Order Price</span>
-            <span class="price">&dollar;<?php
+            <span class="price">&euro;<?php
             $overall_total = $dateDiff+ $delivery_price +$set_up_cost;
             $_SESSION['order_total']=$overall_total;
             echo $overall_total;

@@ -75,7 +75,7 @@ $recently_added_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
           <img class="homepage-icons" src="img/truck.png" alt="">
           <h2>Track your Delivery Online</h2>
           <p>See exactly what time your delivery is coming.</p>
-          <p><a class="btn btn-secondary" href="add_event.php" role="button">Add Event &raquo;</a></p>
+          <p><a class="btn btn-secondary" href="add_event.php" role="button">View Orders &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
       </div><!-- /.row -->
 
