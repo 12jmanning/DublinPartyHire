@@ -72,7 +72,7 @@ include('inc/navbar.php');
                   $employee="employee";
 
                   if($_SESSION['db_jobTitle']=$admin){
-                    header('Location: index.php');
+                    header('Location: admindashboard.php');
                   }
                   else{
                     header('Location: index.php');
