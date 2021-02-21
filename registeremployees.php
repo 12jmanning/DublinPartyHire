@@ -79,6 +79,8 @@
 
 <?php
     session_start();
+    
+    include ("inc/detail.php");         
     // define variables and set to empty values
     $employeeNameErr = $jobTitleErr ="";
     $db_employeeName = $db_jobTitle = "";
@@ -86,7 +88,7 @@
       //This if statement is executed after the form has been submitted and the contents of the statement execute the form data validation. Each of the inputs are checked if they are null and appropriate error messages are assigned
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-        if (empty($_POST["db_employeeName"])) {
+        /*if (empty($_POST["db_employeeName"])) {
            $employeeNameErr = "Name is required";
            $valid=false;
         } 
@@ -109,47 +111,30 @@
           $jobTitleErr = "Only letters and white space allowed";
           $valid=false;
         }
-      }   
+      }*/   
 
     // If the validation is accepted then this if statement is executed which will firstly call the register_members php file 
       if($valid<>false)
       {
-        include 'registeremployee.php';
-      //Here, a query is run to obtain the member_id of the newly added member and this will be stored as a session varibale which is a super global variable
-        $found=false;
-        $query ="select * from customers";
-        $result = $db->query($query);
-        $num_results = mysqli_num_rows($result);
-        $i=0;
-        $found_member_id="";
-        while($i<$num_results&&$found<>true)
-        {
-            $row = mysqli_fetch_assoc($result); 
-            if($row['db_customerEmail']==$db_customerEmail&&$row['db_customerName']==$db_customerName)
-            {
-                $found_customer_id=$row['db_customerID'];
-                $found=true;
-            }
-            $i++;
-        }
-        if($found==true)
-        {
-            $_SESSION['db_customerID']=$found_customer_id;
-        }
-        //This will then move the user to the mai menu where they have accesss to the member section and the admin section
+        $db_employeeName = $_POST['db_employeeName'];
+        $db_jobTitle = $_POST['db_jobTitle'];
+        $q  = "INSERT INTO employees (";
+        $q .= "db_employeeName, db_jobTitle";
+        $q .= ") VALUES (";
+        $q .= "'$db_employeeName', '$db_jobTitle')";
+        $result = $db->query($q);
+
+        $query="SELECT db_employeeID from employees WHERE db_employeeName = '$db_employeeName' AND db_jobTitle = '$db_jobTitle'";
+        $result1 = $db->query($query);
+        $row = mysqli_fetch_assoc($result1); 
+        $db_employeeID = $row['db_employeeID'];
+          
+
         header('Location: index.php');
       }
       
     }
-    //This function is called to test the input, trim the whitespace characters and return the formatted data
-    function test_input($data) {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
-      }  
-  
-      
+    
 ?>
 <!-- Here, a navigation bar is being created for the homepage which will have links to the Homepage, the new members page which allows new users to sign up and the existing members page which allows present members to log in with their Member ID's-->
 <nav class="navbar navbar-dark bg-dark">
@@ -176,14 +161,17 @@
   <!-- This is the member form where they input their information and it calls itself in the action attribute in order to perform the validations -->
 <div class="boxed">
 <h1>New Employee:</h1>
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"> 
+<form method="post" action=""> 
         <label for ="members">Employee Name:</label>
         <input type="text" name="db_employeeName" size = 30>  
         <span class='error'> <?php echo $employeeNameErr ?> <span>
         <br> <br> 
 
         <label for ="members">Job Title:</label>
-        <input type="text" name="db_jobTitle" size = 30>
+        <select name="db_jobTitle" id="db_jobTitle">
+            <option value="admin">Admin</option>
+            <option value="employee">Employee</option>
+        </select>
         <span class='error'> <?php echo $jobTitleErr ?> <span>
         <br> <br> 
 
