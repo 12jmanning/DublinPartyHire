@@ -1,79 +1,11 @@
+<?PHP
+include('inc/navbar.php');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <style> 
-    .boxed
-    {
-      width: 500px;
-      border: 10px solid grey;
-      padding: 50px;
-      max-width: 500px;
-      margin: auto;
-    }
-    .button {
-        border: none;
-        color: white;
-        padding: 16px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        
-        transition-duration: 0.4s;
-        cursor: pointer;
-        max-width: 500px;
-        margin: auto;
-        }
 
-        .button1 {
-        background-color: white;
-        color: black;
-        border: 2px solid #4CAF50;
-        }
-
-        .button1:hover {
-        background-color: #4CAF50;
-        color: white;
-        }
-
-        .button2 {
-        background-color: white;
-        color: black;
-        border: 2px solid #008CBA;
-        }
-
-        .button2:hover {
-        background-color: #008CBA;
-        color: white;
-        }
-        .content {
-          max-width: 500px;
-          margin: auto;
-        }
-        .center {
-          margin: 0;
-          position: absolute;
-          left: 40%;
-          
-        }
-        .center2 {
-          margin: 0;
-          position: absolute;
-          left: 50%;
-        
-        }
-
-  </style>
-    <!-- Here, Bootstrap is being intsalled and imported along with importing Bootstrap's JavaScript, Styles
-     CSS, Sass. This allows access to resources and elements to aid in web development -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="master.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
 </head>
 <body>
 
@@ -89,7 +21,7 @@
         if (empty($_POST["db_customerName"])) {
            $nameErr = "Name is required";
            $valid=false;
-        } 
+        }
         //This ensures the name only contsains valid characters
         else {
           $db_customerName = test_input($_POST["db_customerName"]);
@@ -102,12 +34,12 @@
       if (empty($_POST["db_customerAddress"])) {
         $addressErr = "Address is required";
         $valid=false;
-      }  
+      }
 
       if (empty($_POST["db_county"])) {
         $countyErr = "County is required";
         $valid=false;
-      } 
+      }
       //This ensures the student number input only contains numeric values
       else {
         $db_county = test_input($_POST["db_county"]);
@@ -115,12 +47,12 @@
           $countyErr = "Only letters and white space allowed";
           $valid=false;
         }
-      } 
-     
+      }
+
       if (empty($_POST["db_customerEmail"])) {
         $db_customerEmailErr = "db_customerEmail is required";
         $valid=false;
-      } 
+      }
       //This ensures the db_customerEmail is correctly formatted
       else {
         $db_customerEmail = test_input($_POST["db_customerEmail"]);
@@ -133,7 +65,7 @@
       if (empty($_POST["db_customerPhone"])) {
         $phoneErr = "Student number is required";
         $valid=false;
-      } 
+      }
       //This ensures the student number input only contains numeric values
       else {
         $db_customerPhone = test_input($_POST["db_customerPhone"]);
@@ -141,12 +73,12 @@
           $phoneErr = "Only numbers allowed";
           $valid=false;
         }
-      }   
+      }
 
       if (empty($_POST["db_customerEircode"])) {
         $eircodeErr = "Eircode is required";
         $valid=false;
-      } 
+      }
       //This ensures the course code only contsains valid characters
       else {
         $db_customerEircode = test_input($_POST["db_customerEircode"]);
@@ -154,9 +86,9 @@
         $eircodeErr = "Only numbers, letters and white space allowed";
         $valid=false;
         }
-      } 
+      }
 
-    // If the validation is accepted then this if statement is executed which will firstly call the register_members php file 
+    // If the validation is accepted then this if statement is executed which will firstly call the register_members php file
       if($valid<>false)
       {
         include 'registernewcustomer.php';
@@ -169,7 +101,7 @@
         $found_member_id="";
         while($i<$num_results&&$found<>true)
         {
-            $row = mysqli_fetch_assoc($result); 
+            $row = mysqli_fetch_assoc($result);
             if($row['db_customerEmail']==$db_customerEmail&&$row['db_customerName']==$db_customerName)
             {
                 $found_customer_id=$row['db_customerID'];
@@ -184,7 +116,7 @@
         //This will then move the user to the mai menu where they have accesss to the member section and the admin section
         header('Location: index.php');
       }
-      
+
     }
     //This function is called to test the input, trim the whitespace characters and return the formatted data
     function test_input($data) {
@@ -192,80 +124,88 @@
         $data = stripslashes($data);
         $data = htmlspecialchars($data);
         return $data;
-      }  
-  
-      
-?>
-<!-- Here, a navigation bar is being created for the homepage which will have links to the Homepage, the new members page which allows new users to sign up and the existing members page which allows present members to log in with their Member ID's-->
-<nav class="navbar navbar-dark bg-dark">
-    <a class="navbar-brand" href="homepage.html">DUMMS Society</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="true" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="navbar-collapse collapse show" id="navbarNav" style="">
-      <ul class="navbar-nav">
-        <li class="nav-item active">
-          <a class="nav-link" href="homepage.html">Homepage <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="members.php">New Members</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="existing_members.php">Existing Members</a>
-        </li>
+      }
 
-      </ul>
-    </div>
-  </nav>
-  <br> <br>
+
+?>
+
   <!-- This is the member form where they input their information and it calls itself in the action attribute in order to perform the validations -->
 <div class="boxed">
-<h1>New Customers:</h1>
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"> 
-        <label for ="members">Customer Name:</label>
-        <input type="text" name="db_customerName" size = 30>  
-        <span class='error'> <?php echo $nameErr ?> <span>
-        <br> <br> 
+<h2 class="form-heading">Become a customer!</h2>
+<form class="table-forms" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 
-        <label for ="members">Address:</label>
-        <input type="text" name="db_customerAddress" size = 30>
-        <span class='error'> <?php echo $addressErr ?> <span>
-        <br> <br> 
+        <table class="table-forms">
+          <tr>
+            <td><label for ="members">Customer Name:</label></td>
+            <td><input type="text" name="db_customerName" size = 30><span class='error'> <?php echo $nameErr ?> <span></td>
+          </tr>
 
-        <label for ="members">County:</label>
-        <input type="text" name="db_county" id="db_county" size = 10> 
-        <span class='error'> <?php echo $countyErr ?> <span>
-        <br> <br>
+          <tr>
+            <td><label for ="members">Address:</label></td>
+            <td><input type="text" name="db_customerAddress" size = 30><span class='error'> <?php echo $addressErr ?> <span></td>
+          </tr>
 
-        <label for ="members">Eirode:</label>
-        <input type="text" name="db_customerEircode" id="db_customerEircode" size = 20> 
-        <span class='error'> <?php echo $eircodeErr ?> <span>
-        <br> <br>
+          <tr>
+            <td><label for="members">County:</label><span class='error'> <?php echo $countyErr ?> <span></td>
+            <td><select name="db_county" id="db_county">
+                <option value="Dublin">Dublin</option>
+                <option value="Cork">Cork</option>
+                <option value="Carlow">Carlow</option>
+                <option value="Cavan">Cavan</option>
+                <option value="Clare">Clare</option>
+                <option value="Donegal">Donegal</option>
+                <option value="Galway">Galway</option>
+                <option value="Kerry">Kerry</option>
+                <option value="Kildare">Kildare</option>
+                <option value="Kilkenny">Kilkenny</option>
+                <option value="Laois">Laois</option>
+                <option value="Leitrim">Leitrim</option>
+                <option value="Limerick">Limerick</option>
+                <option value="Longford">Longford</option>
+                <option value="Louth">Louth</option>
+                <option value="Mayo">Mayo</option>
+                <option value="Meath">Meath</option>
+                <option value="Monaghan">Monaghan</option>
+                <option value="Offaly">Offaly</option>
+                <option value="Roscommon">Roscommon</option>
+                <option value="Sligo">Sligo</option>
+                <option value="Tipperary">Tipperary</option>
+                <option value="Waterford">Waterford</option>
+                <option value="Westmeath">Westmeath</option>
+                <option value="Wexford">Wexford</option>
+                <option value="Wicklow">Wicklow</option><br>
+              </select> </td>
 
-        <label for ="members">Email:</label>
-        <input type="text" name="db_customerEmail" id="db_customerEmail" size = 20> 
-        <span class='error'> <?php echo $db_customerEmailErr ?> <span>
-        <br> <br>
+          </tr>
 
-        <label for ="members">Phone Number:</label>
-        <input type="text" name="db_customerPhone" id="db_customerPhone" size = 20> 
-        <span class='error'> <?php echo $phoneErr ?> <span>
-        <br> <br>
+          <tr>
+            <td><label for ="members">Eircode:</label></td>
+            <td><input type="text" name="db_customerEircode" id="db_customerEircode" size = 20><span class='error'> <?php echo $eircodeErr ?> <span></td>
+          </tr>
 
-        <input type="submit" value = "Submit">
-        <input type="reset" value = "Reset">
+          <tr>
+            <td><label for ="members">Email:</label></td>
+            <td><input type="text" name="db_customerEmail" id="db_customerEmail" size = 20><span class='error'> <?php echo $db_customerEmailErr ?> <span></td>
+          </tr>
+
+          <tr>
+            <td><label for ="members">Phone Number:</label></td>
+            <td><input type="text" name="db_customerPhone" id="db_customerPhone" size = 20><span class='error'> <?php echo $phoneErr ?> <span></td>
+          </tr>
+
+          <tr>
+            <td></td>
+            <td><input class="btn btn-success" type="submit" name="submit" value="Submit"><input style="margin-left: 10px;"class="btn btn-danger" type="reset" value = "Reset"></td>
+          </tr>
+
+          <tr>
+            <td></td>
+            <td><p>Already have an account? Log in <a href="existingcustomers.php">HERE</a></p></td>
+          </tr>
+        </table>
+
     </form>
     </div>
-    <br> <br>
-    <br> <br>
-  
 
-    <div class="center">
-    <button onclick="window.location.href='index.php';" class="button button1">Homepage</button>
-    </div>
-    <div class="center2">
-    <button onclick="window.location.href='existing_members.php';" class="button button2">Existing Customer</button>
-    </div>
-    <br></br>
 </body>
-</html>  
+</html>

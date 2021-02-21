@@ -32,7 +32,6 @@ $recently_added_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <span class="price">
                 &dollar;<?=$product['db_productPrice']?>
                 <?php if ($product['db_productPrice'] > 0): ?>
-                <span class="rrp">&dollar;<?=$product['db_productPrice']?></span>
                 <?php endif; ?>
             </span>
         </a>
@@ -41,7 +40,7 @@ $recently_added_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </div>
 
 <div class="recentlyadded content-wrapper">
-    <h2>Features:</h2>  
+    <h2>Features:</h2>
 </div>
 
 <!-- Marketing messaging and featurettes

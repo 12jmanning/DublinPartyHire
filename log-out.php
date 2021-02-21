@@ -1,3 +1,8 @@
-// log out needed
+<?php
 
-// delete all session variables
+session_unset();
+unset($_SESSION['db_customerID']);
+session_destroy();
+header("Location: index.php");
+
+?>

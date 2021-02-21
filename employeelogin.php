@@ -85,34 +85,36 @@ include('inc/navbar.php');
 
 <!-- This is the form which takes in the user input value for the member ID -->
 
-    <h2 class="form-heading">Please Log In!</h2>
+    <h2 class="form-heading">Staff Log In!</h2>
 
 
     <form class="table-forms" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
     <table class="table-forms">
       <tr>
-        <td><label for ="members">Your Employee ID:</label></td>
+        <td><label for ="members">Employee ID:</label></td>
         <td><input type="text" name="db_employeeID" size = 30><span class='error'> <?php echo $nameErr ?> <span></td>
       </tr>
       <tr>
-        <td><label for ="members">Your Name:</label></td>
-        <td><input type="text" name="db_employeeName" id="db_employeeName" size = 20>
+        <td><label for ="members">Name:</label></td>
+        <td><input type="text" name="db_employeeName" id="db_employeeName" size = 30>
         <span class='error'> <?php echo $db_customerEmailErr ?> <span></td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td><input class="btn btn-success" type="submit" name="submit" value="Submit"><input style="margin-left: 10px;"class="btn btn-danger" type="reset" value = "Reset"></td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td><p>Get your employee account <a href="registeremployees.php">HERE</a></p></td>
       </tr>
     </table>
 
-        <br> <br>
 
-        <input type="submit" value = "Submit">
-        <input type="reset" value = "Reset">
+
 
     </form>
 
-    <br> <br>
-
-    <div class="center">
-    <button onclick="window.location.href='index.php';" class="button button1">Homepage</button>
-    </div>
-    <br></br>
 </body>
 </html>

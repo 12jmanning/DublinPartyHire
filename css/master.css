@@ -30,6 +30,10 @@
   margin-bottom: 3%;
 }
 
+th, td {
+  padding: 10px;
+}
+
 
 /* FROM SHOPPING CART PACKAGE */
 

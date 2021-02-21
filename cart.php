@@ -112,6 +112,8 @@ if ($products_in_cart) {
     $res_v = $db ->query($sql_v);
     $row = mysqli_fetch_assoc($res_v);
     $delivery_price = $row['db_countyPrice'];
+
+
 }
 $set_up_preference = $_POST['set_up'];
 $delivery_preference = $_POST['delivery_and_collection'];
@@ -139,7 +141,7 @@ function dateDiffInDays($date1, $date2)
 
 <div class="cart content-wrapper">
     <h1>Shopping Cart</h1>
-    <form method="post" action = "index.php?page=cart"  name="order_form" id="order_form">
+    <form method="post" action = "index.php?page=cart#bottomOfPage"  name="order_form" id="order_form">
         <table>
             <thead>
                 <tr>
@@ -173,7 +175,8 @@ function dateDiffInDays($date1, $date2)
                     </td>
                     <td class="price">&dollar;<?=$product['db_productPrice'] * $products_in_cart[$product['db_productID']]?></td>
                 </tr>
-
+                <?php endforeach; ?>
+                <?php endif; ?>
                 <tr>
                   <td><label for="delivery_date">Delivery Date:</label></td>
                   <td><input type="date" name="delivery_date" id="delivery_date" ><br><br></td>
@@ -199,9 +202,6 @@ function dateDiffInDays($date1, $date2)
                     <option value = "No">No</option>
                 </select><br><br></td>
                 </tr>
-
-                <?php endforeach; ?>
-                <?php endif; ?>
             </tbody>
         </table>
         <div class="buttons">
@@ -212,6 +212,17 @@ function dateDiffInDays($date1, $date2)
 
 <div class="cart content-wrapper">
     <form method="post" action = "registerorder.php"  name="order_form" id="order_form">
+
+        <div style="position: absolute;">
+          <h2>Order Confirmation:</h2>
+          <h5>Start Date:</h5> <?php echo $_SESSION['delivery_date'] ?>
+          <h5>End Date:</h5> <?php echo $_SESSION['collection_date'] ?>
+          <h5>Delivery:</h5> <?php echo $_SESSION['delivery_preference'] ?>
+          <h5>Setup Preference:</h5> <?php echo $_SESSION['set_up_preference'] ?>
+
+
+
+        </div>
 
         <div class="subtotal">
             <span class="text">Rent Subtotal</span>
@@ -261,6 +272,8 @@ function dateDiffInDays($date1, $date2)
             ?>
         </span>
         </div>
+        <a name="bottomOfPage"></a>
+
         <div class="buttons">
             <input type="submit" value="Confirm Order" name="placeorder" >
         </div>

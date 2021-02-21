@@ -79,36 +79,27 @@ include('inc/navbar.php');
     <form class="table-forms" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
     <table class="table-forms">
       <tr>
-        <td><label for ="members">Your Name:</label></td>
+        <td><label for ="members">Name:</label></td>
         <td><input type="text" name="db_customerName" size = 30><span class='error'> <?php echo $nameErr ?> <span></td>
       </tr>
       <tr>
-        <td><label for ="members">Your Email:</label></td>
+        <td><label for ="members">Email:</label></td>
         <td><input type="text" name="db_customerEmail" id="db_customerEmail" size = 20>
         <span class='error'> <?php echo $db_customerEmailErr ?> <span></td>
       </tr>
+
+      <tr>
+        <td></td>
+        <td><input class="btn btn-success" type="submit" name="submit" value="Submit"><input style="margin-left: 10px;"class="btn btn-danger" type="reset" value = "Reset"></td>
+      </tr>
+
+      <tr>
+    		<td></td>
+    		<td><p>Or create an account <a href="newcustomers.php">HERE</a></p></td>
+    	</tr>
     </table>
-
-
-
-
-
-
-        <br> <br>
-
-        <input type="submit" value = "Submit">
-        <input type="reset" value = "Reset">
-
     </form>
 
-    <br> <br>
-
-    <div class="center">
-    <button onclick="window.location.href='index.php';" class="button button1">Homepage</button>
-    </div>
-    <div class="center2">
-    <button onclick="window.location.href='newcustomers.php';" class="button button2">Create New Cusomer</button>
-    </div>
-    <br></br>
+    <a class="btn" style="background-color: #373F51; color: #fff;     margin-left: auto; margin-right: auto; display: block; width: 30%; margin-top: 10%;" role="button" href="employeelogin.php">Staff Login</a>
 </body>
 </html>
