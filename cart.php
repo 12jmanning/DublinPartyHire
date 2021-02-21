@@ -267,14 +267,4 @@ function dateDiffInDays($date1, $date2)
     </form>
 </div>
 
-<?php
-echo $setup2;
-echo $set_up_preference;
-echo $delivery_price;
-echo $collection_date;
-echo $delivery_date;
-?>
-
-
-
 <?=template_footer()?>
