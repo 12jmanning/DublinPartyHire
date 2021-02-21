@@ -107,7 +107,8 @@ if (isset($_SESSION['db_customerID'])) {
         }
 
     }
-
+//Change the location of page to an invoice
+//Session variables are not deleted here
     header('location: index.php');
 }
 else{
