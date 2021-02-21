@@ -44,8 +44,10 @@ echo <<<EOT
                     <a href="index.php?page=cart">
                         <i class="fas fa-shopping-cart"></i>
                         <span>$num_items_in_cart</span>
-					</a>
+					           </a>
                 </div>
+                <a class="btn" style ="color: #fff; background-color: #373F51; margin:auto;margin-left: 6px;" role="button" href="existingcustomers.php">Log In</a>
+                <a class="btn" style="background-color: #C46BAE; color: #fff; margin:auto; margin-left: 4px;"role="button" href="log-out.php">Log Out</a>
             </div>
         </header>
         <main>

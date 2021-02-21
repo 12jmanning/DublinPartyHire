@@ -64,7 +64,7 @@ include('inc/navbar.php');
                         $_SESSION['db_employeeName']=$row['db_employeeName'];
                         $_SESSION['db_jobTitle']=$row['db_jobTitle'];
                         $valid1=true;
-                        header('Location: index.php');
+                        header('Location: employeedashboard.php');
                       }
                       $i++;
                   }
