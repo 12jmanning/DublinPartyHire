@@ -80,86 +80,41 @@
 <?php
     session_start();
     // define variables and set to empty values
-    $nameErr = $addressErr = $countyErr = $db_customerEmailErr = $eircodeErr = $phoneErr ="";
-    $db_customerName = $db_customerAddress = $db_county = $db_customerEmail = $db_customerEircode = $db_customerPhone = "";
+    $employeeNameErr = $jobTitleErr ="";
+    $db_employeeName = $db_jobTitle = "";
     $valid=true;
       //This if statement is executed after the form has been submitted and the contents of the statement execute the form data validation. Each of the inputs are checked if they are null and appropriate error messages are assigned
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-        if (empty($_POST["db_customerName"])) {
-           $nameErr = "Name is required";
+        if (empty($_POST["db_employeeName"])) {
+           $employeeNameErr = "Name is required";
            $valid=false;
         } 
         //This ensures the name only contsains valid characters
         else {
-          $db_customerName = test_input($_POST["db_customerName"]);
-          if (!preg_match("/^[a-zA-Z-' ]*$/",$db_customerName)) {
-            $nameErr = "Only letters and white space allowed";
+          $db_employeeName = test_input($_POST["db_employeeName"]);
+          if (!preg_match("/^[a-zA-Z-' ]*$/",$db_employeeName)) {
+            $employeeNameErr = "Only letters and white space allowed";
             $valid=false;
           }
         }
 
-      if (empty($_POST["db_customerAddress"])) {
-        $addressErr = "Address is required";
+      if (empty($_POST["db_jobTitle"])) {
+        $jobTitleErr = "Job Title is required";
         $valid=false;
-      }  
-
-      if (empty($_POST["db_county"])) {
-        $countyErr = "County is required";
-        $valid=false;
-      } 
-      //This ensures the student number input only contains numeric values
-      else {
-        $db_county = test_input($_POST["db_county"]);
-        if (!preg_match("/^[a-zA-Z-' ]*$/",$db_county)) {
-          $countyErr = "Only letters and white space allowed";
-          $valid=false;
-        }
-      } 
-     
-      if (empty($_POST["db_customerEmail"])) {
-        $db_customerEmailErr = "db_customerEmail is required";
-        $valid=false;
-      } 
-      //This ensures the db_customerEmail is correctly formatted
-      else {
-        $db_customerEmail = test_input($_POST["db_customerEmail"]);
-        if (!filter_var($db_customerEmail, FILTER_VALIDATE_EMAIL)) {
-          $db_customerEmailErr = "Invalid email format";
-          $valid=false;
-        }
       }
-
-      if (empty($_POST["db_customerPhone"])) {
-        $phoneErr = "Student number is required";
-        $valid=false;
-      } 
-      //This ensures the student number input only contains numeric values
       else {
-        $db_customerPhone = test_input($_POST["db_customerPhone"]);
-        if (!is_numeric($db_customerPhone)) {
-          $phoneErr = "Only numbers allowed";
+        $db_jobTitle = test_input($_POST["db_jobTitle"]);
+        if (!preg_match("/^[a-zA-Z-' ]*$/",$db_customerName)) {
+          $jobTitleErr = "Only letters and white space allowed";
           $valid=false;
         }
       }   
 
-      if (empty($_POST["db_customerEircode"])) {
-        $eircodeErr = "Eircode is required";
-        $valid=false;
-      } 
-      //This ensures the course code only contsains valid characters
-      else {
-        $db_customerEircode = test_input($_POST["db_customerEircode"]);
-        if (!preg_match("/([A-Za-z0-9])+/",$db_customerEircode)) {
-        $eircodeErr = "Only numbers, letters and white space allowed";
-        $valid=false;
-        }
-      } 
-
     // If the validation is accepted then this if statement is executed which will firstly call the register_members php file 
       if($valid<>false)
       {
-        include 'registernewcustomer.php';
+        include 'registeremployee.php';
       //Here, a query is run to obtain the member_id of the newly added member and this will be stored as a session varibale which is a super global variable
         $found=false;
         $query ="select * from customers";
@@ -220,37 +175,17 @@
   <br> <br>
   <!-- This is the member form where they input their information and it calls itself in the action attribute in order to perform the validations -->
 <div class="boxed">
-<h1>New Customers:</h1>
+<h1>New Employee:</h1>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"> 
-        <label for ="members">Customer Name:</label>
-        <input type="text" name="db_customerName" size = 30>  
-        <span class='error'> <?php echo $nameErr ?> <span>
+        <label for ="members">Employee Name:</label>
+        <input type="text" name="db_employeeName" size = 30>  
+        <span class='error'> <?php echo $employeeNameErr ?> <span>
         <br> <br> 
 
-        <label for ="members">Address:</label>
-        <input type="text" name="db_customerAddress" size = 30>
-        <span class='error'> <?php echo $addressErr ?> <span>
+        <label for ="members">Job Title:</label>
+        <input type="text" name="db_jobTitle" size = 30>
+        <span class='error'> <?php echo $jobTitleErr ?> <span>
         <br> <br> 
-
-        <label for ="members">County:</label>
-        <input type="text" name="db_county" id="db_county" size = 10> 
-        <span class='error'> <?php echo $countyErr ?> <span>
-        <br> <br>
-
-        <label for ="members">Eirode:</label>
-        <input type="text" name="db_customerEircode" id="db_customerEircode" size = 20> 
-        <span class='error'> <?php echo $eircodeErr ?> <span>
-        <br> <br>
-
-        <label for ="members">Email:</label>
-        <input type="text" name="db_customerEmail" id="db_customerEmail" size = 20> 
-        <span class='error'> <?php echo $db_customerEmailErr ?> <span>
-        <br> <br>
-
-        <label for ="members">Phone Number:</label>
-        <input type="text" name="db_customerPhone" id="db_customerPhone" size = 20> 
-        <span class='error'> <?php echo $phoneErr ?> <span>
-        <br> <br>
 
         <input type="submit" value = "Submit">
         <input type="reset" value = "Reset">
@@ -261,10 +196,7 @@
   
 
     <div class="center">
-    <button onclick="window.location.href='index.php';" class="button button1">Homepage</button>
-    </div>
-    <div class="center2">
-    <button onclick="window.location.href='existing_members.php';" class="button button2">Existing Customer</button>
+    <button onclick="window.location.href='admindashboard.php';" class="button button1">Admin Dashboard</button>
     </div>
     <br></br>
 </body>
