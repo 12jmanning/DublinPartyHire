@@ -50,6 +50,13 @@ if (isset($_SESSION['db_customerID'])) {
         $result_delivery = $db->query($q1);
 
         $_SESSION['db_orderID']= $order_ID;
+
+        $transit_record1 = "UPDATE orders, transit SET orders.db_deliveryID = transit.db_transitID WHERE orders.db_orderID = '$order_ID' AND orders.db_orderID = transit.db_orderID AND transit.db_transitType = '$delivery'";
+        $update_order1 = $db->query($transit_record1);
+
+        $transit_record2 = "UPDATE orders, transit SET orders.db_collectionID = transit.db_transitID WHERE orders.db_orderID = '$order_ID' AND orders.db_orderID = transit.db_orderID AND transit.db_transitType = '$collection'";
+        $update_order2 = $db->query($transit_record2);
+
     }
 
     function pdo_connect_mysql() {
