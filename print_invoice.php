@@ -3,7 +3,7 @@ session_start();
 include('inc/detail.php');
 include('inc/navbar.php');
 
-$customer_ID = $_SESSION['db_customerID']
+$customer_ID = $_SESSION['db_customerID'];
 $order_ID = $_POST['order_id'];
 
 echo "$order_ID";
