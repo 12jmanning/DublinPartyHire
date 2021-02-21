@@ -1,6 +1,6 @@
 <?php
 // Get the 4 most recently added products
-$stmt = $pdo->prepare('SELECT * FROM products ORDER BY db_productPrice DESC LIMIT 4');
+$stmt = $pdo->prepare("SELECT * from products WHERE db_productID IN ('1', '10', '14', '40')");
 $stmt->execute();
 $recently_added_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -30,7 +30,7 @@ $recently_added_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <img src="img/<?=$product['db_imageLink']?>" width="200" height="200" alt="<?=$product['db_productName']?>">
             <span class="name"><?=$product['db_productName']?></span>
             <span class="price">
-                &dollar;<?=$product['db_productPrice']?>
+                &euro;<?=$product['db_productPrice']?> per 48 hrs
                 <?php if ($product['db_productPrice'] > 0): ?>
                 <?php endif; ?>
             </span>

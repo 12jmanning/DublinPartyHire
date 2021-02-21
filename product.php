@@ -25,7 +25,7 @@ if (isset($_GET['db_productID'])) {
     <div>
         <h1 class="name"><?=$product['db_productName']?></h1>
         <span class="price">
-            &dollar;<?=$product['db_productPrice']?>
+            &euro;<?=$product['db_productPrice']?> per 48 hrs
         </span>
         <form action="index.php?page=cart" method="post">
             <input type="number" name="quantity" value="1" min="1" max="<?=$product['db_quantity']?>" placeholder="Quantity" required>

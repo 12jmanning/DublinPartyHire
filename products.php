@@ -26,7 +26,7 @@ $total_products = $pdo->query('SELECT * FROM products')->rowCount();
             <img src="img/<?=$product['db_imageLink']?>" width="200" height="200" alt="<?=$product['db_productName']?>">
             <span class="name"><?=$product['db_productName']?></span>
             <span class="price">
-                &dollar;<?=$product['db_productPrice']?>
+                &euro;<?=$product['db_productPrice']?> per 48 hrs
             </span>
         </a>
         <?php endforeach; ?>
