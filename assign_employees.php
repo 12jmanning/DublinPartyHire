@@ -21,7 +21,7 @@ $num_van_results = mysqli_num_rows($van_results);
 
 $employee_query = "SELECT employees.db_employeeID, employees.db_employeeName FROM employees, employee_timesheets WHERE employees.db_employeeID=employee_timesheets.db_employeeID AND employees.db_jobTitle='$employee_title' AND (employee_timesheets.db_StartDatetime BETWEEN '$start_today_date' AND '$now_today_date') AND employee_timesheets.db_endDatetime = '0'";
 $employee_results = $db->query($employee_query);
-$num_results = mysqli_num_rows($orders_today);
+$num_employee_results = mysqli_num_rows($employee_results);
 
 
 //SELECT employees.db_employeeID, employees.db_employeeName FROM employees, employee_timesheets WHERE employees.db_employeeID=employee_timesheets.db_employeeID AND (employee_timesheets.db_StartDatetime BETWEEN '$start_today_date' AND '$now_today_date') AND employee_timesheets.db_endDatetime = '0'
@@ -69,8 +69,21 @@ $num_results = mysqli_num_rows($orders_today);
 
         }
       ?>
+    </tr>
+    <tr>
+      <td><label for="order_id">Order ID:</label></td>
+      <td style="width: 618px; height: 38px;" class="auto-style2">
+      <select name="order_id" style="width: 399px" class="auto-style1" required>
+      <option value= "select">--Select an Order--</option>
+      <?php
+        for($i = 0;$i<$num_results;$i++)
+        {
+          //Move query up top and iterate through results here with an if statement
+          $row = mysqli_fetch_assoc($orders_today);
+          echo '<option value = "'.$row['db_orderID'].'"> Order ID: '.$row['db_orderID']." Type: ".$row['db_transitType'].' </option>';
 
-
+        }
+      ?>
     </tr>
 
     <tr>
