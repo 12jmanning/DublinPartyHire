@@ -3,11 +3,10 @@ session_start();
 include('inc/detail.php');
 include('inc/navbar.php');
 
-
-$customer_ID = $_SESSION['db_customerID'];
-$query = "SELECT * FROM orders where db_customerID = $customer_ID";
-$customer_orders = $db->query($query);
-$num_results = mysqli_num_rows($customer_orders);
+$today_date = date("Y-m-d H:i:s");
+$employee_ID = $_SESSION['db_employeeID'];
+$employee_name = $_SESSION['db_employeeName'];
+$job_title = $_SESSION['db_jobTitle'];
 
 ?>
 
@@ -17,25 +16,40 @@ $num_results = mysqli_num_rows($customer_orders);
   <div class="col-lg-6">
     <h2 style="text-align: center;">My Details:</h2>
     <?php echo $customer_ID ?>
+    <table border="2">
+      <tr>
+        <td> Employee ID </td>
+        <td> <?php echo $employee_ID; ?> </td>
+      </tr>
+      <tr>
+        <td> Employee Name </td>
+        <td> <?php echo $employee_name; ?> </td>
+      </tr>
+      <tr>
+        <td> Job Title </td>
+        <td> <?php echo $job_title; ?> </td>
+      </tr>
+    </table>
   </div>
 
 
   <div class="col-lg-6" >
-    <h2 style="text-align: center;">Print Invoices:</h2>
+    <h2 style="text-align: center;">Assign Employees and Vans to Transit Orders:</h2>
     <form class="" action="print_invoice.php" method="post" name="invoice" id="invoice">
 
     <table class="">
 
     <tr>
-      <td><label for="order_id">Select an Order ID:</label></td>
+      <td><label for="order_id">Order ID:</label></td>
       <td style="width: 618px; height: 38px;" class="auto-style2">
       <select name="order_id" style="width: 399px" class="auto-style1" required>
       <option value= "select">--Select an Order--</option>
       <?php
         for($i = 0;$i<$num_results;$i++)
         {
+          //Move query up top and iterate through results here with an if statement
           $row = mysqli_fetch_assoc($customer_orders);
-          $q = 'select * from orders where '.$row['db_orderID'].'= orders.db_orderID';
+          $q = 'select * from orders where '.$row['db_orderID'].'= orders.db_orderID AND (orders.db_deliveryDatetime='.$today_date.' OR orders.db_deliveryDatetime='.$today_date.')';
           $result2 = $db->query($q);
           $row2 = mysqli_fetch_assoc($result2);
 
