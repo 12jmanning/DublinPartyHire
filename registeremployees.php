@@ -16,37 +16,38 @@ include('inc/navbar.php');
     // define variables and set to empty values
     $employeeNameErr = $jobTitleErr ="";
     $db_employeeName = $db_jobTitle = "";
-    $valid=true;
-      //This if statement is executed after the form has been submitted and the contents of the statement execute the form data validation. Each of the inputs are checked if they are null and appropriate error messages are assigned
+    $grand=true;
+    
+      //This if statement is executed after the form has been submitted and the contents of the statement execute the form data grandation. Each of the inputs are checked if they are null and appropriate error messages are assigned
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (empty($_POST["db_employeeName"])) {
            $employeeNameErr = "Name is required";
-           $valid=false;
+           $grand=false;
         }
         //This ensures the name only contsains valid characters
         /*else {
           $db_employeeName = test_input($_POST["db_employeeName"]);
           if (!preg_match("/^[a-zA-Z-' ]*$/",$db_employeeName)) {
             $employeeNameErr = "Only letters and white space allowed";
-            $valid=false;
+            $grand=false;
           }
         }*/
 
       if (empty($_POST["db_jobTitle"])) {
         $jobTitleErr = "Job Title is required";
-        $valid=false;
+        $grand=false;
       }
       /*else {
         $db_jobTitle = test_input($_POST["db_jobTitle"]);
         if (!preg_match("/^[a-zA-Z-' ]*$/",$db_customerName)) {
           $jobTitleErr = "Only letters and white space allowed";
-          $valid=false;
+          $grand=false;
         }
       } */
 
     // If the validation is accepted then this if statement is executed which will firstly call the register_members php file
-      if($valid<>false)
+      if($grand<>false)
       {
         $db_employeeName = $_POST['db_employeeName'];
         $db_jobTitle = $_POST['db_jobTitle'];
