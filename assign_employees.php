@@ -3,14 +3,23 @@ session_start();
 include('inc/detail.php');
 include('inc/navbar.php');
 
-$today_date = date("Y-m-d");
+$now_today_date = date("Y-m-d H:i:s");
+$start_today_date = date("Y-m-d");
+$start_today_date = $end_today_date+"T00:00:00.00";
+$no_time = "0000-00-00T00:00:00.00";
+
 $employee_ID = $_SESSION['db_employeeID'];
 $employee_name = $_SESSION['db_employeeName'];
 $job_title = $_SESSION['db_jobTitle'];
 $yes = "Yes";
 $order_ID = $_POST['order_id'];
 
-$van_query = "SELECT db_vanName FROM vans";
+$van_query = "SELECT * FROM vans";
+
+$employee_query = "SELECT employees.db_employeeID, employees.db_employeeName FROM employees, employee_timesheets WHERE employees.db_employeeID=employee_timesheets.db_employeeID AND (employee_timesheets.db_StartDatetime BETWEEN '$start_today_date' AND '$now_today_date') AND employee_timesheets.db_endDatetime = '0'";
+
+
+//SELECT employees.db_employeeID, employees.db_employeeName FROM employees, employee_timesheets WHERE employees.db_employeeID=employee_timesheets.db_employeeID AND (employee_timesheets.db_StartDatetime BETWEEN '$start_today_date' AND '$now_today_date') AND employee_timesheets.db_endDatetime = '0'
 ?>
 
 <div class="row" style="margin-top: 3%;">
