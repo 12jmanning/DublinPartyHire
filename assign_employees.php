@@ -7,7 +7,7 @@ $valid=true;
 
 $now_today_date = date("Y-m-d H:i:s");
 $start_today_date = date("Y-m-d");
-$start_today_date = $end_today_date+"T00:00:00.00";
+$start_today_date = $start_today_date.''."T00:00:00.00";
 $no_time = "0000-00-00T00:00:00.00";
 $employee_title ="employee";
 
