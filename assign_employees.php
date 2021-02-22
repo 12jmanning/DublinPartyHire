@@ -7,6 +7,7 @@ $now_today_date = date("Y-m-d H:i:s");
 $start_today_date = date("Y-m-d");
 $start_today_date = $end_today_date+"T00:00:00.00";
 $no_time = "0000-00-00T00:00:00.00";
+$employee_title ="employee";
 
 $employee_ID = $_SESSION['db_employeeID'];
 $employee_name = $_SESSION['db_employeeName'];
@@ -15,8 +16,12 @@ $yes = "Yes";
 $order_ID = $_POST['order_id'];
 
 $van_query = "SELECT * FROM vans";
+$van_results = $db->query($van_query);
+$num_van_results = mysqli_num_rows($van_results);
 
-$employee_query = "SELECT employees.db_employeeID, employees.db_employeeName FROM employees, employee_timesheets WHERE employees.db_employeeID=employee_timesheets.db_employeeID AND (employee_timesheets.db_StartDatetime BETWEEN '$start_today_date' AND '$now_today_date') AND employee_timesheets.db_endDatetime = '0'";
+$employee_query = "SELECT employees.db_employeeID, employees.db_employeeName FROM employees, employee_timesheets WHERE employees.db_employeeID=employee_timesheets.db_employeeID AND employees.db_jobTitle='$employee_title' AND (employee_timesheets.db_StartDatetime BETWEEN '$start_today_date' AND '$now_today_date') AND employee_timesheets.db_endDatetime = '0'";
+$employee_results = $db->query($employee_query);
+$num_results = mysqli_num_rows($orders_today);
 
 
 //SELECT employees.db_employeeID, employees.db_employeeName FROM employees, employee_timesheets WHERE employees.db_employeeID=employee_timesheets.db_employeeID AND (employee_timesheets.db_StartDatetime BETWEEN '$start_today_date' AND '$now_today_date') AND employee_timesheets.db_endDatetime = '0'
