@@ -6,15 +6,14 @@ include('inc/navbar.php');
 $customer_ID = $_SESSION['db_customerID'];
 $order_ID = $_POST['order_id'];
 
-echo "$order_ID";
-
-
 
 ?>
-<div class="" >
-      <button class="btn btn-success" style="margin-left: 45%;
-    margin-right: 45%;
-    margin-top: 10px;" onClick="window.print()">Print Me</button>
+<div >
+      <button class="btn btn-success" style="    margin-left: 40%;
+    margin-right: 40%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 20%;" onClick="window.print()">Print Me</button>
 </div>
 
 
@@ -51,14 +50,15 @@ echo "$order_ID";
   </div>
   <br>
   <div class="col-lg-4">
-    <p><strong>Deliver To:</strong></p>
+    <p><strong>DELIVER TO:</strong></p>
     <p>Same as billing address</p>
 
   </div>
 
   <div class="col-lg-2">
-      <p>INVOICE #: </p> <?php echo $order_ID ?>
-      <p>DATE: </p>
+      <p><strong>INVOICE #: </strong></p> <?php echo $order_ID, "<br>" ?>
+
+      <p><strong>DATE: </strong></p>
       <?php $invoice_date_query = "SELECT db_orderCreatedAt FROM `orders`
                               WHERE db_orderID = '$order_ID'";
       $invoice_date_details = $db->query($invoice_date_query);
@@ -163,6 +163,6 @@ echo "$order_ID";
   <br>
   <p>Payment due before delivery date. If you have any questions concerning this invoice, contact Accounts Payable, 01 756 1113, accounts@dph.ie</p>
 </div>
-<div class="row" style="margin-left:33%; margin-right: a;">
-  <p><strong>THANK YOU FOR YOUR BUSINESS</strong></p>
+<div class="row" >
+  <p style="margin-left:auto; margin-right: auto;"><strong>THANK YOU FOR YOUR BUSINESS</strong></p>
 </div>

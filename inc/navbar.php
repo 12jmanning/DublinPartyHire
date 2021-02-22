@@ -28,9 +28,9 @@
             <a href="index.php?page=products">Products</a>
         </nav>
         <div class="link-icons">
-            <a href="index.php?page=cart">
 
-
+             <a href="customerdashboard.php">
+                 <i class="fas fa-user-circle"></i>
              </a>
         </div>
         <a class="btn" style ="color: #fff; background-color: #373F51; margin:auto;margin-left: 6px;" role="button" href="existingcustomers.php">Log In</a>
