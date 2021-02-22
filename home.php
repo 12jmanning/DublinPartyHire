@@ -62,7 +62,7 @@ $recently_added_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
           <img class="homepage-icons" src="img/orders.png" alt="">
           <h2>Make your Orders Online</h2>
           <p>And have it delivered when it suits.</p>
-          <p><a class="btn btn-secondary" href="create_order.php" role="button">Order Now. &raquo;</a></p>
+          <p><a class="btn btn-secondary" href="create_order.php" role="button">Order Now &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-3">
           <img class="homepage-icons" src="img/balloon.png" alt="">
