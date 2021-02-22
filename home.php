@@ -55,36 +55,42 @@ $recently_added_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
           <img class="homepage-icons" src="img/laptop.png" alt="">
           <h2>Create your Account</h2>
-          <p>And save your details for the future.</p>
-          <p><a class="btn btn-secondary" href="member_register.php" role="button">Register &raquo;</a></p>
+          <p>And save your details for the future. View orders and print invoices.</p>
+          <p><a class="btn btn-secondary" href="newcustomers.php" role="button">Register &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-3">
           <img class="homepage-icons" src="img/orders.png" alt="">
           <h2>Make your Orders Online</h2>
-          <p>And have it delivered when it suits.</p>
-          <p><a class="btn btn-secondary" href="create_order.php" role="button">Order Now &raquo;</a></p>
+          <p>And have it delivered when it suits. Options to have it setup as well.</p>
+          <p><a class="btn btn-secondary" href="index.php?page=products" role="button">Order Now &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-3">
           <img class="homepage-icons" src="img/balloon.png" alt="">
 
-          <h2>An Excellent Range of Party Essentials</h2>
+          <h2>Range of Party Essentials</h2>
           <p>Everything from marquees to tables to bouncy castles.</p>
-          <p><a class="btn btn-secondary" href="get_tickets.php" role="button">View Products &raquo;</a></p>
+          <p><a class="btn btn-secondary" href="index.php?page=products" role="button">View Products &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-3">
           <img class="homepage-icons" src="img/truck.png" alt="">
           <h2>Track your Delivery Online</h2>
           <p>See exactly what time your delivery is coming.</p>
-          <p><a class="btn btn-secondary" href="add_event.php" role="button">View Orders &raquo;</a></p>
+          <p><a class="btn btn-secondary" href="customerdashboard.php" role="button">View Orders &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
       </div><!-- /.row -->
 
 
+
+
+          <div class="recentlyadded content-wrapper" >
+              <h2>Why Choose Us?</h2>
+          </div>
+
       <!-- START THE FEATURETTES -->
 
-      <hr class="featurette-divider">
 
-      <div class="row featurette">
+
+      <div class="row featurette" style="padding-top: 20px;">
         <div class="col-md-7">
           <h2 class="featurette-heading">All the party essentials. <span class="text-muted">Furniture, glassware, cutlery, linen and gazebos.</span></h2>
           <p class="lead">The finest quality in the industry which will impress any guest.</p>
