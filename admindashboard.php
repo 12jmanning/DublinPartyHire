@@ -3,12 +3,15 @@ session_start();
 include('inc/detail.php');
 include('inc/navbar.php');
 
-$today_date = date("Y-m-d H:i:s");
+$today_date = date("Y-m-d");
 $employee_ID = $_SESSION['db_employeeID'];
 $employee_name = $_SESSION['db_employeeName'];
 $job_title = $_SESSION['db_jobTitle'];
-//select * from orders where (orders.db_deliveryDatetime= '2020-02-20' OR orders.db_deliveryDatetime='2020-02-20')
+$yes = "Yes";
 
+$query1 = "select orders.db_orderID, transit.db_transitType from orders,transit where db_deliveryPreference = '$yes' AND ((orders.db_deliveryDatetime= '$today_date' AND orders.db_deliveryID = transit.db_transitID ) OR (orders.db_deliveryDatetime= '$today_date' AND orders.db_collectionID = transit.db_transitID))";
+$orders_today = $db->query($query1);
+$num_results = mysqli_num_rows($orders_today);
 ?>
 
 
@@ -49,12 +52,9 @@ $job_title = $_SESSION['db_jobTitle'];
         for($i = 0;$i<$num_results;$i++)
         {
           //Move query up top and iterate through results here with an if statement
-          $row = mysqli_fetch_assoc($customer_orders);
-          $q = 'select * from orders where '.$row['db_orderID'].'= orders.db_orderID AND (orders.db_deliveryDatetime='.$today_date.' OR orders.db_deliveryDatetime='.$today_date.')';
-          $result2 = $db->query($q);
-          $row2 = mysqli_fetch_assoc($result2);
+          $row = mysqli_fetch_assoc($orders_today);
+          echo '<option value = "'.$row['db_orderID'].'"> Order ID: '.$row['db_orderID']." Type: ".$row['db_transitType'].' </option>';
 
-          echo '<<option value ="'.$row['db_orderID'].'">Order ID: '.$row['db_orderID']." On ".$row['db_deliveryDatetime'].'</option>';
         }
       ?>
 
