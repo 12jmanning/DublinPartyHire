@@ -58,14 +58,14 @@ $num_employee_results = mysqli_num_rows($employee_results);
     <tr>
       <td><label for="order_id">Order ID:</label></td>
       <td style="width: 618px; height: 38px;" class="auto-style2">
-      <select name="order_id" style="width: 399px" class="auto-style1" required>
-      <option value= "select">--Select an Order--</option>
+      <select name="van_id" style="width: 399px" class="auto-style1" required>
+      <option value= "select">--Select a Van--</option>
       <?php
-        for($i = 0;$i<$num_results;$i++)
+        for($i = 0;$i<$num_van_results;$i++)
         {
           //Move query up top and iterate through results here with an if statement
-          $row = mysqli_fetch_assoc($orders_today);
-          echo '<option value = "'.$row['db_orderID'].'"> Order ID: '.$row['db_orderID']." Type: ".$row['db_transitType'].' </option>';
+          $row_van = mysqli_fetch_assoc($van_results);
+          echo '<option value = "'.$row_van['db_vanID'].'"> Van ID: '.$row_van['db_vanID']." Van Name: ".$row_van['db_vanName'].' </option>';
 
         }
       ?>
