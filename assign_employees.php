@@ -79,7 +79,7 @@ $num_employee_results = mysqli_num_rows($employee_results);
         for($i = 0;$i<$num_employee_results;$i++)
         {
           //Move query up top and iterate through results here with an if statement
-          $row_employee = mysqli_fetch_assoc($orders_today);
+          $row_employee = mysqli_fetch_assoc($employee_results);
           echo '<option value = "'.$row_employee['db_employeeID'].'"> Employee ID: '.$row_employee['db_employeeID']." Name: ".$row_employee['db_employeeName'].' </option>';
 
         }
