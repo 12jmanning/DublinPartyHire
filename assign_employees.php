@@ -73,14 +73,14 @@ $num_employee_results = mysqli_num_rows($employee_results);
     <tr>
       <td><label for="order_id">Order ID:</label></td>
       <td style="width: 618px; height: 38px;" class="auto-style2">
-      <select name="order_id" style="width: 399px" class="auto-style1" required>
-      <option value= "select">--Select an Order--</option>
+      <select name="employee_id" style="width: 399px" class="auto-style1" required>
+      <option value= "select">--Select an Employee--</option>
       <?php
-        for($i = 0;$i<$num_results;$i++)
+        for($i = 0;$i<$num_employee_results;$i++)
         {
           //Move query up top and iterate through results here with an if statement
-          $row = mysqli_fetch_assoc($orders_today);
-          echo '<option value = "'.$row['db_orderID'].'"> Order ID: '.$row['db_orderID']." Type: ".$row['db_transitType'].' </option>';
+          $row_employee = mysqli_fetch_assoc($orders_today);
+          echo '<option value = "'.$row_employee['db_employeeID'].'"> Employee ID: '.$row_employee['db_employeeID']." Name: ".$row_employee['db_employeeName'].' </option>';
 
         }
       ?>
@@ -98,47 +98,4 @@ $num_employee_results = mysqli_num_rows($employee_results);
 
 </div>
 
-
-
-
-
-
-<div class="row" style="margin-left: auto; margin-right: auto; justify-content: center;">
-  <h2>My Orders</h2>
-</div>
-
-<div class="row" style="margin-left: auto; margin-right: auto; justify-content: center;">
-
-  <?php
-  $customer_query = "SELECT db_orderID, db_deliveryDatetime, db_collectionDatetime, db_setUpPreference, db_deliveryPreference, db_setUpPrice, db_deliveryPrice, db_rentalPrice
-                        FROM `orders`
-                        WHERE db_customerID = '$customer_ID'";
-  $order_details = $db->query($customer_query);
-  echo '<table border="2">';
-  echo '<tr class="first-row-database">';
-      echo "<td>Order ID</td>";
-      echo "<td>Delivery Time</td>";
-      echo "<td>Collection Time</td>";
-      echo "<td>Set Up Preference</td>";
-      echo "<td>Delivery Preference</td>";
-      echo "<td>Set Up Price</td>";
-    echo "<td>Delivery Price</td>";
-    echo "<td>Total Price</td>";
-    echo "</tr>";
-  while($row = mysqli_fetch_row($order_details))
-  {
-      echo "<tr>";
-      echo "<td>$row[0]</td>";
-      echo "<td>$row[1]</td>";
-      echo "<td>$row[2]</td>";
-      echo "<td>$row[3]</td>";
-      echo "<td>$row[4]</td>";
-      echo "<td>$row[5]</td>";
-      echo "<td>$row[6]</td>";
-      echo "<td>$row[7]</td>";
-      echo "</tr>";
-  }
-  echo '</table>';?>
-
-</div>
 
