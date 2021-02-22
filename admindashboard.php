@@ -7,6 +7,7 @@ $today_date = date("Y-m-d H:i:s");
 $employee_ID = $_SESSION['db_employeeID'];
 $employee_name = $_SESSION['db_employeeName'];
 $job_title = $_SESSION['db_jobTitle'];
+//select * from orders where (orders.db_deliveryDatetime= '2020-02-20' OR orders.db_deliveryDatetime='2020-02-20')
 
 ?>
 
