@@ -115,7 +115,19 @@ $num_employee_results = mysqli_num_rows($employee_results);
             $insert_query .= "'$transit_ID','$employee_id','$van_id'";
             $result_insert = $db->query($insert_query);
 
-            
+            echo '<table border="2">';
+            echo '<tr class="first-row-database">';
+                echo "<td><strong>Transit ID</strong></td>";
+                echo "<td><strong>Employee ID</strong></td>";
+                echo "<td><strong>Van ID</strong></td>";
+            echo "</tr>";
+            echo "<tr>";
+                echo "<td> $transit_ID </td>";
+                echo "<td> $employee_id </td>";
+                echo "<td> $van_id </td>";
+            echo "</tr>";
+
+
         }
 
     }
