@@ -39,7 +39,7 @@ $num_results = mysqli_num_rows($customer_orders);
           $result2 = $db->query($q);
           $row2 = mysqli_fetch_assoc($result2);
 
-          echo '<<option value ="'.$row['db_orderID'].'">Order ID on :'.$row['db_orderID'].$row['db_deliveryDatetime'].'</option>';
+          echo '<<option value ="'.$row['db_orderID'].'">Order ID: '.$row['db_orderID']." On ".$row['db_deliveryDatetime'].'</option>';
         }
       ?>
 

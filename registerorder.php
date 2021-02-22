@@ -12,11 +12,13 @@ if (isset($_SESSION['db_customerID'])) {
     $set_up_price =  $_SESSION['set_up_cost'];
     $rental_price = $_SESSION['rental_price'];
     $delivery_price = $_SESSION['delivery_price'];
+    $time_created = date("Y-m-d H:i:s");
+    $comment = $_POST['db_orderComment'];
 
     $q  = "INSERT INTO orders (";
-    $q .= "db_customerID, db_deliveryDatetime, db_collectionDatetime, db_setUpPreference, db_deliveryPreference,db_setUpPrice, db_rentalPrice, db_deliveryPrice";
+    $q .= "db_customerID, db_deliveryDatetime, db_collectionDatetime, db_setUpPreference, db_deliveryPreference,db_setUpPrice, db_rentalPrice, db_deliveryPrice, db_orderCreatedAt, db_orderComment";
     $q .= ") VALUES (";
-    $q .= "'$customer_ID', '$delivery_date', '$collection_date', '$set_up', '$delivery_and_collection','$set_up_price', '$rental_price','$delivery_price')";
+    $q .= "'$customer_ID', '$delivery_date', '$collection_date', '$set_up', '$delivery_and_collection','$set_up_price', '$rental_price','$delivery_price', '$time_created', '$comment')";
 
     $result_1 = $db->query($q);
 

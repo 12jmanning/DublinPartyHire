@@ -202,6 +202,7 @@ function dateDiffInDays($date1, $date2)
                     <option value = "No">No</option>
                 </select><br><br></td>
                 </tr>
+
             </tbody>
         </table>
         <div class="buttons">
@@ -219,10 +220,13 @@ function dateDiffInDays($date1, $date2)
           <h5>End Date:</h5> <?php echo $_SESSION['collection_date'] ?>
           <h5>Delivery:</h5> <?php echo $_SESSION['delivery_preference'] ?>
           <h5>Setup Preference:</h5> <?php echo $_SESSION['set_up_preference'] ?>
-
-
+          <br>
+        <label for ="register-order"><h5>Comment or Special Instructions:</h5></label><br>
+        <input type="text" name="db_orderComment" size = 80>
 
         </div>
+
+
 
         <div class="subtotal">
             <span class="text">Rent Subtotal</span>
