@@ -39,7 +39,7 @@ $num_results = mysqli_num_rows($orders_today);
 
   <div class="col-lg-6" >
     <h2 style="text-align: center;">Assign Employees and Vans to Transit Orders:</h2>
-    <form class="" action="print_invoice.php" method="post" name="invoice" id="invoice">
+    <form class="" action="assign_employees.php" method="post" name="invoice" id="invoice">
 
     <table class="">
 
