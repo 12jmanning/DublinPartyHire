@@ -2,6 +2,8 @@
 session_start();
 include('inc/detail.php');
 include('inc/navbar.php');
+$db_employeeErr=$db_vanErr="";
+$valid=true;
 
 $now_today_date = date("Y-m-d H:i:s");
 $start_today_date = date("Y-m-d");
@@ -51,7 +53,7 @@ $num_employee_results = mysqli_num_rows($employee_results);
 
   <div class="col-lg-6" >
     <h2 style="text-align: center;">Assign Employees and Vans to Transit Orders:</h2>
-    <form class="" action="assign_employees.php" method="post" name="invoice" id="invoice">
+    <form class="" action="" method="post" name="invoice" id="invoice">
 
     <table class="">
 
@@ -69,6 +71,7 @@ $num_employee_results = mysqli_num_rows($employee_results);
 
         }
       ?>
+      <span class='error'> <?php echo $db_vanErr ?> <span></td>
     </tr>
     <tr>
       <td><label for="order_id">Order ID:</label></td>
@@ -84,6 +87,7 @@ $num_employee_results = mysqli_num_rows($employee_results);
 
         }
       ?>
+      <span class='error'> <?php echo $db_employeeErr ?> <span></td>
     </tr>
 
     <tr>
@@ -95,6 +99,23 @@ $num_employee_results = mysqli_num_rows($employee_results);
     </form>
 
   </div>
+  <?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (empty($_POST["employee_id"])||empty($_POST["van_id"])) {
+            $db_employeeErr = "Both fields ar required";
+            $db_vanErr = "Both fields ar required";
+            $valid=false;
+        }
+        if($valid==true ){
+            $employee_id = $_POST["employee_id"];
+            $van_id = $_POST["van_id"];
+
+        }
+
+    }
+
+   ?>
+
 
 </div>
 
