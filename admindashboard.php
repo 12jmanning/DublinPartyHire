@@ -53,7 +53,7 @@ $num_results = mysqli_num_rows($orders_today);
         {
           //Move query up top and iterate through results here with an if statement
           $row = mysqli_fetch_assoc($orders_today);
-          echo '<option value = "'.$row['db_orderID'].'"> Order ID: '.$row['db_orderID']." Type: ".$row['db_transitType'].' </option>';
+          echo '<option value = "'.$row['db_transitID'].'"> Order ID: '.$row['db_orderID']." Type: ".$row['db_transitType'].' </option>';
 
         }
       ?>
