@@ -9,9 +9,14 @@ $employee_name = $_SESSION['db_employeeName'];
 $job_title = $_SESSION['db_jobTitle'];
 $yes = "Yes";
 
-$query1 = "select orders.db_orderID, transit.db_transitType, transit.db_transitID from orders,transit where db_deliveryPreference = '$yes' AND ((orders.db_deliveryDatetime= '$today_date' AND orders.db_deliveryID = transit.db_transitID ) OR (orders.db_deliveryDatetime= '$today_date' AND orders.db_collectionID = transit.db_transitID))";
+$query1 = "select orders.db_orderID, transit.db_transitType, transit.db_transitID from orders,transit where orders.db_orderID = transit.db_orderID AND db_deliveryPreference = '$yes' AND ((orders.db_deliveryDatetime= '$today_date' AND orders.db_deliveryID = transit.db_transitID ) OR (orders.db_collectionDatetime= '$today_date' AND orders.db_collectionID = transit.db_transitID))";
 $orders_today = $db->query($query1);
 $num_results = mysqli_num_rows($orders_today);
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $_SESSION['transit_ID'] = $_POST['transit_id'];
+  header('location: assign_employees.php');
+}
 ?>
 
 
@@ -39,14 +44,14 @@ $num_results = mysqli_num_rows($orders_today);
 
   <div class="col-lg-6" >
     <h2 style="text-align: center;">Assign Employees and Vans to Transit Orders:</h2>
-    <form class="" action="assign_employees.php" method="post" name="invoice" id="invoice">
+    <form class="" action="" method="post" name="invoice" id="invoice">
 
     <table class="">
 
     <tr>
       <td><label for="order_id">Order ID:</label></td>
       <td style="width: 618px; height: 38px;" class="auto-style2">
-      <select name="order_id" style="width: 399px" class="auto-style1" required>
+      <select name="transit_id" style="width: 399px" class="auto-style1" required>
       <option value= "select">--Select an Order--</option>
       <?php
         for($i = 0;$i<$num_results;$i++)

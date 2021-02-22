@@ -15,7 +15,8 @@ $employee_ID = $_SESSION['db_employeeID'];
 $employee_name = $_SESSION['db_employeeName'];
 $job_title = $_SESSION['db_jobTitle'];
 $yes = "Yes";
-$transit_ID = $_POST['transit_id'];
+$transit_ID = $_SESSION['transit_ID'];
+
 
 $van_query = "SELECT * FROM vans";
 $van_results = $db->query($van_query);
@@ -112,16 +113,18 @@ $num_employee_results = mysqli_num_rows($employee_results);
             $insert_query = "INSERT INTO employee_work_records (";
             $insert_query .= "db_transitID, db_employeeID, db_vanID";
             $insert_query .= ") VALUES (";
-            $insert_query .= "'$transit_ID','$employee_id','$van_id'";
+            $insert_query .= "'$transit_ID','$employee_id','$van_id')";
             $result_insert = $db->query($insert_query);
 
             echo '<table border="2">';
             echo '<tr class="first-row-database">';
+                echo "<td></td>";
                 echo "<td><strong>Transit ID</strong></td>";
                 echo "<td><strong>Employee ID</strong></td>";
                 echo "<td><strong>Van ID</strong></td>";
             echo "</tr>";
             echo "<tr>";
+                echo "<td></td>";
                 echo "<td> $transit_ID </td>";
                 echo "<td> $employee_id </td>";
                 echo "<td> $van_id </td>";
