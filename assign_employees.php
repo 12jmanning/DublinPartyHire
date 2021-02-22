@@ -58,7 +58,7 @@ $num_employee_results = mysqli_num_rows($employee_results);
     <table class="">
 
     <tr>
-      <td><label for="order_id">Order ID:</label></td>
+      <td><label for="order_id">Van ID:</label></td>
       <td style="width: 618px; height: 38px;" class="auto-style2">
       <select name="van_id" style="width: 399px" class="auto-style1" required>
       <option value= "select">--Select a Van--</option>
@@ -74,7 +74,7 @@ $num_employee_results = mysqli_num_rows($employee_results);
       <span class='error'> <?php echo $db_vanErr ?> <span></td>
     </tr>
     <tr>
-      <td><label for="order_id">Order ID:</label></td>
+      <td><label for="order_id">Employee ID:</label></td>
       <td style="width: 618px; height: 38px;" class="auto-style2">
       <select name="employee_id" style="width: 399px" class="auto-style1" required>
       <option value= "select">--Select an Employee--</option>
