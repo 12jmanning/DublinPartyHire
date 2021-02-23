@@ -29,7 +29,7 @@ $num_employee_results = mysqli_num_rows($employee_results);
 
 
 $today_date = date("Y-m-d");
-$employee_ID = $_SESSION['db_employeeID'];
+$admin_ID = $_SESSION['db_employeeID'];
 $employee_name = $_SESSION['db_employeeName'];
 $job_title = $_SESSION['db_jobTitle'];
 $yes = "Yes";
@@ -41,8 +41,8 @@ $num_results = mysqli_num_rows($orders_today);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   if (empty($_POST["employee_id"])||empty($_POST["van_id"])||empty($_POST['transit_id'])) {
-      $db_employeeErr = "Both fields ar required";
-      $db_vanErr = "Both fields ar required";
+      $db_employeeErr = "Both fields are required";
+      $db_vanErr = "Both fields are required";
       $valid=false;
   }
   if($valid==true ){
@@ -55,19 +55,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $insert_query .= "'$transit_ID','$employee_id','$van_id')";
       $result_insert = $db->query($insert_query);
 
-      echo '<table border="2">';
-      echo '<tr class="first-row-database">';
-          echo "<td></td>";
-          echo "<td><strong>Transit ID</strong></td>";
-          echo "<td><strong>Employee ID</strong></td>";
-          echo "<td><strong>Van ID</strong></td>";
-      echo "</tr>";
-      echo "<tr>";
-          echo "<td></td>";
-          echo "<td> $transit_ID </td>";
-          echo "<td> $employee_id </td>";
-          echo "<td> $van_id </td>";
-      echo "</tr>";
+      // echo '<table border="2">';
+      // echo '<tr class="first-row-database">';
+      //     echo "<td></td>";
+      //     echo "<td><strong>Transit ID</strong></td>";
+      //     echo "<td><strong>Employee ID</strong></td>";
+      //     echo "<td><strong>Van ID</strong></td>";
+      // echo "</tr>";
+      // echo "<tr>";
+      //     echo "<td></td>";
+      //     echo "<td> $transit_ID </td>";
+      //     echo "<td> $employee_id </td>";
+      //     echo "<td> $van_id </td>";
+      // echo "</tr>";
 
 
   }
@@ -75,37 +75,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 
-<div class="row" style="margin-top: 3%;">
+<div class="row" style="padding-top:25px;">
 
-  <div class="col-lg-6">
-    <h2 style="text-align: center;">My Details:</h2>
-    <?php echo $customer_ID ?>
-    <table border="2">
-      <tr>
-        <td> Employee ID </td>
-        <td> <?php echo $employee_ID; ?> </td>
-      </tr>
-      <tr>
-        <td> Employee Name </td>
-        <td> <?php echo $employee_name; ?> </td>
-      </tr>
-      <tr>
-        <td> Job Title </td>
-        <td> <?php echo $job_title; ?> </td>
-      </tr>
-    </table>
+  <div class="col-lg-1">
+
+  </div>
+  <div class="col-lg-4">
+    <h2>My Details:</h2>
+    <?php
+          echo "Employee ID: ", $admin_ID, "<br>";
+          echo "Name: ", $employee_name, "<br>";
+          echo "Job Title: ", $job_title, "<br>";
+     ?>
+
+     <h2 style="padding-top:25px;">Transits Today:</h2>
+
+     <?php
+     $orders_today_query = "select orders.db_orderID, transit.db_transitType, transit.db_transitID from orders,transit where orders.db_orderID = transit.db_orderID AND db_deliveryPreference = '$yes' AND ((orders.db_deliveryDatetime= '$today_date' AND orders.db_deliveryID = transit.db_transitID ) OR (orders.db_collectionDatetime= '$today_date' AND orders.db_collectionID = transit.db_transitID))";
+     $orders_today_details = $db->query($orders_today_query);
+     $num_orders_today = mysqli_num_rows($orders_today_details);
+
+     echo '<table border="2">';
+     echo '<tr class="first-row-database">';
+         echo "<td>Order ID</td>";
+         echo "<td>Type</td>";
+         echo "<td>Transit ID</td>";
+       echo "</tr>";
+     while($row_orders_today = mysqli_fetch_row($orders_today_details))
+     {
+         echo "<tr>";
+         echo "<td>$row_orders_today[0]</td>";
+         echo "<td>$row_orders_today[1]</td>";
+         echo "<td>$row_orders_today[2]</td>";
+         echo "</tr>";
+     }
+       echo '</table>';
+     ?>
+
+
+
   </div>
 
 
   <div class="col-lg-6" >
-    <h2 style="text-align: center;">Assign Employees and Vans to Transit Orders:</h2>
-    <form class="" action="" method="post" name="invoice" id="invoice">
+    <h2>Assign Employees and Vans to Transit Orders:</h2>
+    <form class="dd" action="" method="post" >
 
-    <table class="">
+    <table class="dd">
 
     <tr>
       <td><label for="order_id">Order ID:</label></td>
-      <td style="width: 618px; height: 38px;" class="auto-style2">
+      <td style="width: 399px; height: 38px;" class="auto-style2">
       <select name="transit_id" style="width: 399px" class="auto-style1" required>
       <option value= "select">--Select an Order--</option>
       <?php
@@ -120,7 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </tr>
     <tr>
       <td><label for="order_id">Van ID:</label></td>
-      <td style="width: 618px; height: 38px;" class="auto-style2">
+      <td style="width: 399px; height: 38px;" class="auto-style2">
       <select name="van_id" style="width: 399px" class="auto-style1" required>
       <option value= "select">--Select a Van--</option>
       <?php
@@ -136,7 +156,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </tr>
     <tr>
       <td><label for="order_id">Employee ID:</label></td>
-      <td style="width: 618px; height: 38px;" class="auto-style2">
+      <td style="width: 399px; height: 38px;" class="auto-style2">
       <select name="employee_id" style="width: 399px" class="auto-style1" required>
       <option value= "select">--Select an Employee--</option>
       <?php
