@@ -3,6 +3,32 @@
 $stmt = $pdo->prepare("SELECT * from products WHERE db_productID IN ('1', '10', '14', '40')");
 $stmt->execute();
 $recently_added_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$deliveryDateErr = $collectionDateErr ="";
+$db_deliveryDatetime = $db_collectionDatetime = "";
+$grand=true;
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  if (empty($_POST['delivery_date'])) {
+    $deliveryDateErr = "Delivery Date is required";
+    $grand=false;
+  }
+  if (empty($_POST['collection_date'])) {
+    $deliveryDateErr = "Collection Date is required";
+    $grand=false;
+  }
+  if($_POST['delivery_date']>$_POST['collection_date'])
+  {
+    $deliveryDateErr = $collectionDateErr = "Please Enter Valid Dates";
+    $grand=false;
+  }
+  if($grand==true)
+  {
+    $_SESSION['delivery_date'] = $_POST['delivery_date'];
+    $_SESSION['collection_date'] = $_POST['collection_date'];
+  }
+}
+
 ?>
 
 <?=template_header('Home')?>
@@ -24,6 +50,21 @@ $recently_added_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <div class="recentlyadded content-wrapper">
     <h2>Recently Added Products</h2>
+    <form method="post" action = ""  name="order_form" id="order_form">
+      <tr>
+        <td><label for="delivery_date">Delivery Date:</label></td>
+        <td><input type="date" name="delivery_date" id="delivery_date" ><?php echo $deliveryDateErr ?> <span></td>
+      </tr>
+
+      <tr>
+        <td><label for="collection_date">Collection Date:</label></td>
+        <td><input type="date" name="collection_date" id="collection_date" ><?php echo $collectionDateErr ?> <span></td>
+      </tr>
+      <div class="buttons">
+            <input type="submit" value="Update" name="update">
+      </div>
+    </form>
+    <?php echo $_SESSION['collection_date']; ?>
     <div class="products">
         <?php foreach ($recently_added_products as $product): ?>
         <a href="index.php?page=product&db_productID=<?=$product['db_productID']?>" class="product">
