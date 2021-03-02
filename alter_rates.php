@@ -9,7 +9,7 @@ if($_SESSION['db_jobTitle']=="admin"){
     $employee_name = $_SESSION['db_employeeName'];
     $job_title = $_SESSION['db_jobTitle'];
 
-    $product_query = "SELECT * FROM products";
+    $product_query = "SELECT * FROM delivery_costs";
     $product_results = $db->query($product_query);
     $num_product_results = mysqli_num_rows($product_results);
 
@@ -103,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
 
 
   <div class="col-lg-6" >
-    <h2>Alter The Price of Products:</h2>
+    <h2>Alter The Price of Delivery:</h2>
     <form class="dd" action="" method="post" >
 
     <table class="dd">
