@@ -184,6 +184,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <td></td>
       <td><p>Add New Products <a href="add_new_products.php">HERE</a></p></td>
     </tr>
+    <tr>
+      <td></td>
+      <td><p>Add or Delete Employees <a href="registeremployees.php">HERE</a></p></td>
+    </tr>
     </table>
 
     </form>
