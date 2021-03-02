@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="submit" value="Update" name="update">
       </div>
     </form>
-    <?php echo $_SESSION['collection_date']; ?>
+    <?php echo $_SESSION['collection_date']; echo $_SESSION['delivery_date']; ?>
     <div class="products">
         <?php foreach ($recently_added_products as $product): ?>
         <a href="index.php?page=product&db_productID=<?=$product['db_productID']?>" class="product">

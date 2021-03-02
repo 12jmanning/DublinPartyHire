@@ -39,11 +39,15 @@ for($i = $start; $i <= $end; $i->modify('+1 day')){
         
     }*/
     for ($j = 0; $j < count($result); $j++) {
-        if($i>=$result[$j]['db_deliveryDatetime'] && $i <= $result[$j]['db_collectionDatetime'])
+        $delivery = new DateTime($result[$j]['db_deliveryDatetime']);
+        $collection = new DateTime($result[$j]['db_collectionDatetime']);
+        //Error Lies within this if statement
+        if($i>=$delivery)// && $i <= $collection)
         {
             $sum_quantity_ordered=$sum_quantity_ordered+$result[$j]['db_quantityOrdered'];
         }
     }
+    
     $Q=$max_quantity-$sum_quantity_ordered;
     if($Q<$min_quantity)
     {
