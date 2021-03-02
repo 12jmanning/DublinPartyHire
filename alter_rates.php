@@ -9,45 +9,45 @@ if($_SESSION['db_jobTitle']=="admin"){
     $employee_name = $_SESSION['db_employeeName'];
     $job_title = $_SESSION['db_jobTitle'];
 
-    $product_query = "SELECT * FROM delivery_costs";
-    $product_results = $db->query($product_query);
-    $num_product_results = mysqli_num_rows($product_results);
+    $delivery_query = "SELECT * FROM delivery_costs";
+    $delivery_results = $db->query($delivery_query);
+    $num_delivery_results = mysqli_num_rows($deliver_results);
 
     $product_results1 = $db->query($product_query);
     $num_product_results1 = mysqli_num_rows($product_results1);
 }
 
-$productErr= "";
+$countyErr= "";
 $priceErr="";
 $quantityErr="";
 $valid= true;
 if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
-    if (empty($_POST["product_id"])) {
-        $productErr = "Product is required";
+    if (empty($_POST["db_countyID"])) {
+        $countyErr = "County is required";
         $valid=false;
     }
-    if (empty($_POST["db_productPrice"])) {
-        $priceErr = "Product Price is required";
+    if (empty($_POST["db_countyPrice"])) {
+        $priceErr = "County Price is required";
         $valid=false;
     }
     if($valid)
     {
-        if (!is_numeric($_POST["db_productPrice"])) {
-            $priceErr = "Product Price must be numeric";
+        if (!is_numeric($_POST["db_countyPrice"])) {
+            $priceErr = "county Price must be numeric";
             $valid=false;
         }
-        else if ($_POST["db_productPrice"]<=0) {
-            $priceErr = "Product Price must be greater than 0";
+        else if ($_POST["db_countyPrice"]<=0) {
+            $priceErr = "County Price must be greater than 0";
             $valid=false;
         }
     }
     #Problem is with this if statement
     if($valid!=false)
     {
-        $db_productID =$_POST['product_id'];
-        $db_productPrice=$_POST['db_productPrice'];
-        $query = "UPDATE products SET db_productPrice = '$db_productPrice' WHERE db_productID = '$db_productID'";
-        $edit_product = $db->query($query);
+        $db_countyID =$_POST['db_countyID'];
+        $db_countyPrice=$_POST['db_countyPrice'];
+        $query = "UPDATE delivery_costs SET db_countyPrice = '$db_countyPrice' WHERE db_countyID = '$db_countyID'";
+        $edit_county = $db->query($query);
     }
 
 }
@@ -109,23 +109,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
     <table class="dd">
 
     <tr>
-      <td><label for="order_id">Product Name:</label></td>
+      <td><label for="order_id">County:</label></td>
       <td style="width: 399px; height: 38px;" class="auto-style2">
-      <select name="product_id" style="width: 399px" class="auto-style1" required>
-      <option value= "select">--Select a Product--</option>
+      <select name="db_countyID" style="width: 399px" class="auto-style1" required>
+      <option value= "select">--Select a County--</option>
       <?php
-        for($i = 0;$i<$num_product_results1;$i++)
+        for($i = 0;$i<$num_county_results;$i++)
         {
           //Move query up top and iterate through results here with an if statement
-          $row1 = mysqli_fetch_assoc($product_results1);
-          echo '<option value = "'.$row1['db_productID'].'"> Product Name: '.$row1['db_productName']." Current Price: ".$row1['db_productPrice'].' </option>';
+          $row = mysqli_fetch_assoc($county_results);
+          echo '<option value = "'.$row['db_countyID'].'"> County Name: '.$row['db_countyName']." Delivery Price: ".$row['db_countyPrice'].' </option>';
 
         }
       ?>
     </tr>
     <tr>
         <td><label for ="members">New Price:</label></td>
-        <td><input type="text" name="db_productPrice" id="db_productPrice" size = 20><span class='error'> <?php echo $priceErr ?> <span></td>
+        <td><input type="text" name="db_countyPrice" id="db_countyPrice" size = 20><span class='error'> <?php echo $priceErr ?> <span></td>
     </tr>
     <tr>
       <td></td>
