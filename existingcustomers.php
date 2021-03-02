@@ -2,71 +2,96 @@
 include('inc/navbar.php');
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<body>
 
-    <?php
+
+<?php
     // This php code will run a query which gets all of the member_id rows from the members table and then loops through to find the user input member ID and returns an error string if not found. If it is found, it is stored as a super global session variable and they are passed to the main menu page
-        session_start();
-        include("inc/detail.php");
-        //$nameErr=$db_customerEmailErr="";
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+session_start();
+include("inc/detail.php");
+
+$db_customerEmail = $password = "";
+$db_customerEmailErr = $password_err = "";
+
+
+      if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $valid=true;
           $valid1=false;
 
-            /* if (empty($_POST["db_customerName"])) {
-                $nameErr = "Name is required";
-                $valid=false;
-              }
-            //This ensures the name only contsains valid characters
-            else {
-              $db_customerName = test_input($_POST["db_customerName"]);
-              if (!preg_match("/^[a-zA-Z-' ]*$/",$db_customerName)) {
-                $nameErr = "Only letters and white space allowed";
-                $valid=false;
-              }
+            if(empty(trim($_POST["db_customerEmail"]))){
+                $db_customerEmailErr = "Please enter username.";
+            } else{
+                $db_customerEmail = trim($_POST["db_customerEmail"]);
             }
 
-            if (empty($_POST["db_customerEmail"])) {
-              $db_customerEmailErr = "db_customerEmail is required";
-              $valid=false;
-            }
-            //This ensures the db_customerEmail is correctly formatted
-            else {
-              $db_customerEmail = test_input($_POST["db_customerEmail"]);
-              if (!filter_var($db_customerEmail, FILTER_VALIDATE_EMAIL)) {
-                $db_customerEmailErr = "Invalid email format";
+
+            // Check if password is empty
+            if(empty(trim($_POST["password"]))){
+                $password_err = "Please enter your password.";
                 $valid=false;
-              }
-            }*/
-            if($valid)
-            {
-              $db_customerName=$_POST['db_customerName'];
-              $db_customerEmail=$_POST['db_customerEmail'];
-              $query ="select * from customers";
-              $result = $db->query($query);
-              $num_results = mysqli_num_rows($result);
-              if($num_results==0)
-              {
-                  $valid1=false;
-              }
-              else
-              {
-                  $i=0;
-                  while($i<$num_results&&$valid1<>true)
-                  {
-                      $row = mysqli_fetch_assoc($result);
-                      if($row['db_customerName']==$db_customerName&&$row['db_customerEmail']==$db_customerEmail)
-                      {
-                        $_SESSION['db_customerID']=$row['db_customerID'];
-                        $valid1=true;
-                        header('Location: index.php');
-                      }
-                      $i++;
-                  }
-              }
+            } else{
+                $password = trim($_POST["password"]);
             }
+
+            echo $password;
+
+            // Validate credentials
+            if(empty($db_customerEmailErr) && empty($password_err)){
+                // Prepare a select statement
+                $sql = "SELECT db_customerID, db_customerEmail, db_customerPW FROM customers WHERE db_customerEmail = ?";
+
+                if($stmt = mysqli_prepare($link, $sql)){
+
+                    // Bind variables to the prepared statement as parameters
+                    mysqli_stmt_bind_param($stmt, "s", $param_email);
+
+                    // Set parameters
+                    $param_email = $db_customerEmail;
+
+                    // Attempt to execute the prepared statement
+                    if(mysqli_stmt_execute($stmt)){
+                        // Store result
+                        mysqli_stmt_store_result($stmt);
+
+                        // Check if username exists, if yes then verify password
+                        if(mysqli_stmt_num_rows($stmt) == 1){
+                            // Bind result variables
+                            mysqli_stmt_bind_result($stmt, $id, $db_customerEmail, $hashed_password);
+                            if(mysqli_stmt_fetch($stmt)){
+                                if(password_verify($password, $hashed_password)){
+                                    // Password is correct, so start a new session
+                                    session_start();
+
+                                    // Store data in session variables
+
+                                    $_SESSION["db_customerID"] = $id;
+
+
+                                    // Redirect user to welcome page
+                                    header("location: customerdashboard.php");
+                                } else{
+                                    // Display an error message if password is not valid
+                                    $password_err = "The password you entered was not valid.";
+                                }
+                            }
+                        } else{
+                            // Display an error message if username doesn't exist
+                            $db_customerEmailErr = "No account found with that email.";
+                        }
+                    } else{
+                        echo "Oops! Something went wrong. Please try again later.";
+                    }
+
+                    // Close statement
+                    mysqli_stmt_close($stmt);
+                }
+            }
+
+            // Close connection
+            mysqli_close($link);
+
+
+
+
         }
     ?>
 
@@ -79,18 +104,22 @@ include('inc/navbar.php');
     <form class="table-forms" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
     <table class="table-forms">
       <tr>
-        <td><label for ="members">Name:</label></td>
-        <td><input type="text" name="db_customerName" size = 30><span class='error'> <?php echo $nameErr ?> <span></td>
-      </tr>
-      <tr>
         <td><label for ="members">Email:</label></td>
         <td><input type="text" name="db_customerEmail" id="db_customerEmail" size = 20>
         <span class='error'> <?php echo $db_customerEmailErr ?> <span></td>
       </tr>
 
       <tr>
+        <td><label>Password</label></td>
+        <td><div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
+                <input type="password" name="password" class="form-control">
+                <span class="help-block"><?php echo $password_err; ?></span>
+            </div></td>
+      </tr>
+
+      <tr>
         <td></td>
-        <td><input class="btn btn-success" type="submit" name="submit" value="Submit"><input style="margin-left: 10px;"class="btn btn-danger" type="reset" value = "Reset"></td>
+        <td><input class="btn btn-success" type="submit" name="submit" value="Login"><input style="margin-left: 10px;"class="btn btn-danger" type="reset" value = "Reset"></td>
       </tr>
 
       <tr>
@@ -101,5 +130,3 @@ include('inc/navbar.php');
     </form>
 
     <a class="btn" style="background-color: #373F51; color: #fff;     margin-left: auto; margin-right: auto; display: block; width: 30%; margin-top: 10%;" role="button" href="employeelogin.php">Staff Login</a>
-</body>
-</html>

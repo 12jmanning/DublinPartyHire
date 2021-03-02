@@ -12,8 +12,8 @@ include('inc/navbar.php');
 <?php
     session_start();
     // define variables and set to empty values
-    $nameErr = $addressErr = $countyErr = $db_customerEmailErr = $eircodeErr = $phoneErr ="";
-    $db_customerName = $db_customerAddress = $db_county = $db_customerEmail = $db_customerEircode = $db_customerPhone = "";
+    $nameErr = $addressErr = $countyErr = $db_customerEmailErr = $eircodeErr = $phoneErr = $password_err = $confirm_password_err ="";
+    $db_customerName = $db_customerAddress = $db_county = $db_customerEmail = $db_customerEircode = $db_customerPhone = $password = $confirm_password ="";
     $valid=true;
       //This if statement is executed after the form has been submitted and the contents of the statement execute the form data validation. Each of the inputs are checked if they are null and appropriate error messages are assigned
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -50,7 +50,7 @@ include('inc/navbar.php');
       }
 
       if (empty($_POST["db_customerEmail"])) {
-        $db_customerEmailErr = "db_customerEmail is required";
+        $db_customerEmailErr = "Email is required";
         $valid=false;
       }
       //This ensures the db_customerEmail is correctly formatted
@@ -87,6 +87,29 @@ include('inc/navbar.php');
         $valid=false;
         }
       }
+
+      if(empty(trim($_POST["password"]))){
+          $password_err = "Please enter a password.";
+          $valid=false;
+      } elseif(strlen(trim($_POST["password"])) < 6){
+          $password_err = "Password must have atleast 6 characters.";
+          $valid=false;
+      } else{
+          $password = trim($_POST["password"]);
+      }
+
+      // Validate confirm password
+      if(empty(trim($_POST["confirm_password"]))){
+          $confirm_password_err = "Please confirm password.";
+          $valid=false;
+      } else{
+          $confirm_password = trim($_POST["confirm_password"]);
+          if(empty($password_err) && ($password != $confirm_password)){
+              $confirm_password_err = "Password did not match.";
+              $valid=false;
+          }
+      }
+
 
     // If the validation is accepted then this if statement is executed which will firstly call the register_members php file
       if($valid<>false)
@@ -193,6 +216,21 @@ include('inc/navbar.php');
             <td><input type="text" name="db_customerPhone" id="db_customerPhone" size = 20><span class='error'> <?php echo $phoneErr ?> <span></td>
           </tr>
 
+          <tr>
+            <td><label for ="members">Password:</label></td>
+            <td>
+                <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
+                <span class="help-block"><?php echo $password_err; ?></span>
+            </td>
+          </tr>
+
+          <tr>
+            <td><label for ="members">Confirm Password:</label></td>
+            <td>
+                <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
+                <span class="help-block"><?php echo $confirm_password_err; ?></span>
+            </td>
+          </tr>
           <tr>
             <td></td>
             <td><input class="btn btn-success" type="submit" name="submit" value="Submit"><input style="margin-left: 10px;"class="btn btn-danger" type="reset" value = "Reset"></td>
