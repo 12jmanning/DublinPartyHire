@@ -12,6 +12,9 @@ if($_SESSION['db_jobTitle']=="admin"){
     $product_query = "SELECT * FROM products";
     $product_results = $db->query($product_query);
     $num_product_results = mysqli_num_rows($product_results);
+
+    $product_results1 = $db->query($product_query);
+    $num_product_results1 = mysqli_num_rows($product_results1);
 }
 
 $productErr= "";
@@ -30,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
     if($valid)
     {
         if (!is_numeric($_POST["db_productPrice"])) {
-            $priceErr = "Product Price must be numeric than 0";
+            $priceErr = "Product Price must be numeric";
             $valid=false;
         }
         else if ($_POST["db_productPrice"]<=0) {
@@ -49,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
 
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit1'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
     if (empty($_POST["product_id"])) {
         $productErr = "Product is required";
         $valid=false;
@@ -61,11 +64,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit1'])) {
     if($valid)
     {
         if (!is_numeric($_POST["db_quantity"])) {
-            $priceErr = "Product quantity must be numeric than 0";
+            $quantityErr = "Product quantity must be numeric";
             $valid=false;
         }
         else if ($_POST["db_quantity"]<=0) {
-            $priceErr = "Product quantity must be greater than 0";
+            $quantityErr = "Product quantity must be greater than 0";
             $valid=false;
         }
     }
@@ -111,18 +114,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit1'])) {
       <select name="product_id" style="width: 399px" class="auto-style1" required>
       <option value= "select">--Select a Product--</option>
       <?php
-        for($i = 0;$i<$num_product_results;$i++)
+        for($i = 0;$i<$num_product_results1;$i++)
         {
           //Move query up top and iterate through results here with an if statement
-          $row = mysqli_fetch_assoc($product_results);
-          echo '<option value = "'.$row['db_productID'].'"> Product Name: '.$row['db_productName']." Current Price: ".$row['db_productPrice'].' </option>';
+          $row1 = mysqli_fetch_assoc($product_results1);
+          echo '<option value = "'.$row1['db_productID'].'"> Product Name: '.$row1['db_productName']." Current Price: ".$row1['db_productPrice'].' </option>';
 
         }
       ?>
     </tr>
     <tr>
         <td><label for ="members">New Price:</label></td>
-        <td><input type="text" name="db_productPrice" id="db_productPrice" size = 20><span class='error'> <?php echo $productPriceErr ?> <span></td>
+        <td><input type="text" name="db_productPrice" id="db_productPrice" size = 20><span class='error'> <?php echo $priceErr ?> <span></td>
     </tr>
     <tr>
       <td></td>
