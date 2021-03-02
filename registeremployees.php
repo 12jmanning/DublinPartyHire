@@ -14,10 +14,10 @@ include('inc/navbar.php');
 
     include ("inc/detail.php");
     // define variables and set to empty values
-    $employeeNameErr = $jobTitleErr ="";
-    $db_employeeName = $db_jobTitle = "";
+    $employeeNameErr = $jobTitleErr = $password_err = $confirm_password_err = "";
+    $db_employeeName = $db_jobTitle = $password = $confirm_password = "";
     $grand=true;
-    
+
       //This if statement is executed after the form has been submitted and the contents of the statement execute the form data grandation. Each of the inputs are checked if they are null and appropriate error messages are assigned
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -26,18 +26,18 @@ include('inc/navbar.php');
            $grand=false;
         }
         //This ensures the name only contsains valid characters
-        /*else {
-          $db_employeeName = test_input($_POST["db_employeeName"]);
-          if (!preg_match("/^[a-zA-Z-' ]*$/",$db_employeeName)) {
-            $employeeNameErr = "Only letters and white space allowed";
-            $grand=false;
-          }
-        }*/
+        // else {
+        //   $db_employeeName = test_input($_POST["db_employeeName"]);
+        //   if (!preg_match("/^[a-zA-Z-' ]*$/",$db_employeeName)) {
+        //     $employeeNameErr = "Only letters and white space allowed";
+        //     $grand=false;
+        //   }
 
-      if (empty($_POST["db_jobTitle"])) {
-        $jobTitleErr = "Job Title is required";
-        $grand=false;
-      }
+      //
+      // if (empty($_POST["db_jobTitle"])) {
+      //   $jobTitleErr = "Job Title is required";
+      //   $grand=false;
+      // }
       /*else {
         $db_jobTitle = test_input($_POST["db_jobTitle"]);
         if (!preg_match("/^[a-zA-Z-' ]*$/",$db_customerName)) {
@@ -45,16 +45,40 @@ include('inc/navbar.php');
           $grand=false;
         }
       } */
+      if(empty(trim($_POST["password"]))){
+          $password_err = "Please enter a password.";
+          $grand=false;
+      } elseif(strlen(trim($_POST["password"])) < 6){
+          $password_err = "Password must have atleast 6 characters.";
+          $grand=false;
+      } else{
+          $password = trim($_POST["password"]);
+      }
 
-    // If the validation is accepted then this if statement is executed which will firstly call the register_members php file
+      // Validate confirm password
+      if(empty(trim($_POST["confirm_password"]))){
+          $confirm_password_err = "Please confirm password.";
+          $grand=false;
+      } else{
+          $confirm_password = trim($_POST["confirm_password"]);
+          if(empty($password_err) && ($password != $confirm_password)){
+              $confirm_password_err = "Password did not match.";
+              $grand=false;
+          }
+      }
+
+    // If the validation is accepted then this if statement is executed
       if($grand<>false)
       {
         $db_employeeName = $_POST['db_employeeName'];
         $db_jobTitle = $_POST['db_jobTitle'];
+        $password = $_POST['password'];
+        $db_employeePW = password_hash($password, PASSWORD_DEFAULT);
+
         $q  = "INSERT INTO employees (";
-        $q .= "db_employeeName, db_jobTitle";
+        $q .= "db_employeeName, db_jobTitle, db_employeePW";
         $q .= ") VALUES (";
-        $q .= "'$db_employeeName', '$db_jobTitle')";
+        $q .= "'$db_employeeName', '$db_jobTitle', '$db_employeePW')";
         $result = $db->query($q);
 
         $query="SELECT db_employeeID from employees WHERE db_employeeName = '$db_employeeName' AND db_jobTitle = '$db_jobTitle'";
@@ -67,6 +91,14 @@ include('inc/navbar.php');
       }
 
     }
+
+    function test_input($data) {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+      }
+
 
 ?>
 
@@ -86,6 +118,22 @@ include('inc/navbar.php');
           <option value="admin">Admin</option>
           <option value="employee">Employee</option>
           </select><span class='error'> <?php echo $jobTitleErr ?> <span></td>
+    </tr>
+
+    <tr>
+      <td><label for ="members">Password:</label></td>
+      <td>
+          <input type="password" name="password" class="" value="<?php echo $password; ?>">
+          <span class="help-block"><?php echo $password_err; ?></span>
+      </td>
+    </tr>
+
+    <tr>
+      <td><label for ="members">Confirm Password:</label></td>
+      <td>
+          <input type="password" name="confirm_password" class="" value="<?php echo $confirm_password; ?>">
+          <span class="help-block"><?php echo $confirm_password_err; ?></span>
+      </td>
     </tr>
 
     <tr>

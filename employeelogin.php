@@ -11,74 +11,91 @@ include('inc/navbar.php');
     // This php code will run a query which gets all of the member_id rows from the members table and then loops through to find the user input member ID and returns an error string if not found. If it is found, it is stored as a super global session variable and they are passed to the main menu page
         session_start();
         include("inc/detail.php");
-        //$nameErr=$db_customerEmailErr="";
+
+        $db_employeeID = $password = "";
+        $db_employeeIDErr = $password_err = "";
+
+
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-          $valid=true;
-          $valid1=false;
 
-            /* if (empty($_POST["db_customerName"])) {
-                $nameErr = "Name is required";
-                $valid=false;
-              }
-            //This ensures the name only contsains valid characters
-            else {
-              $db_customerName = test_input($_POST["db_customerName"]);
-              if (!preg_match("/^[a-zA-Z-' ]*$/",$db_customerName)) {
-                $nameErr = "Only letters and white space allowed";
-                $valid=false;
-              }
-            }
 
-            if (empty($_POST["db_customerEmail"])) {
-              $db_customerEmailErr = "db_customerEmail is required";
-              $valid=false;
-            }
-            //This ensures the db_customerEmail is correctly formatted
-            else {
-              $db_customerEmail = test_input($_POST["db_customerEmail"]);
-              if (!filter_var($db_customerEmail, FILTER_VALIDATE_EMAIL)) {
-                $db_customerEmailErr = "Invalid email format";
-                $valid=false;
-              }
-            }*/
-            if($valid)
-            {
-              $db_employeeID=$_POST['db_employeeID'];
-              $db_employeeName=$_POST['db_employeeName'];
-              $query ="select * from employees";
-              $result = $db->query($query);
-              $num_results = mysqli_num_rows($result);
-              if($num_results==0)
-              {
-                  $valid1=false;
-              }
-              else
-              {
-                  $i=0;
-                  while($i<$num_results&&$valid1<>true)
-                  {
-                      $row = mysqli_fetch_assoc($result);
-                      if($row['db_employeeName']==$db_employeeName&&$row['db_employeeID']==$db_employeeID)
-                      {
-                        $_SESSION['db_employeeID']=$row['db_employeeID'];
-                        $_SESSION['db_employeeName']=$row['db_employeeName'];
-                        $_SESSION['db_jobTitle']=$row['db_jobTitle'];
-                        $valid1=true;
 
+                      if(empty(trim($_POST["db_employeeID"]))){
+                          $db_employeeIDErr = "Please enter employee ID.";
+                      } else{
+                          $db_employeeID = trim($_POST["db_employeeID"]);
                       }
-                      $i++;
-                  }
-                  $admin="admin";
-                  $employee="employee";
 
-                  if($_SESSION['db_jobTitle']==$admin){
-                    header('Location: admindashboard.php');
-                  }
-                  else{
-                    header('Location: employeedashboard.php');
-                  }
-              }
-            }
+
+                      // Check if password is empty
+                      if(empty(trim($_POST["password"]))){
+                          $password_err = "Please enter your password.";
+                      } else{
+                          $password = trim($_POST["password"]);
+                      }
+
+                      // Validate credentials
+                      if(empty($db_employeeIDErr) && empty($password_err)){
+                          // Prepare a select statement
+                          $sql = "SELECT db_employeeID, db_employeeName, db_jobTitle, db_employeePW FROM employees WHERE db_employeeID = ?";
+
+                          if($stmt = mysqli_prepare($link, $sql)){
+
+                              // Bind variables to the prepared statement as parameters
+                              mysqli_stmt_bind_param($stmt, "s", $param_id);
+
+                              // Set parameters
+                              $param_id = $db_employeeID;
+
+                              // Attempt to execute the prepared statement
+                              if(mysqli_stmt_execute($stmt)){
+                                  // Store result
+                                  mysqli_stmt_store_result($stmt);
+
+                                  // Check if username exists, if yes then verify password
+                                  if(mysqli_stmt_num_rows($stmt) == 1){
+                                      // Bind result variables
+                                      mysqli_stmt_bind_result($stmt, $id, $name, $jobtitle, $hashed_password);
+                                      if(mysqli_stmt_fetch($stmt)){
+                                          if(password_verify($password, $hashed_password)){
+                                              // Password is correct, so start a new session
+                                              session_start();
+
+                                              // Store data in session variables
+
+                                              $_SESSION['db_employeeID'] = $id;
+                                              $_SESSION['db_jobTitle']= $jobtitle;
+                                              $_SESSION['db_employeeName'] = $name;
+
+
+                                              // Redirect user to welcome page
+                                              if($_SESSION['db_jobTitle']==$admin){
+                                                header('Location: admindashboard.php');
+                                              }
+                                              else{
+                                                header('Location: employeedashboard.php');
+                                              }
+                                          } else{
+                                              // Display an error message if password is not valid
+                                              $password_err = "The password you entered was not valid.";
+                                          }
+                                      }
+                                  } else{
+                                      // Display an error message if username doesn't exist
+                                      $db_employeeIDErr = "No employee account found with that ID.";
+                                  }
+                              } else{
+                                  echo "Oops! Something went wrong. Please try again later.";
+                              }
+
+                              // Close statement
+                              mysqli_stmt_close($stmt);
+                          }
+                      }
+
+                      // Close connection
+                      mysqli_close($link);
+
         }
     ?>
 
@@ -92,17 +109,20 @@ include('inc/navbar.php');
     <table class="table-forms">
       <tr>
         <td><label for ="members">Employee ID:</label></td>
-        <td><input type="text" name="db_employeeID" size = 30><span class='error'> <?php echo $nameErr ?> <span></td>
+        <td><input type="text" name="db_employeeID" size = 30><span class='error'> <?php echo $db_employeeIDErr ?> <span></td>
       </tr>
+
       <tr>
-        <td><label for ="members">Name:</label></td>
-        <td><input type="text" name="db_employeeName" id="db_employeeName" size = 30>
-        <span class='error'> <?php echo $db_customerEmailErr ?> <span></td>
+        <td><label>Password</label></td>
+        <td><div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
+                <input type="password" name="password" class="form-control">
+                <span class="help-block"><?php echo $password_err; ?></span>
+            </div></td>
       </tr>
 
       <tr>
         <td></td>
-        <td><input class="btn btn-success" type="submit" name="submit" value="Submit"><input style="margin-left: 10px;"class="btn btn-danger" type="reset" value = "Reset"></td>
+        <td><input class="btn btn-success" type="submit" name="submit" value="Login"><input style="margin-left: 10px;"class="btn btn-danger" type="reset" value = "Reset"></td>
       </tr>
 
       <tr>

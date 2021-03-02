@@ -14,8 +14,7 @@ $db_customerEmailErr = $password_err = "";
 
 
       if ($_SERVER["REQUEST_METHOD"] == "POST") {
-          $valid=true;
-          $valid1=false;
+
 
             if(empty(trim($_POST["db_customerEmail"]))){
                 $db_customerEmailErr = "Please enter username.";
@@ -27,12 +26,9 @@ $db_customerEmailErr = $password_err = "";
             // Check if password is empty
             if(empty(trim($_POST["password"]))){
                 $password_err = "Please enter your password.";
-                $valid=false;
             } else{
                 $password = trim($_POST["password"]);
             }
-
-            echo $password;
 
             // Validate credentials
             if(empty($db_customerEmailErr) && empty($password_err)){
