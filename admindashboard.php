@@ -180,6 +180,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <td></td>
       <td><p>Edit Product Prices <a href="alter_products.php">HERE</a></p></td>
     </tr>
+    <tr>
+      <td></td>
+      <td><p>Add New Products <a href="add_new_products.php">HERE</a></p></td>
+    </tr>
     </table>
 
     </form>
