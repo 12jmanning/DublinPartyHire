@@ -175,6 +175,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <td></td>
       <td><input class="btn btn-success" type="submit" value="Submit"><input style="margin-left: 4px;"class="btn btn-danger" type="reset" value="Reset"></td>
     </tr>
+
+    <tr>
+      <td></td>
+      <td><p>Edit Product Prices <a href="alter_products.php">HERE</a></p></td>
+    </tr>
     </table>
 
     </form>
