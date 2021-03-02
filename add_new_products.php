@@ -22,14 +22,31 @@ $setUpPriceErr="";
 $imageLinkErr="";
 $valid= true;
 if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
-    if (empty($_POST["product_id"])) {
-        $productErr = "Product is required";
+    if (empty($_POST["db_productName"])) {
+        $productNameErr = "Product name is required";
         $valid=false;
     }
     if (empty($_POST["db_productPrice"])) {
-        $priceErr = "Product Price is required";
+        $productPriceErr = "Product Price is required";
         $valid=false;
     }
+    if (empty($_POST["db_volumeSize"])) {
+        $volumeSizeErr = "Volume is required";
+        $valid=false;
+    }
+    if (empty($_POST["db_setUpPrice"])) {
+        $setUpPriceErr = "Set Up Price is required";
+        $valid=false;
+    }
+    if (empty($_POST["db_imageLink"])) {
+        $imageLinkErr = "Product imageLink is required";
+        $valid=false;
+    }
+    if (empty($_POST["db_quantity"])) {
+        $quantityErr = "Product quantity is required";
+        $valid=false;
+    }
+    /*
     if($valid)
     {
         if (!is_numeric($_POST["db_productPrice"])) {
@@ -48,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
         $db_productPrice=$_POST['db_productPrice'];
         $query = "UPDATE products SET db_productPrice = '$db_productPrice' WHERE db_productID = '$db_productID'";
         $edit_product = $db->query($query);
-    }
+    }*/
 
 }
 
