@@ -11,10 +11,9 @@ if($_SESSION['db_jobTitle']=="admin"){
 
     $delivery_query = "SELECT * FROM delivery_costs";
     $delivery_results = $db->query($delivery_query);
-    $num_delivery_results = mysqli_num_rows($deliver_results);
+    $num_delivery_results = mysqli_num_rows($delivery_results);
 
-    $product_results1 = $db->query($product_query);
-    $num_product_results1 = mysqli_num_rows($product_results1);
+
 }
 
 $countyErr= "";
@@ -52,36 +51,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
 
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
-    if (empty($_POST["product_id"])) {
-        $productErr = "Product is required";
-        $valid=false;
-    }
-    if (empty($_POST["db_quantity"])) {
-        $priceErr = "Product quantity is required";
-        $valid=false;
-    }
-    if($valid)
-    {
-        if (!is_numeric($_POST["db_quantity"])) {
-            $quantityErr = "Product quantity must be numeric";
-            $valid=false;
-        }
-        else if ($_POST["db_quantity"]<=0) {
-            $quantityErr = "Product quantity must be greater than 0";
-            $valid=false;
-        }
-    }
-    #Problem is with this if statement
-    if($valid!=false)
-    {
-        $db_productID =$_POST['product_id'];
-        $db_quantity=$_POST['db_quantity'];
-        $query1 = "UPDATE products SET db_quantity = '$db_quantity' WHERE db_productID = '$db_productID'";
-        $edit_product1 = $db->query($query1);
-    }
-
-}
 
 ?>
 
@@ -114,11 +83,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
       <select name="db_countyID" style="width: 399px" class="auto-style1" required>
       <option value= "select">--Select a County--</option>
       <?php
-        for($i = 0;$i<$num_county_results;$i++)
+        for($i = 0;$i<$num_delivery_results;$i++)
         {
           //Move query up top and iterate through results here with an if statement
-          $row = mysqli_fetch_assoc($county_results);
-          echo '<option value = "'.$row['db_countyID'].'"> County Name: '.$row['db_countyName']." Delivery Price: ".$row['db_countyPrice'].' </option>';
+          $row = mysqli_fetch_assoc($delivery_results);
+          echo '<option value = "'.$row['db_countyID'].'"> County Name: '.$row['db_county']." Delivery Price: ".$row['db_countyPrice'].' </option>';
 
         }
       ?>
