@@ -12,6 +12,7 @@ include('inc/navbar.php');
         session_start();
         include("inc/detail.php");
         $admin = "admin";
+        $employee = "employee";
 
         $db_employeeID = $password = "";
         $db_employeeIDErr = $password_err = "";
@@ -73,8 +74,11 @@ include('inc/navbar.php');
                                               if($_SESSION['db_jobTitle']==$admin){
                                                 header('Location: admindashboard.php');
                                               }
-                                              else{
+                                              else if($_SESSION['db_jobTitle']==$employee) {
                                                 header('Location: employeedashboard.php');
+                                              }
+                                              else{
+                                                header('Location: non_registered_employee.php');
                                               }
                                           } else{
                                               // Display an error message if password is not valid
