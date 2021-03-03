@@ -11,6 +11,11 @@ include('inc/navbar.php');
 
 <?php
     session_start();
+    include('inc/detail.php');
+    $delivery_query = "SELECT * FROM delivery_costs";
+    $delivery_results = $db->query($delivery_query);
+    $num_delivery_results = mysqli_num_rows($delivery_results);
+
     // define variables and set to empty values
     $nameErr = $addressErr = $countyErr = $db_customerEmailErr = $eircodeErr = $phoneErr = $password_err = $confirm_password_err ="";
     $db_customerName = $db_customerAddress = $db_county = $db_customerEmail = $db_customerEircode = $db_customerPhone = $password = $confirm_password ="";
@@ -40,14 +45,6 @@ include('inc/navbar.php');
         $countyErr = "County is required";
         $valid=false;
       }
-      //This ensures the student number input only contains numeric values
-      else {
-        $db_county = test_input($_POST["db_county"]);
-        if (!preg_match("/^[a-zA-Z-' ]*$/",$db_county)) {
-          $countyErr = "Only letters and white space allowed";
-          $valid=false;
-        }
-      }
 
       if (empty($_POST["db_customerEmail"])) {
         $db_customerEmailErr = "Email is required";
@@ -63,16 +60,19 @@ include('inc/navbar.php');
       }
 
       if (empty($_POST["db_customerPhone"])) {
-        $phoneErr = "Student number is required";
+        $phoneErr = "Phone number is required";
         $valid=false;
       }
-      //This ensures the student number input only contains numeric values
-      else {
-        $db_customerPhone = test_input($_POST["db_customerPhone"]);
-        if (!is_numeric($db_customerPhone)) {
-          $phoneErr = "Only numbers allowed";
-          $valid=false;
-        }
+      else
+      {
+          if (!is_numeric($_POST["db_customerPhone"])) {
+              $phoneErr = "Phone Number must be numeric";
+              $valid=false;
+          }
+          else if ($_POST["db_customerPhone"]<=0) {
+              $phoneErr = "Phone Number must be greater than 0";
+              $valid=false;
+          }
       }
 
       if (empty($_POST["db_customerEircode"])) {
@@ -171,33 +171,17 @@ include('inc/navbar.php');
           <tr>
             <td><label for="members">County:</label><span class='error'> <?php echo $countyErr ?> <span></td>
             <td><select name="db_county" id="db_county">
-                <option value="Dublin">Dublin</option>
-                <option value="Cork">Cork</option>
-                <option value="Carlow">Carlow</option>
-                <option value="Cavan">Cavan</option>
-                <option value="Clare">Clare</option>
-                <option value="Donegal">Donegal</option>
-                <option value="Galway">Galway</option>
-                <option value="Kerry">Kerry</option>
-                <option value="Kildare">Kildare</option>
-                <option value="Kilkenny">Kilkenny</option>
-                <option value="Laois">Laois</option>
-                <option value="Leitrim">Leitrim</option>
-                <option value="Limerick">Limerick</option>
-                <option value="Longford">Longford</option>
-                <option value="Louth">Louth</option>
-                <option value="Mayo">Mayo</option>
-                <option value="Meath">Meath</option>
-                <option value="Monaghan">Monaghan</option>
-                <option value="Offaly">Offaly</option>
-                <option value="Roscommon">Roscommon</option>
-                <option value="Sligo">Sligo</option>
-                <option value="Tipperary">Tipperary</option>
-                <option value="Waterford">Waterford</option>
-                <option value="Westmeath">Westmeath</option>
-                <option value="Wexford">Wexford</option>
-                <option value="Wicklow">Wicklow</option><br>
-              </select> </td>
+              <option value= "select">--Select a County--</option>
+              <?php
+                for($i = 0;$i<$num_delivery_results;$i++)
+                {
+                  //Move query up top and iterate through results here with an if statement
+                  $row = mysqli_fetch_assoc($delivery_results);
+                  echo '<option value = "'.$row['db_countyID'].'"> County Name: '.$row['db_county'].' </option>';
+
+                }
+              ?><br>
+            </select> </td>
 
           </tr>
 
