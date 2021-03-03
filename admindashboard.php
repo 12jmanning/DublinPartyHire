@@ -186,7 +186,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </tr>
     <tr>
       <td></td>
-      <td><p>Add or Delete Employees <a href="registeremployees.php">HERE</a></p></td>
+      <td><p>Verify or Delete Employees <a href="verify_delete_employees.php">HERE</a></p></td>
     </tr>
     <tr>
       <td></td>
