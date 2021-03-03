@@ -100,6 +100,49 @@ $employeeID = $_SESSION['db_employeeID'];
 
       ?>
 
+      <h2 style="padding-top:25px;">My Transits Today: </h2>
+<?php
+$current_time = date("Y-m-d H:i:s");
+echo "$current_time";
+$orders_in_future_query = "SELECT * FROM orders where db_deliveryDatetime >= '$current_time' ORDER BY db_deliveryDatetime ASC";
+$orders_in_future = $db->query($orders_in_future_query);
+$num_results = mysqli_num_rows($orders_in_future);
+
+ ?>
+      <h2 style="padding-top:25px;">Print delivery dockets : </h2>
+
+      <form class="" action="print_docket.php" method="post" name="docket" id="docket">
+
+      <table class="">
+
+      <tr>
+        <td><label for="order_id" style="width: 100px;">Select an Order ID:</label></td>
+        <td style="width: 618px; height: 38px;" class="auto-style2">
+        <select name="order_id" style="width: 399px" class="auto-style1" required>
+        <option value= "select">--Select an Order--</option>
+        <?php
+          for($i = 0;$i<$num_results;$i++)
+          {
+            $row = mysqli_fetch_assoc($orders_in_future);
+            $q = 'select * from orders where '.$row['db_orderID'].'= orders.db_orderID';
+            $result2 = $db->query($q);
+            $row2 = mysqli_fetch_assoc($result2);
+
+            echo '<<option value ="'.$row['db_orderID'].'">Order ID: '.$row['db_orderID']." On ".$row['db_deliveryDatetime'].'</option>';
+          }
+        ?>
+
+
+      </tr>
+
+      <tr>
+        <td></td>
+        <td><input class="btn btn-success" type="submit" value="Submit"><input style="margin-left: 4px;"class="btn btn-danger" type="reset" value="Reset"></td>
+      </tr>
+      </table>
+
+      </form>
+
 
   </div>
 
