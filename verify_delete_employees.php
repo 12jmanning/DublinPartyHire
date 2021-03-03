@@ -97,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
         for($i = 0;$i<$num_employee_results;$i++)
         {
           //Move query up top and iterate through results here with an if statement
-          $row = mysqli_fetch_assoc($employee_results1);
+          $row = mysqli_fetch_assoc($employee_results);
           echo '<option value = "'.$row['db_employeeID'].'"> Employee Name: '.$row['db_employeeName']." Employee ID: ".$row['db_employeeID'].' </option>';
 
         }
