@@ -24,6 +24,8 @@ $job_title = "Not Yet Verified";
           echo "Employee ID: ", $employee_ID, "<br>";
           echo "Name: ", $employee_name, "<br>";
           echo "Job Title: ", $job_title, "<br>";
+
+          
      ?>
   </div>
 
