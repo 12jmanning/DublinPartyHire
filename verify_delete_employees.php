@@ -91,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
     <tr>
       <td><label for="order_id">Employee Name:</label></td>
       <td style="width: 399px; height: 38px;" class="auto-style2">
-      <select name="product_id" style="width: 399px" class="auto-style1" required>
+      <select name="db_employeeID" style="width: 399px" class="auto-style1" required>
       <option value= "select">--Select an Employee--</option>
       <?php
         for($i = 0;$i<$num_employee_results;$i++)
@@ -129,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
     <tr>
       <td><label for="order_id">Employee Name:</label></td>
       <td style="width: 399px; height: 38px;" class="auto-style2">
-      <select name="employee_id" style="width: 399px" class="auto-style1" required>
+      <select name="db_employeeID" style="width: 399px" class="auto-style1" required>
       <option value= "select">--Select an Employee--</option>
       <?php
         for($i = 0;$i<$num_employee_results1;$i++)
