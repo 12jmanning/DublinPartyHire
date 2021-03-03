@@ -71,14 +71,13 @@ include('inc/navbar.php');
       if($grand<>false)
       {
         $db_employeeName = $_POST['db_employeeName'];
-        $db_jobTitle = $_POST['db_jobTitle'];
         $password = $_POST['password'];
         $db_employeePW = password_hash($password, PASSWORD_DEFAULT);
 
         $q  = "INSERT INTO employees (";
-        $q .= "db_employeeName, db_jobTitle, db_employeePW";
+        $q .= "db_employeeName, db_employeePW";
         $q .= ") VALUES (";
-        $q .= "'$db_employeeName', '$db_jobTitle', '$db_employeePW')";
+        $q .= "'$db_employeeName','$db_employeePW')";
         $result = $db->query($q);
 
         $query="SELECT db_employeeID from employees WHERE db_employeeName = '$db_employeeName' AND db_jobTitle = '$db_jobTitle'";
@@ -111,13 +110,6 @@ include('inc/navbar.php');
     <tr>
       <td><label for ="members">Employee Name:</label></td>
       <td><input type="text" name="db_employeeName" size = 30><span class='error'> <?php echo $employeeNameErr ?> <span></td>
-    </tr>
-    <tr>
-      <td><label for ="members">Job Title:</label></td>
-      <td><select name="db_jobTitle" id="db_jobTitle">
-          <option value="admin">Admin</option>
-          <option value="employee">Employee</option>
-          </select><span class='error'> <?php echo $jobTitleErr ?> <span></td>
     </tr>
 
     <tr>
