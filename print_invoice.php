@@ -6,6 +6,27 @@ include('inc/navbar.php');
 $customer_ID = $_SESSION['db_customerID'];
 $order_ID = $_POST['order_id'];
 
+$query1="SELECT * FROM orders WHERE db_orderID = '$order_ID'";
+$order_results1 = $db->query($query1);
+$num_order_results = mysqli_num_rows($order_results1);
+$row1 = mysqli_fetch_assoc($order_results1);
+$db_deliveryDatetime= $row1['db_deliveryDatetime'];
+$db_collectionDatetime= $row1['db_collectionDatetime'];
+
+//$number_periods =ceil(dateDiffInDays($db_deliveryDatetime, $db_collectionDatetime)/2);
+//$number_periods=2;
+$number_periods=ceil(((new DateTime($db_collectionDatetime))->diff(new DateTime($db_deliveryDatetime))->days)/2);
+
+$query="SELECT * FROM vat";
+$vat_results = $db->query($query);
+$num_vat_results = mysqli_num_rows($vat_results);
+$dv_vatRate =0;
+for($i=0; $i<$num_vat_results; $i++)
+{
+  $row = mysqli_fetch_assoc($vat_results);
+  $dv_vatRate= $row['dv_vatRate'];
+}
+
 
 ?>
 <div >
@@ -112,9 +133,9 @@ $order_ID = $_POST['order_id'];
       echo "<td>$row[1]</td>";
       echo "<td>$row[2]</td>";
       echo "<td>$row[3]</td>";
-      echo "<td>", ($row[3] + $row[2])* $row[0] , "</td>";
+      echo "<td>", ((($row[3] + $row[2])* $row[0])*$number_periods) , "</td>";
       echo "</tr>";
-      $subtotal += ($row[3] + $row[2]) * $row[0];
+      $subtotal += ((($row[3] + $row[2])* $row[0])*$number_periods);
       $delivery = $row[4];
   }
   echo "<tr>";
@@ -130,7 +151,7 @@ $order_ID = $_POST['order_id'];
   echo "<td> </td>";
   echo "<td> </td>";
   echo "<td> VAT @ 23% </td>";
-  echo "<td>", $subtotal * .23, "</td>";
+  echo "<td>", $subtotal * ($dv_vatRate/100), "</td>";
   echo "</tr>";
 
   echo "<tr>";
@@ -144,9 +165,9 @@ $order_ID = $_POST['order_id'];
   echo "<tr>";
   echo "<td> </td>";
   echo "<td> </td>";
-  echo "<td> </td>";
+  echo "<td></td>";
   echo "<td> TOTAL DUE </td>";
-  echo "<td>", (round($subtotal * 1.23,2)) + $row[4] , "</td>";
+  echo "<td>", (round($subtotal * (1+ ($dv_vatRate/100)),2)) + $row[4] +$delivery , "</td>";
   echo "</tr>";
 
 

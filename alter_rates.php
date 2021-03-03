@@ -18,7 +18,7 @@ if($_SESSION['db_jobTitle']=="admin"){
 
 $countyErr= "";
 $priceErr="";
-$quantityErr="";
+$vatRateErr="";
 $valid= true;
 if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
     if (empty($_POST["db_countyID"])) {
@@ -47,6 +47,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
         $db_countyPrice=$_POST['db_countyPrice'];
         $query = "UPDATE delivery_costs SET db_countyPrice = '$db_countyPrice' WHERE db_countyID = '$db_countyID'";
         $edit_county = $db->query($query);
+    }
+
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
+
+    if (empty($_POST["dv_vatRate"])) {
+        $vatRateErr = "VAT Rate is required";
+        $valid=false;
+    }
+    if($valid)
+    {
+        if (!is_numeric($_POST["dv_vatRate"])) {
+            $vatRateErr = "VAT Rate must be numeric";
+            $valid=false;
+        }
+        else if ($_POST["dv_vatRate"]<=0) {
+            $vatRateErr = "VAT Rate must be greater than 0";
+            $valid=false;
+        }
+    }
+    #Problem is with this if statement
+    if($valid!=false)
+    {
+        $dv_vatRate =$_POST['dv_vatRate'];
+        $db_vatID=1;
+        $query2 = "UPDATE vat SET dv_vatRate = '$dv_vatRate' WHERE db_vatID = '$db_vatID'";
+        $vat_county = $db->query($query2);
     }
 
 }
@@ -107,29 +135,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
 
 
   <div class="col-lg-6" >
-    <h2>Alter The Quantity of Products:</h2>
+    <h2>Alter The VAT Rate:</h2>
     <form class="dd" action="" method="post" >
 
     <table class="dd">
-
     <tr>
-      <td><label for="order_id">Product Name:</label></td>
-      <td style="width: 399px; height: 38px;" class="auto-style2">
-      <select name="product_id" style="width: 399px" class="auto-style1" required>
-      <option value= "select">--Select a Product--</option>
-      <?php
-        for($i = 0;$i<$num_product_results;$i++)
-        {
-          //Move query up top and iterate through results here with an if statement
-          $row = mysqli_fetch_assoc($product_results);
-          echo '<option value = "'.$row['db_productID'].'"> Product Name: '.$row['db_productName']." Current Quantity: ".$row['db_quantity'].' </option>';
-
-        }
-      ?>
-    </tr>
-    <tr>
-        <td><label for ="members">New Quantity:</label></td>
-        <td><input type="text" name="db_quantity" id="db_quantity" size = 20><span class='error'> <?php echo $quantityErr ?> <span></td>
+        <td><label for ="members">New VAT Rate:</label></td>
+        <td><input type="text" name="dv_vatRate" id="dv_vatRate" size = 20><span class='error'> <?php echo $vatRateErr ?> <span></td>
     </tr>
     <tr>
       <td></td>
