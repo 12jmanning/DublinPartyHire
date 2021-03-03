@@ -26,18 +26,61 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
         $productNameErr = "Product name is required";
         $valid=false;
     }
+    else {
+        $db_productName = test_input($_POST["db_productName"]);
+        if (!preg_match("/^[a-zA-Z-' ]*$/",$db_employeeName)) {
+            $productNameErr = "Only letters and white space allowed";
+            $valid=false;
+        }
+    }
+
     if (empty($_POST["db_productPrice"])) {
         $productPriceErr = "Product Price is required";
         $valid=false;
+    }
+    else
+    {
+        if (!is_numeric($_POST["db_productPrice"])) {
+            $priceErr = "product Price must be numeric";
+            $valid=false;
+        }
+        else if ($_POST["db_productPrice"]<=0) {
+            $priceErr = "product Price must be greater than 0";
+            $valid=false;
+        }
     }
     if (empty($_POST["db_volumeSize"])) {
         $volumeSizeErr = "Volume is required";
         $valid=false;
     }
+    else
+    {
+        if (!is_numeric($_POST["db_volumeSize"])) {
+            $volumeSizeErr = "Volume must be numeric";
+            $valid=false;
+        }
+        else if ($_POST["db_volumeSize"]<=0) {
+            $VolumeSizeErr = "Volume must be greater than 0";
+            $valid=false;
+        }
+    }
+
     if (empty($_POST["db_setUpPrice"])) {
         $setUpPriceErr = "Set Up Price is required";
         $valid=false;
     }
+    else
+    {
+        if (!is_numeric($_POST["db_setUpPrice"])) {
+            $setUpPriceErr = "Set Up Price must be numeric";
+            $valid=false;
+        }
+        else if ($_POST["db_setUpPrice"]<=0) {
+            $setUpPriceErr = "Set Up Price must be greater than 0";
+            $valid=false;
+        }
+    }
+
     if (empty($_POST["db_imageLink"])) {
         $imageLinkErr = "Product imageLink is required";
         $valid=false;
@@ -46,26 +89,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
         $quantityErr = "Product quantity is required";
         $valid=false;
     }
-    /*
-    if($valid)
+    else
     {
-        if (!is_numeric($_POST["db_productPrice"])) {
-            $priceErr = "Product Price must be numeric than 0";
+        if (!is_numeric($_POST["db_quantity"])) {
+            $quantityErr = "Quantity must be numeric";
             $valid=false;
         }
-        else if ($_POST["db_productPrice"]<=0) {
-            $priceErr = "Product Price must be greater than 0";
+        else if ($_POST["db_quantity"]<=0) {
+            $quantityErr = "Quantity must be greater than 0";
             $valid=false;
         }
     }
+
     #Problem is with this if statement
     if($valid!=false)
     {
-        $db_productID =$_POST['product_id'];
+        $db_productName =$_POST['db_productName'];
         $db_productPrice=$_POST['db_productPrice'];
-        $query = "UPDATE products SET db_productPrice = '$db_productPrice' WHERE db_productID = '$db_productID'";
+        $db_quantity =$_POST['db_quantity'];
+        $db_setUpPrice =$_POST['db_setUpPrice'];
+        $db_volumeSize =$_POST['db_volumeSize'];
+        $db_imageLink =$_POST['db_imageLink'];
+        $query = "INSERT INTO products (db_productName,db_productPrice,db_quantity,db_setUpPrice,db_volumeSize,db_imageLink) VALUES ('$db_productName','$db_productPrice','$db_quantity','$db_setUpPrice','$db_volumeSize', '$db_imageLink')";
         $edit_product = $db->query($query);
-    }*/
+    }
 
 }
 

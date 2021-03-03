@@ -11,6 +11,7 @@ include('inc/navbar.php');
     // This php code will run a query which gets all of the member_id rows from the members table and then loops through to find the user input member ID and returns an error string if not found. If it is found, it is stored as a super global session variable and they are passed to the main menu page
         session_start();
         include("inc/detail.php");
+        $admin = "admin";
 
         $db_employeeID = $password = "";
         $db_employeeIDErr = $password_err = "";
