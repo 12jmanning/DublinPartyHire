@@ -111,7 +111,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
         $db_volumeSize =$_POST['db_volumeSize'];
         $db_imageLink =$_POST['db_imageLink'];
         $query = "INSERT INTO products (db_productName,db_productPrice,db_quantity,db_setUpPrice,db_volumeSize,db_imageLink) VALUES ('$db_productName','$db_productPrice','$db_quantity','$db_setUpPrice','$db_volumeSize', '$db_imageLink')";
-        $edit_product = $db->query($query);
+        $add_product = $db->query($query);
+        header('Location: admindashboard.php');
+
     }
 
 }
