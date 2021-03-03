@@ -21,17 +21,10 @@ $volumeSizeErr= "";
 $setUpPriceErr="";
 $imageLinkErr="";
 $valid= true;
-if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["db_productName"])) {
         $productNameErr = "Product name is required";
         $valid=false;
-    }
-    else {
-        $db_productName = test_input($_POST["db_productName"]);
-        if (!preg_match("/^[a-zA-Z-' ]*$/",$db_employeeName)) {
-            $productNameErr = "Only letters and white space allowed";
-            $valid=false;
-        }
     }
 
     if (empty($_POST["db_productPrice"])) {
@@ -41,11 +34,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
     else
     {
         if (!is_numeric($_POST["db_productPrice"])) {
-            $priceErr = "product Price must be numeric";
+            $productPriceErr = "product Price must be numeric";
             $valid=false;
         }
         else if ($_POST["db_productPrice"]<=0) {
-            $priceErr = "product Price must be greater than 0";
+            $productPriceErr = "product Price must be greater than 0";
             $valid=false;
         }
     }
@@ -60,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
             $valid=false;
         }
         else if ($_POST["db_volumeSize"]<=0) {
-            $VolumeSizeErr = "Volume must be greater than 0";
+            $volumeSizeErr = "Volume must be greater than 0";
             $valid=false;
         }
     }
@@ -110,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
         $db_setUpPrice =$_POST['db_setUpPrice'];
         $db_volumeSize =$_POST['db_volumeSize'];
         $db_imageLink =$_POST['db_imageLink'];
-        $query = "INSERT INTO products (db_productName,db_productPrice,db_quantity,db_setUpPrice,db_volumeSize,db_imageLink) VALUES ('$db_productName','$db_productPrice','$db_quantity','$db_setUpPrice','$db_volumeSize', '$db_imageLink')";
+        $query = "INSERT INTO products (db_productName, db_productPrice, db_quantity,db_setUpPrice ,db_volumeSize ,db_imageLink) VALUES ('$db_productName','$db_productPrice','$db_quantity','$db_setUpPrice','$db_volumeSize', '$db_imageLink')";
         $add_product = $db->query($query);
         header('Location: admindashboard.php');
 
