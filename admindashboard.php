@@ -112,6 +112,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
        echo '</table>';
      ?>
 
+     <h2 style="padding-top:25px;">Order Status:</h2>
+     <!-- need to do this... search database for the delivery records to see if they have been put on employee work records ?  -->
+     <form class="" action=".html" method="post">
+
+     </form>
+
+
+
 
 
   </div>
@@ -191,6 +199,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <tr>
       <td></td>
       <td><p>Alter rates <a href="alter_rates.php">HERE</a></p></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><p>View Reports <a href="reports.php">HERE</a></p></td>
     </tr>
     </table>
 
