@@ -84,9 +84,12 @@ include('inc/navbar.php');
         $result1 = $db->query($query);
         $row = mysqli_fetch_assoc($result1);
         $db_employeeID = $row['db_employeeID'];
+        $_SESSION['db_employeeID'] = $db_employeeID;
+        $_SESSION['db_employeeName'] = $db_employeeName;
+        $_SESSION['db_jobTitle'] = $db_jobTitle;
 
 
-        header('Location: index.php');
+        header('Location: new_employee_info.php');
       }
 
     }
