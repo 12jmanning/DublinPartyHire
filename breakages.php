@@ -12,10 +12,10 @@
   }
   function reload3(form)
   {
-    var val=form.cat.options[form.cat.options.selectedIndex].value; 
-    var val2=form.subcat.options[form.subcat.options.selectedIndex].value; 
+    var val=form.db_orderID.options[form.db_orderID.options.selectedIndex].value; 
+    var val2=form.db_productID.options[form.db_productID.options.selectedIndex].value; 
 
-    self.location='dd3.php?cat=' + val + '&cat3=' + val2 ;
+    self.location='breakages.php?db_orderID=' + val + '&db_productID=' + val2 ;
   }
 
   </script>
@@ -75,13 +75,15 @@ else{echo  "<option value='$noticia[db_productID]'>$noticia[db_productName]</opt
 echo "</select>";
 //////////////////  This will end the second drop down list ///////////
 
-/*
+
 //////////        Starting of third drop downlist /////////
 foreach ($db->query($quer3) as $noticia) {
-echo  "<input type='number' name='db_quantityOrdered' value='1' min='1' max='$noticia['db_quantityOrdered']' placeholder='Quantity Ordered' required>";
+  $max_q = $noticia['db_quantityOrdered'];
 }
+echo  "<input type='number' name='db_quantityOrdered' value='1' min='1' max='$max_q' placeholder='Quantity Ordered' required>";
+
 //////////////////  This will end the third drop down list ///////////
-*/
+
 
 echo "<input type=submit value='Submit the form data'></form>";
 
@@ -103,6 +105,7 @@ echo "<input type=submit value='Submit the form data'></form>";
           echo "Name: ", $employee_name, "<br>";
           echo "Job Title: ", $job_title, "<br>";
           echo  " x ",$db_orderID;
+          echo  " y ",$db_productID;
 
 
      ?>
