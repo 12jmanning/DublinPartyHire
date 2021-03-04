@@ -47,3 +47,37 @@ include('inc/navbar.php');
 ?>	
 
 </table>
+
+<h2 class="auto-style1">Extra Reports</h2>
+
+<h2 class="auto-style1">Most Ordered Products by Quantity</h2>
+<p>List of products and the total quantity that has been ordered for each.</p>
+
+<table id="table">
+	<tr>
+		<th class="auto-style1"><strong>Product Name</strong></th>
+		<th class="auto-style1"><strong>Total Quantity</strong></th>
+	</tr>
+	<?php
+
+	include("detail.php");
+	$sql = "SELECT db_productName, sum(db_quantityOrdered) AS 'Quantity'
+	FROM product_orders, products
+	WHERE product_orders.db_productID = products.db_productID
+	GROUP BY db_productName
+	ORDER BY sum(db_quantityOrdered) DESC"; 
+		$result = $db->query($sql);
+	
+		$num_results = mysqli_num_rows($result);
+		for($i=0; $i < $num_results; $i++)
+		{
+			$row = mysqli_fetch_assoc($result);
+			echo "<tr>";
+		                   echo "<td>".$row[db_productName]."</td>";
+		                   echo "<td>".$row[Quantity]."</td>";
+		                   echo "</tr>";
+		}
+		mysqli_close($db);
+?>	
+
+</table>
