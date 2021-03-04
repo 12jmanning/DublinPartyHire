@@ -206,7 +206,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </tr>
     <tr>
       <td></td>
-      <td><p>View Employee Timesheets <a href="employee_hours.php">HERE</a></p></td>
+      <td><p>Breakages <a href="breakages.php">HERE</a></p></td>
+    </tr>
+    <tr>
+      <td></td>
+        <td><p>View Employee Timesheets <a href="employee_hours.php">HERE</a></p></td>
     </tr>
     </table>
 
