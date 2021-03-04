@@ -55,6 +55,51 @@ $quer3="SELECT product_orders.db_quantityOrdered FROM product_orders,products wh
 }else{$quer3="SELECT * FROM products"; } 
 ////////// end of query for third subcategory drop down list box ///////////////////////////
 
+$orderErr="";
+$productErr = "";
+$quantityErr = "";
+$valid=true;
+if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
+  if (empty($_POST["db_orderID"])) {
+      $orderErr = "Order is required";
+      $valid=false;
+  }
+  if (empty($_POST["db_productID"])) {
+      $productErr = "Product Name is required";
+      $valid=false;
+  }
+  if (empty($_POST["db_quantityOrdered"])) {
+    $quantityErr = "Quantity is required";
+    $valid=false;
+}
+ 
+  #Problem is with this if statement
+  if($valid!=false)
+  {
+      $db_orderID =$_POST['db_orderID'];
+      $db_productID=$_POST['db_productID'];
+      $db_quantity=$_POST['db_quantityOrdered'];
+      $query1 = "SELECT db_customerID FROM orders WHERE db_orderID ='$db_orderID'";
+      $customer_query = $db->query($query1);
+      $row = mysqli_fetch_assoc($customer_query);
+      $db_customerID = $row['db_customerID'];
+
+      $query2 = "INSERT INTO breakages (db_customerID, db_orderID, db_productID, db_quantity) VALUES ('$db_customerID','$db_orderID','$db_productID','$db_quantity')";
+      $add_breakages = $db->query($query2);
+
+      $query3 = "SELECT db_quantity FROM products WHERE db_productID ='$db_productID'";
+      $get_product = $db->query($query3);
+      $row1 = mysqli_fetch_assoc($get_product);
+      $db_quantityProduct = $row1['db_quantity'];
+      $db_quantityProduct =$db_quantityProduct-$db_quantity;
+
+      $query4 = "UPDATE products SET db_quantity = '$db_quantityProduct' WHERE db_productID = '$db_productID'";
+      $reduce = $db->query($query4);
+      header('Location: admindashboard.php');
+  }
+
+}
+
 
 echo "<form method=post name=f1 action=''>";
 //////////        Starting of first drop downlist /////////
@@ -63,7 +108,7 @@ foreach ($db->query($quer2) as $noticia2) {
 if($noticia2['db_orderID']==@$db_orderID){echo "<option selected value='$noticia2[db_orderID]'>$noticia2[db_orderID]</option>";}
 else{echo  "<option value='$noticia2[db_orderID]'>$noticia2[db_orderID]</option>";}
 }
-echo "</select>";
+echo "</select> <span class='error'>$orderErr<span>";
 //////////////////  This will end the first drop down list ///////////
 
 //////////        Starting of second drop downlist /////////
@@ -85,7 +130,7 @@ echo  "<input type='number' name='db_quantityOrdered' value='1' min='1' max='$ma
 //////////////////  This will end the third drop down list ///////////
 
 
-echo "<input type=submit value='Submit the form data'></form>";
+echo "<input type=submit name = 'submit' value='Submit the form data'></form>";
 
 
 
