@@ -1,5 +1,13 @@
 <?PHP
 include('inc/detail.php');
+if(isset($_SESSION['delivery_date'])&&isset($_SESSION['collection_date']))
+{
+    $delivery_date = $_SESSION['delivery_date'];
+    $collection_date = $_SESSION['collection_date'];
+}
+else{
+    header('location: index.php');
+}
 
 
 
@@ -57,10 +65,26 @@ if (isset($_POST['update']) && isset($_SESSION['cart'])) {
     }
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // // ATtemping delivery costs:
-        $_SESSION['set_up_preference'] = $_POST['set_up'];
-        $_SESSION['delivery_preference'] = $_POST['delivery_and_collection'];
-        $_SESSION['delivery_date'] = $_POST['delivery_date'];
-        $_SESSION['collection_date'] = $_POST['collection_date'];
+        $valid=true;
+        $setUpErr=$deliveryErr="";
+        if (empty($_POST["set_up_preference"])) {
+            $setUpErr = "Set Up is required";
+            $valid=false;
+        }
+        if (empty($_POST["delivery_preference"])) {
+            $deliveryErr = "Delivery Preference is required";
+            $valid=false;
+        }
+        if($_POST["set_up_preference"]=="Yes"&&$_POST["delivery_preference"]=="No")
+        {
+            $deliveryErr=$setUpErr = "Set up can only be selected if delivery is chosen";
+            $valid=false;
+        }
+        if($valid)
+        {
+            $_SESSION['set_up_preference'] = $_POST['set_up'];
+            $_SESSION['delivery_preference'] = $_POST['delivery_and_collection'];
+        }
 
     }
 
@@ -105,8 +129,8 @@ if ($products_in_cart) {
     $set_up_preference = $_POST['set_up'];
     $delivery_preference = $_POST['delivery_and_collection'];
     $customer_ID = $_SESSION['db_customerID'];
-    $delivery_date = $_POST['delivery_date'];
-    $collection_date = $_POST['collection_date'];
+    $delivery_date = $_SESSION['delivery_date'];
+    $collection_date = $_SESSION['collection_date'];
 
     $sql_v = "SELECT delivery_costs.db_countyPrice FROM delivery_costs, customers WHERE db_customerID = $customer_ID AND customers.db_county = delivery_costs.db_county";
     $res_v = $db ->query($sql_v);
@@ -118,8 +142,8 @@ if ($products_in_cart) {
 $set_up_preference = $_POST['set_up'];
 $delivery_preference = $_POST['delivery_and_collection'];
 $customer_ID = $_SESSION['db_customerID'];
-$delivery_date = $_POST['delivery_date'];
-$collection_date = $_POST['collection_date'];
+$delivery_date = $_SESSION['delivery_date'];
+$collection_date = $_SESSION['collection_date'];
 
 // Function to find the difference
 // between two dates.
@@ -214,12 +238,12 @@ function dateDiffInDays($date1, $date2)
                 <?php endif; ?>
                 <tr>
                   <td><label for="delivery_date">Delivery Date:</label></td>
-                  <td><input type="date" name="delivery_date" id="delivery_date" ><br><br></td>
+                  <td><label for="delivery_date"><?= $delivery_date ?></label><br><br></td>
                 </tr>
 
                 <tr>
                   <td><label for="collection_date">Collection Date:</label></td>
-                  <td><input type="date" name="collection_date" id="collection_date" ><br><br></td>
+                  <td><label for="delivery_date"><?= $collection_date ?></label><br><br></td>
                 </tr>
 
                 <tr>
