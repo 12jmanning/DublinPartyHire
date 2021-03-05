@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 <div class="recentlyadded content-wrapper">
-    <h2>Recently Added Products</h2>
+    <h2>Special Offer Products</h2>
     <form method="post" action = ""  name="order_form" id="order_form">
       <tr>
         <td><label for="delivery_date">Delivery Date:</label></td>
