@@ -25,6 +25,42 @@ $product_ID = $product['db_productID'];
 $max_quantity =$product['db_quantity'];
 $min_quantity = $max_quantity;
 
+$i= new DateTime();
+for($i = $start; $i <= $end; $i->modify('+1 day')){
+
+    $sum_quantity_ordered=0;
+    $query = "SELECT product_orders.db_quantityOrdered, orders.db_deliveryDatetime, orders.db_collectionDatetime FROM product_orders, orders WHERE product_orders.db_productID= '$product_ID' AND product_orders.db_orderID =orders.db_orderID";
+    $result_query = $db->query($query);
+    $num_results = mysqli_num_rows($result_query);
+
+    for($j= 0;$j<$num_results;$j++)
+    {
+        $row = mysqli_fetch_assoc($result_query);
+        $delivery= new DateTime($row['db_deliveryDatetime']);
+        $collection = new DateTime($row['db_collectionDatetime']);  
+        if($i>=$delivery && $i <=$collection )
+        {
+            $sum_quantity_ordered=$sum_quantity_ordered+$row['db_quantityOrdered'];
+        }
+        
+    }
+    $Q=$max_quantity-$sum_quantity_ordered;
+    if($Q<$min_quantity)
+    {
+        $min_quantity=$Q;
+    }
+
+}
+$product_quantity = $min_quantity;
+
+
+/*
+$start= new DateTime($_SESSION['delivery_date']);
+$end = new DateTime($_SESSION['collection_date']);
+$product_ID = $product['db_productID'];
+$max_quantity =$product['db_quantity'];
+$min_quantity = $max_quantity;
+
 
 for($i = $start; $i <= $end; $i->modify('+1 day')){
 
@@ -49,7 +85,7 @@ for($i = $start; $i <= $end; $i->modify('+1 day')){
     }
 }
 $product_quantity = $min_quantity;
-
+*/
 
 /*$start= new DateTime($_SESSION['delivery_date']);
 $end = new DateTime($_SESSION['collection_date']);
