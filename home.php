@@ -1,6 +1,6 @@
 <?php
 // Get the 4 most recently added products
-$stmt = $pdo->prepare("SELECT * from products WHERE db_productID IN ('1', '10', '14', '40')");
+$stmt = $pdo->prepare("SELECT * from products, special_offers WHERE products.db_productID = special_offers.db_productID");
 $stmt->execute();
 $recently_added_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
