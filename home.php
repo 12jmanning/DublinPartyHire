@@ -1,5 +1,6 @@
 <?php
 // Get the 4 most recently added products
+session_start();
 $stmt = $pdo->prepare("SELECT * from products, special_offers WHERE products.db_productID = special_offers.db_productID");
 $stmt->execute();
 $recently_added_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -24,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
   if($grand==true)
   {
+    unset($_SESSION['cart']);
     $_SESSION['delivery_date'] = $_POST['delivery_date'];
     $_SESSION['collection_date'] = $_POST['collection_date'];
   }
