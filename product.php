@@ -1,5 +1,7 @@
 
 <?php
+session_start();
+include('inc/detail.php');
 // Check to make sure the id parameter is specified in the URL
 if (isset($_GET['db_productID'])) {
     // Prepare statement and execute, prevents SQL injection
@@ -22,6 +24,38 @@ $end = new DateTime($_SESSION['collection_date']);
 $product_ID = $product['db_productID'];
 $max_quantity =$product['db_quantity'];
 $min_quantity = $max_quantity;
+
+
+for($i = $start; $i <= $end; $i->modify('+1 day')){
+
+    $sum_quantity_ordered=0;
+    $query = "SELECT product_orders.db_quantityOrdered, orders.db_deliveryDatetime, orders.db_collectionDatetime FROM product_orders, orders WHERE product_orders.db_productID= '$product_ID' AND product_orders.db_orderID =orders.db_orderID";
+    $result_query = $db->query($query);
+    $num_results = mysqli_num_rows($result_query);
+
+    for($j= 0;$j<$num_results;$j++)
+    {
+        $row = mysqli_fetch_assoc($result_query);
+        if($i>=$row['db_deliveryDatetime'] && $i <= $row['db_collectionDatetime'])
+        {
+            $sum_quantity_ordered=$sum_quantity_ordered+$row['db_quantityOrdered'];
+        }
+        
+    }
+    $Q=$max_quantity-$sum_quantity_ordered;
+    if($Q<$min_quantity)
+    {
+        $min_quantity=$Q;
+    }
+}
+$product_quantity = $min_quantity;
+
+
+/*$start= new DateTime($_SESSION['delivery_date']);
+$end = new DateTime($_SESSION['collection_date']);
+$product_ID = $product['db_productID'];
+$max_quantity =$product['db_quantity'];
+$min_quantity = $max_quantity;
 $query = $pdo->prepare('SELECT product_orders.db_quantityOrdered, orders.db_deliveryDatetime, orders.db_collectionDatetime FROM product_orders, orders 
 WHERE product_orders.db_productID= ? AND product_orders.db_orderID =orders.db_orderID');
 $query-> execute([$_GET['db_productID']]);
@@ -30,14 +64,14 @@ $result = $query->fetch(PDO::FETCH_ASSOC);
 $i= new DateTime();
 for($i = $start; $i <= $end; $i->modify('+1 day')){
     $sum_quantity_ordered=0;
-    /*foreach($result as $row)
+    foreach($result as $row)
     {
         if($i>=$row['db_deliveryDatetime'] && $i <= $row['db_collectionDatetime'])
         {
             $sum_quantity_ordered=$sum_quantity_ordered+$row['db_quantityOrdered'];
         }
         
-    }*/
+    }
     
     for ($j = 0; $j < count($result); $j++) {
         $delivery = new DateTime($result[$j]['db_deliveryDatetime']);
@@ -55,7 +89,7 @@ for($i = $start; $i <= $end; $i->modify('+1 day')){
         $min_quantity=$Q;
     }
 }
-$product_quantity = $min_quantity;
+$product_quantity = $min_quantity;*/
 
 
 ?>
@@ -74,7 +108,7 @@ $product_quantity = $min_quantity;
             <input type="hidden" name="product_id" value="<?=$product['db_productID']?>">
             <input type="submit" value="Add To Cart">
         </form>
-        <?php echo print_r($result); echo "test"; ?>
+        <?php echo print_r($row['db_quantityOrdered']); echo "test"; ?>
     </div>
 </div>
 
