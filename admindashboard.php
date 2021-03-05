@@ -212,6 +212,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <td></td>
         <td><p>View Employee Timesheets <a href="employee_hours.php">HERE</a></p></td>
     </tr>
+    <tr>
+      <td></td>
+        <td><p>Put Products on Special Offer <a href="special_offers.php">HERE</a></p></td>
+    </tr>
     </table>
 
     </form>
