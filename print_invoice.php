@@ -12,6 +12,8 @@ $num_order_results = mysqli_num_rows($order_results1);
 $row1 = mysqli_fetch_assoc($order_results1);
 $db_deliveryDatetime= $row1['db_deliveryDatetime'];
 $db_collectionDatetime= $row1['db_collectionDatetime'];
+$db_setUpPreference= $row1['db_setUpPreference'];
+$db_deliveryPreference= $row1['db_deliveryPreference'];
 
 //$number_periods =ceil(dateDiffInDays($db_deliveryDatetime, $db_collectionDatetime)/2);
 //$number_periods=2;

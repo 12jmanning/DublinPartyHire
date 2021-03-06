@@ -22,20 +22,22 @@ if (isset($_SESSION['db_customerID'])) {
 
     $result_1 = $db->query($q);
 
+    $get_order_ID = ("SELECT orders.db_orderID FROM orders WHERE orders.db_customerID = $customer_ID AND db_deliveryDatetime = '$delivery_date'") ;
+    $result = $db->query($get_order_ID);
+    $num_results = mysqli_num_rows($result);
+    $i=0;
+    $found_order_id="";
+    while($i<$num_results)
+    {
+        $row = mysqli_fetch_assoc($result);
+        $found_order_id=$row['db_orderID'];
+        $i=$i+1;
+    }
+    $order_ID=$found_order_id;
+    $_SESSION['db_orderID']= $order_ID;
+
     if($delivery_and_collection == "Yes")
     {
-        $get_order_ID = ("SELECT orders.db_orderID FROM orders WHERE orders.db_customerID = $customer_ID AND db_deliveryDatetime = '$delivery_date'") ;
-        $result = $db->query($get_order_ID);
-        $num_results = mysqli_num_rows($result);
-        $i=0;
-        $found_order_id="";
-        while($i<$num_results)
-        {
-            $row = mysqli_fetch_assoc($result);
-            $found_order_id=$row['db_orderID'];
-            $i=$i+1;
-        }
-        $order_ID=$found_order_id;
         $collection= "collection";
         $delivery= "delivery";
 
@@ -50,8 +52,6 @@ if (isset($_SESSION['db_customerID'])) {
         $q1 .= ") VALUES (";
         $q1 .= "'$order_ID', '$delivery')";
         $result_delivery = $db->query($q1);
-
-        $_SESSION['db_orderID']= $order_ID;
 
         $transit_record1 = "UPDATE orders, transit SET orders.db_deliveryID = transit.db_transitID WHERE orders.db_orderID = '$order_ID' AND orders.db_orderID = transit.db_orderID AND transit.db_transitType = '$delivery'";
         $update_order1 = $db->query($transit_record1);
