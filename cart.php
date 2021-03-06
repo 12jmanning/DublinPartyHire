@@ -65,30 +65,33 @@ if (isset($_POST['update']) && isset($_SESSION['cart'])) {
     }
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // // ATtemping delivery costs:
+        /*
         $valid=true;
         $setUpErr=$deliveryErr="";
-        if (empty($_POST["set_up_preference"])) {
+        if (empty($_POST["set_up"])) {
             $setUpErr = "Set Up is required";
             $valid=false;
         }
-        if (empty($_POST["delivery_preference"])) {
+        if (empty($_POST["delivery_and_collection"])) {
             $deliveryErr = "Delivery Preference is required";
             $valid=false;
         }
-        if($_POST["set_up_preference"]=="Yes"&&$_POST["delivery_preference"]=="No")
+        if($_POST["set_up"]=="Yes"&&$_POST["delivery_and_collection"]=="No")
         {
             $deliveryErr=$setUpErr = "Set up can only be selected if delivery is chosen";
             $valid=false;
         }
         if($valid)
         {
-            $_SESSION['set_up_preference'] = $_POST['set_up_preference'];
-            $_SESSION['delivery_preference'] = $_POST['delivery_preference'];
-        }
+            $_SESSION['set_up_preference'] = $_POST['set_up'];
+            $_SESSION['delivery_preference'] = $_POST['delivery_and_collection'];
+        }*/
+    $_SESSION['set_up_preference'] = $_POST['set_up'];
+    $_SESSION['delivery_preference'] = $_POST['delivery_and_collection'];
+
 
     }
-
-
+    
     // Prevent form resubmission...
     header('location: index.php?page=cart');
     exit;
