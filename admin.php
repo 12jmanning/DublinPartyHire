@@ -127,7 +127,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="admindashboard.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -324,20 +324,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="log-out.php" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
@@ -355,7 +342,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                        <a href="reports.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
 
@@ -437,8 +424,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Pending Requests</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                                Employees Clocked In</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"> <?php echo "$num_employee_results"; ?></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -656,6 +643,70 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                             </div>
 
+                            <!-- Project Card Example -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Transits Today:</h6>
+                                </div>
+                                <div class="card-body">
+                                  <?php
+                                  $orders_today_query = "select orders.db_orderID, transit.db_transitType, transit.db_transitID from orders,transit where orders.db_orderID = transit.db_orderID AND db_deliveryPreference = '$yes' AND ((orders.db_deliveryDatetime= '$today_date' AND orders.db_deliveryID = transit.db_transitID ) OR (orders.db_collectionDatetime= '$today_date' AND orders.db_collectionID = transit.db_transitID))";
+                                  $orders_today_details = $db->query($orders_today_query);
+                                  $num_orders_today = mysqli_num_rows($orders_today_details);
+
+                                  echo '<table border="2" style="width: -webkit-fill-available;">';
+                                  echo '<tr class="first-row-database">';
+                                      echo "<td>Order ID</td>";
+                                      echo "<td>Type</td>";
+                                      echo "<td>Transit ID</td>";
+                                    echo "</tr>";
+                                  while($row_orders_today = mysqli_fetch_row($orders_today_details))
+                                  {
+                                      echo "<tr>";
+                                      echo "<td>$row_orders_today[0]</td>";
+                                      echo "<td>$row_orders_today[1]</td>";
+                                      echo "<td>$row_orders_today[2]</td>";
+                                      echo "</tr>";
+                                  }
+                                    echo '</table>';
+                                  ?>
+
+
+
+                                </div>
+                            </div>
+
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Your Details:</h6>
+                                </div>
+                                <div class="card-body">
+                                  <?php
+                                  echo "Employee ID: ", $admin_ID, "<br>";
+                                  echo "Name: ", $employee_name, "<br>";
+                                  echo "Job Title: ", $job_title, "<br>";
+                                  ?>
+
+
+
+                                </div>
+                            </div>
+
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Order Status:</h6>
+                                </div>
+                                <div class="card-body">
+                                  <?php
+                                  echo "Employee ID: ", $admin_ID, "<br>";
+                                  echo "Name: ", $employee_name, "<br>";
+                                  echo "Job Title: ", $job_title, "<br>";
+                                  ?>
+
+
+
+                                </div>
+                            </div>
 
                         </div>
 
@@ -772,7 +823,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
+                        <span>Copyright &copy; Dublin Party Hire 2021</span>
                     </div>
                 </div>
             </footer>
@@ -803,7 +854,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="/group_6/">Logout</a>
                 </div>
             </div>
         </div>
