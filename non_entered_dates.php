@@ -75,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
             echo "Order End Date: ", $_SESSION['collection_date'], "<br>";
         }
         else{
-            echo "Please enter valid dates for your before proceeding to the products page.<br>This will allow you to see the products and quantities available for your event!";
+            echo "Please enter valid dates for your order before proceeding to the products page.<br>This will allow you to see the products and quantities available for your event!";
         }
      ?>
   </div>
