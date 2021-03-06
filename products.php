@@ -5,7 +5,7 @@ if(isset($_SESSION['delivery_date'])&&isset($_SESSION['collection_date']))
     $collection_date = $_SESSION['collection_date'];
 }
 else{
-    header('location: index.php');
+    header('location: non_entered_dates.php');
 }
 
 // The amounts of products to show on each page
