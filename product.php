@@ -22,7 +22,7 @@ $end = new DateTime($_SESSION['collection_date']);
 $product_ID = $product['db_productID'];
 $max_quantity =$product['db_quantity'];
 $min_quantity = $max_quantity;
-$query = $pdo->prepare('SELECT product_orders.db_quantityOrdered, orders.db_deliveryDatetime, orders.db_collectionDatetime FROM product_orders, orders 
+$query = $pdo->prepare('SELECT product_orders.db_quantityOrdered, orders.db_deliveryDatetime, orders.db_collectionDatetime FROM product_orders, orders
 WHERE product_orders.db_productID= ? AND product_orders.db_orderID =orders.db_orderID');
 $query-> execute([$_GET['db_productID']]);
 $result = $query->fetch(PDO::FETCH_ASSOC);
@@ -36,9 +36,9 @@ for($i = $start; $i <= $end; $i->modify('+1 day')){
         {
             $sum_quantity_ordered=$sum_quantity_ordered+$row['db_quantityOrdered'];
         }
-        
+
     }*/
-    
+
     for ($j = 0; $j < count($result); $j++) {
         $delivery = new DateTime($result[$j]['db_deliveryDatetime']);
         $collection = new DateTime($result[$j]['db_collectionDatetime']);
@@ -48,7 +48,7 @@ for($i = $start; $i <= $end; $i->modify('+1 day')){
             $sum_quantity_ordered=$sum_quantity_ordered+$result[$j]['db_quantityOrdered'];
         }
     }
-    
+
     $Q=$max_quantity-$sum_quantity_ordered;
     if($Q<$min_quantity)
     {
