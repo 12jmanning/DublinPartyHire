@@ -70,13 +70,50 @@ include('inc/navbar.php');
 			$row = mysqli_fetch_assoc($result);
 			echo "<tr>";
 		                   echo "<td>".$row[Product]."</td>";
-		                   echo "<td>".$row[Revenue]."</td>";
+		                   echo "<td> €".$row[Revenue]."</td>";
 		                   echo "</tr>";
 		}
 		mysqli_close($db);
 ?>	
 
 </table>
+
+<h2 class="auto-style1">Best Customers</h2>
+<p>List of all the customers and how much each has spent on rentals</p>
+
+<table id="table">
+	<tr>
+		<th class="auto-style1"><strong>Last Name</strong></th>
+		<th class="auto-style1"><strong>First Name</strong></th>
+		<th class="auto-style1"><strong>Email</strong></th>
+		<th class="auto-style1"><strong>Total Spent</strong></th>
+	</tr>
+	<?php
+	include('inc/detail.php');
+	$sql = "SELECT substring_index(db_customerName, ' ', -1) AS 'Last Name', substring_index(db_customerName, ' ', 1) AS 'First Name', db_customerEmail AS 'Email', sum(db_rentalPrice) AS 'Total Spent' 
+	FROM orders, customers
+	WHERE orders.db_customerID = customers.db_customerID
+	GROUP BY orders.db_customerID
+	ORDER BY sum(db_rentalPrice) DESC"; 
+
+		$result = $db->query($sql);
+	
+		$num_results = mysqli_num_rows($result);
+		for($i=0; $i < $num_results; $i++)
+		{
+			$row = mysqli_fetch_assoc($result);
+			echo "<tr>";
+		                   echo "<td>".$row['Last Name']."</td>";
+		                   echo "<td>".$row['First Name']."</td>";
+						   echo "<td>".$row['Email']."</td>";
+		                   echo "<td> €".$row['Total Spent']."</td>";
+		                   echo "</tr>";
+		}
+		mysqli_close($db);
+?>	
+
+</table>
+
 
 <h2 class="auto-style1">Extra Reports</h2>
 
