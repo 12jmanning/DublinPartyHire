@@ -16,7 +16,7 @@ include('inc/navbar.php');
   <div class="col-lg-4">
     <h2>My Details:</h2>
     <?php
-          echo "Please enter valid dates for your before proceeding to the products page<br>This will allow you to see the products and quantities available for your event!";
+          echo "Please enter valid dates for your order before proceeding to the products page<br>This will allow you to see the products and quantities available for your event!";
 
      ?>
   </div>

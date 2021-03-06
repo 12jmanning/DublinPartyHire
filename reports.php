@@ -7,7 +7,7 @@ include('inc/navbar.php');
 // rental frequency DONE
 // sales revenue DONE
 // top grossing rentals
-// top customers
+// top customers DONE
 // three other reports
 
 // working hours - JACK
@@ -141,6 +141,36 @@ include('inc/navbar.php');
 			echo "<tr>";
 		                   echo "<td>".$row[Product]."</td>";
 		                   echo "<td>".$row[Quantity]."</td>";
+		                   echo "</tr>";
+		}
+		mysqli_close($db);
+?>	
+
+</table>
+
+<h2 class="auto-style1">Location of Customers</h2>
+<p>Breakdown of customers by location.</p>
+
+<table id="table">
+	<tr>
+		<th class="auto-style1"><strong>County</strong></th>
+		<th class="auto-style1"><strong>Number of Customers</strong></th>
+	</tr>
+	<?php
+	include('inc/detail.php');
+	$sql = "SELECT db_county AS 'County', count(*) AS 'Number of Customers'
+	FROM customers
+	GROUP BY db_county
+	ORDER BY count(*) DESC"; 
+		$result = $db->query($sql);
+	
+		$num_results = mysqli_num_rows($result);
+		for($i=0; $i < $num_results; $i++)
+		{
+			$row = mysqli_fetch_assoc($result);
+			echo "<tr>";
+		                   echo "<td>".$row['County']."</td>";
+		                   echo "<td>".$row['Number of Customers']."</td>";
 		                   echo "</tr>";
 		}
 		mysqli_close($db);
