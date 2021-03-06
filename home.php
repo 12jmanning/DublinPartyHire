@@ -8,6 +8,7 @@ $recently_added_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $deliveryDateErr = $collectionDateErr ="";
 $db_deliveryDatetime = $db_collectionDatetime = "";
 $grand=true;
+$todayDate = date("Y/m/d");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (empty($_POST['delivery_date'])) {
@@ -21,6 +22,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if($_POST['delivery_date']>$_POST['collection_date'])
   {
     $deliveryDateErr = $collectionDateErr = "Please Enter Valid Dates";
+    $grand=false;
+  }
+  if($_POST['delivery_date']<=$todayDate)
+  {
+    $deliveryDateErr =  "Please Enter Valid Future Dates";
     $grand=false;
   }
   if($grand==true)
