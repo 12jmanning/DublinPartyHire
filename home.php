@@ -8,32 +8,55 @@ $recently_added_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $deliveryDateErr = $collectionDateErr ="";
 $db_deliveryDatetime = $db_collectionDatetime = "";
 $grand=true;
-$todayDate = date("Y/m/d");
+$todayDate = getdate("Y/m/d");
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+function isValidDate($date,$dateFormat){
+
+  $date = trim($date);
+  $time = strtotime($date);
+
+  if(date($dateFormat, $time) < date('Y-m-d')){
+      return true;
+  }
+  else {
+      return false;
+  }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
   if (empty($_POST['delivery_date'])) {
     $deliveryDateErr = "Delivery Date is required";
     $grand=false;
   }
-  if (empty($_POST['collection_date'])) {
+  else if (empty($_POST['collection_date'])) {
     $deliveryDateErr = "Collection Date is required";
     $grand=false;
   }
-  if($_POST['delivery_date']>$_POST['collection_date'])
+  else if($_POST['delivery_date']>$_POST['collection_date'])
   {
     $deliveryDateErr = $collectionDateErr = "Please Enter Valid Dates";
     $grand=false;
   }
-  if($_POST['delivery_date']<=$todayDate)
+  /*else if($_POST['delivery_date']>$todayDate)
   {
     $deliveryDateErr =  "Please Enter Valid Future Dates";
     $grand=false;
-  }
+  }*/
+  else if (isValidDate($_POST['delivery_date'],'Y-m-d')) 
+  {
+    $deliveryDateErr =  "Please Enter Valid Future Dates";
+    $grand=false;    
+  }  
   if($grand==true)
   {
-    unset($_SESSION['cart']);
+
+    if(isset($_SESSION['cart']))
+    {
+        unset($_SESSION['cart']);
+    }
     $_SESSION['delivery_date'] = $_POST['delivery_date'];
     $_SESSION['collection_date'] = $_POST['collection_date'];
+    header('location: products.php');
   }
 }
 
