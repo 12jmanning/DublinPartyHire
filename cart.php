@@ -63,9 +63,10 @@ if (isset($_POST['update']) && isset($_SESSION['cart'])) {
             }
         }
     }
+    $deliveryErr=$setUpErr="";
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // // ATtemping delivery costs:
-        /*
+        
         $valid=true;
         $setUpErr=$deliveryErr="";
         if (empty($_POST["set_up"])) {
@@ -85,9 +86,9 @@ if (isset($_POST['update']) && isset($_SESSION['cart'])) {
         {
             $_SESSION['set_up_preference'] = $_POST['set_up'];
             $_SESSION['delivery_preference'] = $_POST['delivery_and_collection'];
-        }*/
-    $_SESSION['set_up_preference'] = $_POST['set_up'];
-    $_SESSION['delivery_preference'] = $_POST['delivery_and_collection'];
+        }
+    //$_SESSION['set_up_preference'] = $_POST['set_up'];
+    //$_SESSION['delivery_preference'] = $_POST['delivery_and_collection'];
 
 
     }
@@ -129,11 +130,11 @@ if ($products_in_cart) {
 
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // // ATtemping delivery costs:
-    $set_up_preference = $_POST['set_up'];
+    /*$set_up_preference = $_POST['set_up'];
     $delivery_preference = $_POST['delivery_and_collection'];
     $customer_ID = $_SESSION['db_customerID'];
     $delivery_date = $_SESSION['delivery_date'];
-    $collection_date = $_SESSION['collection_date'];
+    $collection_date = $_SESSION['collection_date'];*/
 
     $sql_v = "SELECT delivery_costs.db_countyPrice FROM delivery_costs, customers WHERE db_customerID = $customer_ID AND customers.db_county = delivery_costs.db_county";
     $res_v = $db ->query($sql_v);
@@ -142,11 +143,11 @@ if ($products_in_cart) {
 
 
 }
-$set_up_preference = $_POST['set_up'];
+/*$set_up_preference = $_POST['set_up'];
 $delivery_preference = $_POST['delivery_and_collection'];
 $customer_ID = $_SESSION['db_customerID'];
 $delivery_date = $_SESSION['delivery_date'];
-$collection_date = $_SESSION['collection_date'];
+$collection_date = $_SESSION['collection_date'];*/
 
 // Function to find the difference
 // between two dates.
