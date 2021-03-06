@@ -177,7 +177,7 @@ include('inc/navbar.php');
                 {
                   //Move query up top and iterate through results here with an if statement
                   $row = mysqli_fetch_assoc($delivery_results);
-                  echo '<option value = "'.$row['db_countyID'].'">'.$row['db_county'].' </option>';
+                  echo '<option value = "'.$row['db_county'].'">'.$row['db_county'].' </option>';
 
                 }
               ?><br>
