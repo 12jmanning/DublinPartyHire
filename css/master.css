@@ -34,6 +34,10 @@ th, td {
   padding: 10px;
 }
 
+.error {
+  color: #FF0000;
+}
+
 
 /* FROM SHOPPING CART PACKAGE */
 

@@ -112,14 +112,14 @@ include('inc/navbar.php');
   <table class="table-forms">
     <tr>
       <td><label for ="members">Employee Name:</label></td>
-      <td><input type="text" name="db_employeeName" size = 30><span class='error'> <?php echo $employeeNameErr ?> <span></td>
+      <td><input type="text" name="db_employeeName" size = 30><br><span class='error'> <?php echo $employeeNameErr ?> </span></td>
     </tr>
 
     <tr>
       <td><label for ="members">Password:</label></td>
       <td>
           <input type="password" name="password" class="" value="<?php echo $password; ?>">
-          <span class="help-block"><?php echo $password_err; ?></span>
+          <br><span class="error"><?php echo $password_err; ?></span>
       </td>
     </tr>
 
@@ -127,7 +127,7 @@ include('inc/navbar.php');
       <td><label for ="members">Confirm Password:</label></td>
       <td>
           <input type="password" name="confirm_password" class="" value="<?php echo $confirm_password; ?>">
-          <span class="help-block"><?php echo $confirm_password_err; ?></span>
+          <br><span class="error"><?php echo $confirm_password_err; ?></span>
       </td>
     </tr>
 

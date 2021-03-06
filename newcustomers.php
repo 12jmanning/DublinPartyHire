@@ -41,7 +41,7 @@ include('inc/navbar.php');
         $valid=false;
       }
 
-      if (empty($_POST["db_county"])) {
+      if ($_POST["db_county"] == "select") {
         $countyErr = "County is required";
         $valid=false;
       }
@@ -160,16 +160,16 @@ include('inc/navbar.php');
         <table class="table-forms">
           <tr>
             <td><label for ="members">Customer Name:</label></td>
-            <td><input type="text" name="db_customerName" size = 30><span class='error'> <?php echo $nameErr ?> <span></td>
+            <td><input type="text" name="db_customerName" size = 30><span class='error'> <?php echo $nameErr ?> </span></td>
           </tr>
 
           <tr>
             <td><label for ="members">Address:</label></td>
-            <td><input type="text" name="db_customerAddress" size = 30><span class='error'> <?php echo $addressErr ?> <span></td>
+            <td><input type="text" name="db_customerAddress" size = 30><br><span class="error"> <?php echo $addressErr ?> </span></td>
           </tr>
 
           <tr>
-            <td><label for="members">County:</label><span class='error'> <?php echo $countyErr ?> <span></td>
+            <td><label for="members">County:</label></td>
             <td><select name="db_county" id="db_county">
               <option value= "select">--Select a County--</option>
               <?php
@@ -177,42 +177,42 @@ include('inc/navbar.php');
                 {
                   //Move query up top and iterate through results here with an if statement
                   $row = mysqli_fetch_assoc($delivery_results);
-                  echo '<option value = "'.$row['db_countyID'].'"> County Name: '.$row['db_county'].' </option>';
+                  echo '<option value = "'.$row['db_countyID'].'">'.$row['db_county'].' </option>';
 
                 }
               ?><br>
-            </select> </td>
+            </select><br><span class='error'><?php echo $countyErr ?> </span> </td>
 
           </tr>
 
           <tr>
             <td><label for ="members">Eircode:</label></td>
-            <td><input type="text" name="db_customerEircode" id="db_customerEircode" size = 20><span class='error'> <?php echo $eircodeErr ?> <span></td>
+            <td><input type="text" name="db_customerEircode" id="db_customerEircode" size = 20><br><span class='error'> <?php echo $eircodeErr ?> <span/></td>
           </tr>
 
           <tr>
             <td><label for ="members">Email:</label></td>
-            <td><input type="text" name="db_customerEmail" id="db_customerEmail" size = 20><span class='error'> <?php echo $db_customerEmailErr ?> <span></td>
+            <td><input type="text" name="db_customerEmail" id="db_customerEmail" size = 20><br><span class='error'> <?php echo $db_customerEmailErr ?> <span/></td>
           </tr>
 
           <tr>
             <td><label for ="members">Phone Number:</label></td>
-            <td><input type="text" name="db_customerPhone" id="db_customerPhone" size = 20><span class='error'> <?php echo $phoneErr ?> <span></td>
+            <td><input type="text" name="db_customerPhone" id="db_customerPhone" size = 20><br><span class='error'> <?php echo $phoneErr ?> <span></td>
           </tr>
 
           <tr>
             <td><label for ="members">Password:</label></td>
             <td>
-                <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
-                <span class="help-block"><?php echo $password_err; ?></span>
+                <input type="password" name="password" value="<?php echo $password; ?>">
+                <br><span class="error"><?php echo $password_err; ?></span>
             </td>
           </tr>
 
           <tr>
             <td><label for ="members">Confirm Password:</label></td>
             <td>
-                <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
-                <span class="help-block"><?php echo $confirm_password_err; ?></span>
+                <input type="password" name="confirm_password" value="<?php echo $confirm_password; ?>">
+                <br><span class="error"><?php echo $confirm_password_err; ?></span>
             </td>
           </tr>
           <tr>

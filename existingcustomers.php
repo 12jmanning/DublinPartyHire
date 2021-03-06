@@ -102,14 +102,14 @@ $db_customerEmailErr = $password_err = "";
       <tr>
         <td><label for ="members">Email:</label></td>
         <td><input type="text" name="db_customerEmail" id="db_customerEmail" size = 20>
-        <span class='error'> <?php echo $db_customerEmailErr ?> <span></td>
+        <br><span class='error'> <?php echo $db_customerEmailErr ?> <span/></td>
       </tr>
 
       <tr>
-        <td><label>Password</label></td>
+        <td><label>Password:</label></td>
         <td><div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-                <input type="password" name="password" class="form-control">
-                <span class="help-block"><?php echo $password_err; ?></span>
+                <input type="password" name="password" >
+                <br><span class="error"><?php echo $password_err; ?></span>
             </div></td>
       </tr>
 
