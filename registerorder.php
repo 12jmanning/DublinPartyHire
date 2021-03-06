@@ -111,7 +111,14 @@ if (isset($_SESSION['db_customerID'])) {
     }
 //Change the location of page to an invoice
 //Session variables are not deleted here
-unset($_SESSION['cart']);
+    unset($_SESSION['delivery_date']);
+    unset($_SESSION['collection_date']);
+    unset($_SESSION['delivery_preference']);
+    unset($_SESSION['set_up_preference']);
+    unset($_SESSION['set_up_cost']);
+    unset($_SESSION['rental_price']);
+    unset($_SESSION['delivery_price']);
+    unset($_SESSION['cart']);
     header('location: customerdashboard.php');
 }
 else{
