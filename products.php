@@ -1,4 +1,13 @@
 <?php
+if(isset($_SESSION['delivery_date'])&&isset($_SESSION['collection_date']))
+{
+    $delivery_date = $_SESSION['delivery_date'];
+    $collection_date = $_SESSION['collection_date'];
+}
+else{
+    header('location: index.php');
+}
+
 // The amounts of products to show on each page
 $num_products_on_each_page = $pdo->query('SELECT * FROM products')->rowCount();
 // The current page, in the URL this will appear as index.php?page=products&p=1, index.php?page=products&p=2, etc...

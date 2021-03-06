@@ -1,5 +1,13 @@
 <?PHP
 include('inc/detail.php');
+if(isset($_SESSION['delivery_date'])&&isset($_SESSION['collection_date']))
+{
+    $delivery_date = $_SESSION['delivery_date'];
+    $collection_date = $_SESSION['collection_date'];
+}
+else{
+    header('location: index.php');
+}
 
 
 
@@ -57,10 +65,26 @@ if (isset($_POST['update']) && isset($_SESSION['cart'])) {
     }
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // // ATtemping delivery costs:
-        $_SESSION['set_up_preference'] = $_POST['set_up'];
-        $_SESSION['delivery_preference'] = $_POST['delivery_and_collection'];
-        $_SESSION['delivery_date'] = $_POST['delivery_date'];
-        $_SESSION['collection_date'] = $_POST['collection_date'];
+        $valid=true;
+        $setUpErr=$deliveryErr="";
+        if (empty($_POST["set_up_preference"])) {
+            $setUpErr = "Set Up is required";
+            $valid=false;
+        }
+        if (empty($_POST["delivery_preference"])) {
+            $deliveryErr = "Delivery Preference is required";
+            $valid=false;
+        }
+        if($_POST["set_up_preference"]=="Yes"&&$_POST["delivery_preference"]=="No")
+        {
+            $deliveryErr=$setUpErr = "Set up can only be selected if delivery is chosen";
+            $valid=false;
+        }
+        if($valid)
+        {
+            $_SESSION['set_up_preference'] = $_POST['set_up'];
+            $_SESSION['delivery_preference'] = $_POST['delivery_and_collection'];
+        }
 
     }
 
@@ -105,8 +129,8 @@ if ($products_in_cart) {
     $set_up_preference = $_POST['set_up'];
     $delivery_preference = $_POST['delivery_and_collection'];
     $customer_ID = $_SESSION['db_customerID'];
-    $delivery_date = $_POST['delivery_date'];
-    $collection_date = $_POST['collection_date'];
+    $delivery_date = $_SESSION['delivery_date'];
+    $collection_date = $_SESSION['collection_date'];
 
     $sql_v = "SELECT delivery_costs.db_countyPrice FROM delivery_costs, customers WHERE db_customerID = $customer_ID AND customers.db_county = delivery_costs.db_county";
     $res_v = $db ->query($sql_v);
@@ -118,8 +142,8 @@ if ($products_in_cart) {
 $set_up_preference = $_POST['set_up'];
 $delivery_preference = $_POST['delivery_and_collection'];
 $customer_ID = $_SESSION['db_customerID'];
-$delivery_date = $_POST['delivery_date'];
-$collection_date = $_POST['collection_date'];
+$delivery_date = $_SESSION['delivery_date'];
+$collection_date = $_SESSION['collection_date'];
 
 // Function to find the difference
 // between two dates.
@@ -157,7 +181,42 @@ function dateDiffInDays($date1, $date2)
                     <td colspan="5" style="text-align:center;">You have no products added in your Shopping Cart</td>
                 </tr>
                 <?php else: ?>
-                <?php foreach ($products as $product): ?>
+                <?php foreach ($products as $product): 
+                    $start= new DateTime($_SESSION['delivery_date']);
+                    $end = new DateTime($_SESSION['collection_date']);
+                    $product_ID = $product['db_productID'];
+                    $max_quantity =$product['db_quantity'];
+                    $min_quantity = $max_quantity;
+                    
+                    $i= new DateTime();
+                    for($i = $start; $i <= $end; $i->modify('+1 day')){
+                    
+                        $sum_quantity_ordered=0;
+                        $query = "SELECT product_orders.db_quantityOrdered, orders.db_deliveryDatetime, orders.db_collectionDatetime FROM product_orders, orders WHERE product_orders.db_productID= '$product_ID' AND product_orders.db_orderID =orders.db_orderID";
+                        $result_query = $db->query($query);
+                        $num_results = mysqli_num_rows($result_query);
+                    
+                        for($j= 0;$j<$num_results;$j++)
+                        {
+                            $row = mysqli_fetch_assoc($result_query);
+                            $delivery= new DateTime($row['db_deliveryDatetime']);
+                            $collection = new DateTime($row['db_collectionDatetime']);  
+                            if($i>=$delivery && $i <=$collection )
+                            {
+                                $sum_quantity_ordered=$sum_quantity_ordered+$row['db_quantityOrdered'];
+                            }
+                            
+                        }
+                        $Q=$max_quantity-$sum_quantity_ordered;
+                        if($Q<$min_quantity)
+                        {
+                            $min_quantity=$Q;
+                        }
+                    
+                    }
+                    $product_quantity = $min_quantity;
+                    
+                    ?>
                 <tr>
                     <td class="img">
                         <a href="index.php?page=product&id=<?=$product['db_productID']?>">
@@ -171,7 +230,7 @@ function dateDiffInDays($date1, $date2)
                     </td>
                     <td class="price">&euro;<?=$product['db_productPrice']?> per 48 hrs</td>
                     <td class="quantity">
-                        <input type="number" name="quantity-<?=$product['db_productID']?>" value="<?=$products_in_cart[$product['db_productID']]?>" min="1" max="<?=$product['db_quantity']?>" placeholder="Quantity" required>
+                        <input type="number" name="quantity-<?=$product['db_productID']?>" value="<?=$products_in_cart[$product['db_productID']]?>" min="1" max="<?=$product_quantity?>" placeholder="Quantity" required>
                     </td>
                     <td class="price">&euro;<?=$product['db_productPrice'] * $products_in_cart[$product['db_productID']]?></td>
                 </tr>
@@ -179,12 +238,12 @@ function dateDiffInDays($date1, $date2)
                 <?php endif; ?>
                 <tr>
                   <td><label for="delivery_date">Delivery Date:</label></td>
-                  <td><input type="date" name="delivery_date" id="delivery_date" ><br><br></td>
+                  <td><label for="delivery_date"><?= $delivery_date ?></label><br><br></td>
                 </tr>
 
                 <tr>
                   <td><label for="collection_date">Collection Date:</label></td>
-                  <td><input type="date" name="collection_date" id="collection_date" ><br><br></td>
+                  <td><label for="delivery_date"><?= $collection_date ?></label><br><br></td>
                 </tr>
 
                 <tr>
