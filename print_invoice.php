@@ -133,9 +133,9 @@ for($i=0; $i<$num_vat_results; $i++)
       echo "<td>$row[1]</td>";
       echo "<td>$row[2]</td>";
       echo "<td>$row[3]</td>";
-      echo "<td>", ((($row[3] + $row[2])* $row[0])*$number_periods) , "</td>";
+      echo "<td>", (((($row[2])* $row[0])*$number_periods)+($row[3]* $row[0])) , "</td>";
       echo "</tr>";
-      $subtotal += ((($row[3] + $row[2])* $row[0])*$number_periods);
+      $subtotal += (((($row[2])* $row[0])*$number_periods)+($row[3]* $row[0]));
       $delivery = $row[4];
   }
   echo "<tr>";
