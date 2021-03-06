@@ -47,7 +47,7 @@ for($i = $start; $i <= $end; $i->modify('+1 day')){
             $sum_quantity_ordered=$sum_quantity_ordered+$row['db_quantityOrdered'];
         }
 
-    }*/
+    }
 
     for ($j = 0; $j < count($result); $j++) {
         $delivery = new DateTime($result[$j]['db_deliveryDatetime']);
@@ -85,6 +85,7 @@ $product_quantity = $min_quantity;
             <input type="hidden" name="product_id" value="<?=$product['db_productID']?>">
             <input type="submit" value="Add To Cart">
         </form>
+        <?php  echo "test"; ?>
     </div>
 </div>
 

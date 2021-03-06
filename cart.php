@@ -82,8 +82,8 @@ if (isset($_POST['update']) && isset($_SESSION['cart'])) {
         }
         if($valid)
         {
-            $_SESSION['set_up_preference'] = $_POST['set_up'];
-            $_SESSION['delivery_preference'] = $_POST['delivery_and_collection'];
+            $_SESSION['set_up_preference'] = $_POST['set_up_preference'];
+            $_SESSION['delivery_preference'] = $_POST['delivery_preference'];
         }
 
     }
