@@ -25,7 +25,7 @@ include('inc/navbar.php');
 		<th class="auto-style1"><strong>Rental Frequency</strong></th>
 	</tr>
 	<?php
-
+	include('inc/detail.php');
 	$sql = "SELECT db_productName AS 'Product', count(*) AS 'Count'
 	FROM product_orders, products
 	WHERE product_orders.db_productID = products.db_productID
@@ -56,6 +56,7 @@ include('inc/navbar.php');
 		<th class="auto-style1"><strong>Revenue</strong></th>
 	</tr>
 	<?php
+	include('inc/detail.php');
 	$sql = "SELECT db_productName AS 'Product', db_productPrice * sum(db_quantityOrdered) * count(*) AS 'Revenue'
 	FROM product_orders, products
 	WHERE product_orders.db_productID = products.db_productID
@@ -88,8 +89,8 @@ include('inc/navbar.php');
 		<th class="auto-style1"><strong>Total Quantity</strong></th>
 	</tr>
 	<?php
-
-	$sql = "SELECT db_productName, sum(db_quantityOrdered) AS 'Quantity'
+	include('inc/detail.php');
+	$sql = "SELECT db_productName AS 'Product', sum(db_quantityOrdered) AS 'Quantity'
 	FROM product_orders, products
 	WHERE product_orders.db_productID = products.db_productID
 	GROUP BY db_productName
@@ -101,8 +102,8 @@ include('inc/navbar.php');
 		{
 			$row = mysqli_fetch_assoc($result);
 			echo "<tr>";
-		                   echo "<td>".$row['db_productName']."</td>";
-		                   echo "<td>".$row['sum(db_quantityOrdered)']."</td>";
+		                   echo "<td>".$row[Product]."</td>";
+		                   echo "<td>".$row[Quantity]."</td>";
 		                   echo "</tr>";
 		}
 		mysqli_close($db);
