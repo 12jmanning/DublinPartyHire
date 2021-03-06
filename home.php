@@ -1,6 +1,7 @@
 <?php
 // Get the 4 most recently added products
-$stmt = $pdo->prepare("SELECT * from products WHERE db_productID IN ('1', '10', '14', '40')");
+session_start();
+$stmt = $pdo->prepare("SELECT * from products, special_offers WHERE products.db_productID = special_offers.db_productID");
 $stmt->execute();
 $recently_added_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -24,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
   if($grand==true)
   {
+    unset($_SESSION['cart']);
     $_SESSION['delivery_date'] = $_POST['delivery_date'];
     $_SESSION['collection_date'] = $_POST['collection_date'];
   }
@@ -49,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 <div class="recentlyadded content-wrapper">
-    <h2>Recently Added Products</h2>
+    <h2>Special Offer Products</h2>
     <form method="post" action = ""  name="order_form" id="order_form">
       <tr>
         <td><label for="delivery_date">Delivery Date:</label></td>
