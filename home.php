@@ -52,21 +52,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <div class="recentlyadded content-wrapper">
     <h2>Special Offer Products</h2>
-    <form method="post" action = ""  name="order_form" id="order_form">
+    <form method="post" action = ""  name="order_form" id="order_form" style="text-align: -webkit-center;">
       <tr>
-        <td><label for="delivery_date">Delivery Date:</label></td>
-        <td><input type="date" name="delivery_date" id="delivery_date" ><?php echo $deliveryDateErr ?> <span></td>
+        <td><label for="delivery_date" style="padding-right: 20px;">Delivery Date:</label></td>
+        <td ><input type="date" name="delivery_date" id="delivery_date" style="width: 150px;"><?php echo $deliveryDateErr ?> <span></td>
+          <td><label for="collection_date" style="padding-right: 20px; padding-left: 20px;">Collection Date:</label></td>
+          <td><input type="date" name="collection_date" id="collection_date" style="width:150px;" ><?php echo $collectionDateErr ?> <span></td>
+          <td><input class="btn" type="submit" value="Filter Products" name="update" style="background-color: #C46BAE; color: #fff; margin:auto; margin-left: 20px;"></td>
       </tr>
 
-      <tr>
-        <td><label for="collection_date">Collection Date:</label></td>
-        <td><input type="date" name="collection_date" id="collection_date" ><?php echo $collectionDateErr ?> <span></td>
+      <!-- <tr>
+
       </tr>
       <div class="buttons">
             <input type="submit" value="Update" name="update">
-      </div>
+      </div> -->
+
     </form>
-    <?php echo $_SESSION['collection_date']; echo $_SESSION['delivery_date']; ?>
     <div class="products">
         <?php foreach ($recently_added_products as $product): ?>
         <a href="index.php?page=product&db_productID=<?=$product['db_productID']?>" class="product">
