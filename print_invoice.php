@@ -14,6 +14,7 @@ $db_deliveryDatetime= $row1['db_deliveryDatetime'];
 $db_collectionDatetime= $row1['db_collectionDatetime'];
 $db_setUpPreference= $row1['db_setUpPreference'];
 $db_deliveryPreference= $row1['db_deliveryPreference'];
+$yes="Yes";
 
 //$number_periods =ceil(dateDiffInDays($db_deliveryDatetime, $db_collectionDatetime)/2);
 //$number_periods=2;
@@ -130,15 +131,22 @@ for($i=0; $i<$num_vat_results; $i++)
     $delivery = 0;
   while($row = mysqli_fetch_row($invoice_details))
   {
-      echo "<tr>";
-      echo "<td>$row[0]</td>";
-      echo "<td>$row[1]</td>";
-      echo "<td>$row[2]</td>";
-      echo "<td>$row[3]</td>";
-      echo "<td>", (((($row[2])* $row[0])*$number_periods)+($row[3]* $row[0])) , "</td>";
-      echo "</tr>";
-      $subtotal += (((($row[2])* $row[0])*$number_periods)+($row[3]* $row[0]));
-      $delivery = $row[4];
+    if($db_setUpPreference==$yes)
+    {
+      $adjusted_set_up=$row[3];
+    }
+    else{
+      $adjusted_set_up = 0;
+    }
+    echo "<tr>";
+    echo "<td>$row[0]</td>";
+    echo "<td>$row[1]</td>";
+    echo "<td>$row[2]</td>";
+    echo "<td>$adjusted_set_up</td>";
+    echo "<td>", (((($row[2])* $row[0])*$number_periods)+($adjusted_set_up* $row[0])) , "</td>";
+    echo "</tr>";
+    $subtotal += (((($row[2])* $row[0])*$number_periods)+($adjusted_set_up* $row[0]));
+    $delivery = $row[4];
   }
   echo "<tr>";
   echo "<td> </td>";
