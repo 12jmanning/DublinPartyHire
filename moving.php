@@ -2,85 +2,6 @@
 session_start();
 include('inc/detail.php');
 
-
-
-if($_SESSION['db_jobTitle']=="admin"){
-    $employee_ID = $_SESSION['db_employeeID'];
-    $employee_name = $_SESSION['db_employeeName'];
-    $job_title = $_SESSION['db_jobTitle'];
-
-    $delivery_query = "SELECT * FROM delivery_costs";
-    $delivery_results = $db->query($delivery_query);
-    $num_delivery_results = mysqli_num_rows($delivery_results);
-
-
-}
-
-$countyErr= "";
-$priceErr="";
-$vatRateErr="";
-$valid= true;
-if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
-    if (empty($_POST["db_countyID"])) {
-        $countyErr = "County is required";
-        $valid=false;
-    }
-    if (empty($_POST["db_countyPrice"])) {
-        $priceErr = "County Price is required";
-        $valid=false;
-    }
-    if($valid)
-    {
-        if (!is_numeric($_POST["db_countyPrice"])) {
-            $priceErr = "county Price must be numeric";
-            $valid=false;
-        }
-        else if ($_POST["db_countyPrice"]<=0) {
-            $priceErr = "County Price must be greater than 0";
-            $valid=false;
-        }
-    }
-    #Problem is with this if statement
-    if($valid!=false)
-    {
-        $db_countyID =$_POST['db_countyID'];
-        $db_countyPrice=$_POST['db_countyPrice'];
-        $query = "UPDATE delivery_costs SET db_countyPrice = '$db_countyPrice' WHERE db_countyID = '$db_countyID'";
-        $edit_county = $db->query($query);
-    }
-
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
-
-    if (empty($_POST["dv_vatRate"])) {
-        $vatRateErr = "VAT Rate is required";
-        $valid=false;
-    }
-    if($valid)
-    {
-        if (!is_numeric($_POST["dv_vatRate"])) {
-            $vatRateErr = "VAT Rate must be numeric";
-            $valid=false;
-        }
-        else if ($_POST["dv_vatRate"]<=0) {
-            $vatRateErr = "VAT Rate must be greater than 0";
-            $valid=false;
-        }
-    }
-    #Problem is with this if statement
-    if($valid!=false)
-    {
-        $dv_vatRate =$_POST['dv_vatRate'];
-        $db_vatID=1;
-        $query2 = "UPDATE vat SET dv_vatRate = '$dv_vatRate' WHERE db_vatID = '$db_vatID'";
-        $vat_county = $db->query($query2);
-    }
-
-}
-
-
-
 ?>
 
 
@@ -107,6 +28,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
     <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/Chart.min.js"></script>
 <script type="text/javascript" src="js/app.js"></script>
+<meta name="GENERATOR" content="Arachnophilia 4.0">
+<meta name="FORMATTER" content="Arachnophilia 4.0">
+<SCRIPT language=JavaScript>
+function reload(form)
+{
+  var val=form.db_orderID.options[form.db_orderID.options.selectedIndex].value;
+  self.location='breakages.php?db_orderID=' + val ;
+}
+function reload3(form)
+{
+  var val=form.db_orderID.options[form.db_orderID.options.selectedIndex].value;
+  var val2=form.db_productID.options[form.db_productID.options.selectedIndex].value;
+
+  self.location='breakages.php?db_orderID=' + val + '&db_productID=' + val2 ;
+}
+
+</script>
 
 </head>
 
@@ -361,71 +299,139 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
                             <!-- Project Card Example -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Alter Delivery Prices:</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Delivery Pickup/Schedule:</h6>
                                 </div>
-                                <div class="card-body">
-                                  <form class="dd" action="" method="post" >
+                                  <div class="card-body">
 
-                                  <table class="dd">
 
-                                  <tr>
-                                    <td><label for="order_id">County:</label></td>
-                                    <td style="width: 399px; height: 38px;" class="auto-style2">
-                                    <select name="db_countyID" style="width: 399px" class="auto-style1" required>
-                                    <option value= "select">--Select a County--</option>
                                     <?php
-                                      for($i = 0;$i<$num_delivery_results;$i++)
-                                      {
-                                        //Move query up top and iterate through results here with an if statement
-                                        $row = mysqli_fetch_assoc($delivery_results);
-                                        echo '<option value = "'.$row['db_countyID'].'"> County Name: '.$row['db_county']." Delivery Price: ".$row['db_countyPrice'].' </option>';
 
+                                    ///////// Getting the data from Mysql table for first list box//////////
+                                    $quer2="SELECT db_orderID FROM orders WHERE db_collectionDatetime<='$today'";
+                                    ///////////// End of query for first list box////////////
+
+                                    /////// for second drop down list we will check if category is selected else we will display all the subcategory/////
+                                    $db_orderID=$_GET['db_orderID']; // This line is added to take care if your global variable is off
+                                    if(isset($db_orderID) and strlen($db_orderID) > 0){
+                                    $quer="SELECT product_orders.db_productID, products.db_productName, product_orders.db_productOrderID, product_orders.db_quantityOrdered FROM product_orders,products where product_orders.db_orderID = '$db_orderID' AND product_orders.db_productID = products.db_productID";
+                                    }else{$quer="SELECT * FROM product_orders"; }
+                                    ////////// end of query for second subcategory drop down list box ///////////////////////////
+
+
+                                    /////// for Third drop down list we will check if sub category is selected else we will display all the subcategory3/////
+                                    $db_productID=$_GET['db_productID']; // This line is added to take care if your global variable is off
+                                    if(isset($db_productID) and strlen($db_productID) > 0){
+                                    $quer3="SELECT product_orders.db_quantityOrdered FROM product_orders,products where product_orders.db_orderID = '$db_orderID' AND product_orders.db_productID = '$db_productID'";
+                                    }else{$quer3="SELECT * FROM products"; }
+                                    ////////// end of query for third subcategory drop down list box ///////////////////////////
+
+                                    $orderErr="";
+                                    $productErr = "";
+                                    $quantityErr = "";
+                                    $valid=true;
+                                    if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
+                                      if (empty($_POST["db_orderID"])) {
+                                          $orderErr = "Order is required";
+                                          $valid=false;
                                       }
-                                    ?>
-                                  </tr>
-                                  <tr>
-                                      <td><label for ="members" style="margin-right:20px;">New Price:</label></td>
-                                      <td><input type="text" name="db_countyPrice" id="db_countyPrice" size = 20><span class='error'> <?php echo $priceErr ?> </span></td>
-                                  </tr>
-                                  <tr>
-                                    <td></td>
-                                    <td><input class="btn btn-success" style="margin-top:20px;" type="submit" value="Submit" name ="submit"><input style="margin-left: 4px;margin-top:20px;"class="btn btn-danger" type="reset" value="Reset"></td>
-                                  </tr>
-                                  </table>
+                                      if (empty($_POST["db_productID"])) {
+                                          $productErr = "Product Name is required";
+                                          $valid=false;
+                                      }
+                                      if (empty($_POST["db_quantityOrdered"])) {
+                                        $quantityErr = "Quantity is required";
+                                        $valid=false;
+                                    }
 
-                                  </form>
+                                      #Problem is with this if statement
+                                      if($valid!=false)
+                                      {
+                                          $db_orderID =$_POST['db_orderID'];
+                                          $db_productID=$_POST['db_productID'];
+                                          $db_quantity=$_POST['db_quantityOrdered'];
+                                          $query1 = "SELECT db_customerID FROM orders WHERE db_orderID ='$db_orderID'";
+                                          $customer_query = $db->query($query1);
+                                          $row = mysqli_fetch_assoc($customer_query);
+                                          $db_customerID = $row['db_customerID'];
+
+                                          $query2 = "INSERT INTO breakages (db_customerID, db_orderID, db_productID, db_quantity) VALUES ('$db_customerID','$db_orderID','$db_productID','$db_quantity')";
+                                          $add_breakages = $db->query($query2);
+
+                                          $query3 = "SELECT db_quantity FROM products WHERE db_productID ='$db_productID'";
+                                          $get_product = $db->query($query3);
+                                          $row1 = mysqli_fetch_assoc($get_product);
+                                          $db_quantityProduct = $row1['db_quantity'];
+                                          $db_quantityProduct =$db_quantityProduct-$db_quantity;
+
+                                          $query4 = "UPDATE products SET db_quantity = '$db_quantityProduct' WHERE db_productID = '$db_productID'";
+                                          $reduce = $db->query($query4);
+                                          header('Location: admindashboard.php');
+                                      }
+
+                                    }
+
+
+                                    echo "<form method=post name=f1 action=''>";
+                                    //////////        Starting of first drop downlist /////////
+                                    echo "<select name='db_orderID' onchange=\"reload(this.form)\"><option value=''>Select one</option>";
+                                    foreach ($db->query($quer2) as $noticia2) {
+                                    if($noticia2['db_orderID']==@$db_orderID){echo "<option selected value='$noticia2[db_orderID]'>$noticia2[db_orderID]</option>";}
+                                    else{echo  "<option value='$noticia2[db_orderID]'>$noticia2[db_orderID]</option>";}
+                                    }
+                                    echo "</select> <span class='error'>$orderErr<span>";
+                                    //////////////////  This will end the first drop down list ///////////
+
+                                    //////////        Starting of second drop downlist /////////
+                                    echo "<select name='db_productID' onchange=\"reload3(this.form)\"><option value=''>Select one</option>";
+                                    foreach ($db->query($quer) as $noticia) {
+                                    if($noticia['db_productID']==@$db_productID){echo "<option selected value='$noticia[db_productID]'>$noticia[db_productName]</option>";}
+                                    else{echo  "<option value='$noticia[db_productID]'>$noticia[db_productName]</option>";}
+                                    }
+                                    echo "</select>";
+                                    //////////////////  This will end the second drop down list ///////////
+
+
+                                    //////////        Starting of third drop downlist /////////
+                                    foreach ($db->query($quer3) as $noticia) {
+                                      $max_q = $noticia['db_quantityOrdered'];
+                                    }
+                                    echo  "<input type='number' name='db_quantityOrdered' value='1' min='1' max='$max_q' placeholder='Quantity Ordered' required>";
+
+                                    //////////////////  This will end the third drop down list ///////////
+
+
+                                    echo "<input type=submit name = 'submit' value='Submit the form data'></form>";
+
+
+
+                                    ?>
+
+
+
+
                                 </div>
                             </div>
-
-
-
-
-
                         </div>
 
                         <div class="col-lg-6 mb-4">
                           <div class="card shadow mb-4">
                               <div class="card-header py-3">
-                                  <h6 class="m-0 font-weight-bold text-primary">Alter VAT Rate:</h6>
+                                  <h6 class="m-0 font-weight-bold text-primary">Details:</h6>
                               </div>
                               <div class="card-body">
-                                <form class="dd" action="" method="post" >
 
-                                <table class="dd">
-                                <tr>
-                                    <td><label for ="members" style="margin-right: 20px;">New VAT Rate:</label></td>
-                                    <td><input type="text" name="dv_vatRate" id="dv_vatRate" size = 20><span class='error'> <?php echo $vatRateErr ?> <span></td>
-                                </tr>
-                                <tr>
-                                  <td></td>
-                                  <td><input class="btn btn-success" style="margin-top: 20px;" type="submit" value="Submit" name ="submit2"><input style="margin-left: 4px; margin-top: 20px;"class="btn btn-danger" type="reset" value="Reset"></td>
-                                </tr>
-                                </table>
+                                <?php
+                                      echo "Employee ID: ", $employee_ID, "<br>";
+                                      echo "Name: ", $employee_name, "<br>";
+                                      echo "Job Title: ", $job_title, "<br>";
+                                      echo  " x ",$db_orderID;
+                                      echo  " y ",$db_productID;
 
-                                </form>
 
+                                 ?>
                             </div>
                           </div>
+
 
 
                         </div>

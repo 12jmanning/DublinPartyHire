@@ -241,12 +241,12 @@ function dateDiffInDays($date1, $date2)
                 <?php endforeach; ?>
                 <?php endif; ?>
                 <tr>
-                  <td><label for="delivery_date">Delivery Date:</label></td>
+                  <td><label for="delivery_date">Start Date:</label></td>
                   <td><label for="delivery_date"><?= $delivery_date ?></label><br><br></td>
                 </tr>
 
                 <tr>
-                  <td><label for="collection_date">Collection Date:</label></td>
+                  <td><label for="collection_date">End Date:</label></td>
                   <td><label for="delivery_date"><?= $collection_date ?></label><br><br></td>
                 </tr>
 

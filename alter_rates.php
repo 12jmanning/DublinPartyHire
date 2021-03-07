@@ -385,7 +385,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
                                   </tr>
                                   <tr>
                                       <td><label for ="members" style="margin-right:20px;">New Price:</label></td>
-                                      <td><input type="text" name="db_countyPrice" id="db_countyPrice" size = 20><span class='error'> <?php echo $priceErr ?> </span></td>
+                                      <td><input type="text" name="db_countyPrice" id="db_countyPrice" size = 20><span class='my-error'> <?php echo $priceErr ?> </span></td>
                                   </tr>
                                   <tr>
                                     <td></td>
