@@ -469,6 +469,73 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <div class="chart-area">
                                         <canvas id="myAreaChart"></canvas>
                                     </div>
+                                    <?php 
+                                    $sqlQuery = "SELECT SUM(orders.db_setUpPrice)+SUM(orders.db_deliveryPrice)+SUM(orders.db_rentalPrice) AS 'Month' FROM orders 
+                                    GROUP By MONTH(orders.db_orderCreatedAt)";
+
+                                    $result = $db->query($sqlQuery);
+
+                                    $data = array();
+                                    $data = array();
+                                    foreach ($result as $row) {
+                                        $data[] = $row;
+                                    }
+
+                                    echo json_encode($data);
+                                    ?>
+                                    <script>
+                                    $(document).ready(function () {
+                                        showGraph();
+                                    });
+
+
+                                    function showGraph()
+                                    {
+                                        {
+                                            $.post("data.php",
+                                            function (data)
+                                            {
+                                                console.log(data);
+                                                var name = [];
+                                                var marks = [];
+
+                                                marks.push(data[0].Month);
+                                                name.push('Jan 21');
+                                                marks.push(data[1].Month);
+                                                name.push('Feb 21');
+                                                marks.push(0);
+                                                name.push('Mar 21');
+                                                marks.push(0);
+                                                name.push('Apr 21');
+                                                marks.push(0);
+                                                name.push('May 21');
+                                                marks.push(0);
+                                                name.push('Jun 21');
+
+                                                var chartdata = {
+                                                    labels: name,
+                                                    datasets: [
+                                                        {
+                                                            label: 'Monthly Revenue',
+                                                            backgroundColor: '#49e2ff',
+                                                            borderColor: '#46d5f1',
+                                                            hoverBackgroundColor: '#CCCCCC',
+                                                            hoverBorderColor: '#666666',
+                                                            data: marks
+                                                        }
+                                                    ]
+                                                };
+
+                                                var graphTarget = $("#myAreaChart");
+
+                                                var barGraph = new Chart(graphTarget, {
+                                                    type: 'bar',
+                                                    data: chartdata
+                                                });
+                                            });
+                                        }
+                                    }
+                                    </script>
                                 </div>
                             </div>
                         </div>
