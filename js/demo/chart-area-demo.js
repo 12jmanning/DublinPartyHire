@@ -1,4 +1,4 @@
-/*// Set new default font family and font color to mimic Bootstrap's default styling
+// Set new default font family and font color to mimic Bootstrap's default styling
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
 
@@ -115,56 +115,5 @@ var myLineChart = new Chart(ctx, {
       }
     }
   }
-});*/
-
-$(document).ready(function () {
-  showGraph();
 });
 
-
-function showGraph()
-{
-  {
-      $.post("data.php",
-      function (data)
-      {
-          console.log(data);
-          var name = [];
-          var marks = [];
-
-          marks.push(data[0].Month);
-          name.push('Jan 21');
-          marks.push(data[1].Month);
-          name.push('Feb 21');
-          marks.push(0);
-          name.push('Mar 21');
-          marks.push(0);
-          name.push('Apr 21');
-          marks.push(0);
-          name.push('May 21');
-          marks.push(0);
-          name.push('Jun 21');
-
-          var chartdata = {
-              labels: name,
-              datasets: [
-                  {
-                      label: 'Monthly Revenue',
-                      backgroundColor: '#49e2ff',
-                      borderColor: '#46d5f1',
-                      hoverBackgroundColor: '#CCCCCC',
-                      hoverBorderColor: '#666666',
-                      data: marks
-                  }
-              ]
-          };
-
-          var graphTarget = $("#myChart");
-
-          var barGraph = new Chart(graphTarget, {
-              type: 'bar',
-              data: chartdata
-          });
-      });
-  }
-}
