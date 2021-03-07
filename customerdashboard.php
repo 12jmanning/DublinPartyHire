@@ -47,7 +47,7 @@ $customer_phone = $row['db_customerPhone'] ;
   <tr>
     <td><label for="order_id" style="width: 100px;">Select an Order ID:</label></td>
     <td style="width: 618px; height: 38px;" class="auto-style2">
-    <select name="order_id" style="width: 399px" class="auto-style1" required>
+    <select name="order_id" style="width: 300px" class="auto-style1" required>
     <option value= "select">--Select an Order--</option>
     <?php
       for($i = 0;$i<$num_results;$i++)
