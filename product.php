@@ -85,7 +85,7 @@ $product_quantity = $min_quantity;
             <input type="hidden" name="product_id" value="<?=$product['db_productID']?>">
             <input type="submit" value="Add To Cart">
         </form>
-        <?php  echo "test"; ?>
+
     </div>
 </div>
 
