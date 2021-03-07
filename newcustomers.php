@@ -137,7 +137,14 @@ include('inc/navbar.php');
             $_SESSION['db_customerID']=$found_customer_id;
         }
         //This will then move the user to the mai menu where they have accesss to the member section and the admin section
-        header('Location: index.php');
+
+        if(isset($_SESSION['link']))
+        {
+          header($_SESSION['link']);
+        }
+        else{
+          header('Location: index.php');
+        }
       }
 
     }
