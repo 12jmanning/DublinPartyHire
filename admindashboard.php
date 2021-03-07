@@ -157,7 +157,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manage Products:</h6>
                         <a class="collapse-item" href="alter_products.php">Manage Prices/Quantities</a>
-                        <a class="collapse-item" href="add_new_products.php">Add Product</a>
+                        <a class="collapse-item" href="add_new_products.php">Add Products</a>
                         <a class="collapse-item" href="special_offers.php">Manage Special Offers</a>
 
                     </div>

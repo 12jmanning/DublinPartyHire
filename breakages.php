@@ -371,6 +371,8 @@ function reload3(form)
                                           $query4 = "UPDATE products SET db_quantity = '$db_quantityProduct' WHERE db_productID = '$db_productID'";
                                           $reduce = $db->query($query4);
                                           header('Location: admindashboard.php');
+
+                                          $success_message = "You have successfully recorded the breakage";
                                       }
 
                                     }
@@ -378,25 +380,30 @@ function reload3(form)
 
                                     echo "<form method=post name=f1 action=''>";
                                     //////////        Starting of first drop downlist /////////
+                                    echo "<label style='margin-right: 20px;'>Select an Order:</label>";
                                     echo "<select name='db_orderID' onchange=\"reload(this.form)\"><option value=''>Select one</option>";
                                     foreach ($db->query($quer2) as $noticia2) {
                                     if($noticia2['db_orderID']==@$db_orderID){echo "<option selected value='$noticia2[db_orderID]'>$noticia2[db_orderID]</option>";}
                                     else{echo  "<option value='$noticia2[db_orderID]'>$noticia2[db_orderID]</option>";}
                                     }
                                     echo "</select> <span class='error'>$orderErr<span>";
+                                    echo "<br>";
                                     //////////////////  This will end the first drop down list ///////////
 
                                     //////////        Starting of second drop downlist /////////
+                                    echo "<label style='margin-right: 20px;'>Select an Item from The Order:</label>";
                                     echo "<select name='db_productID' onchange=\"reload3(this.form)\"><option value=''>Select one</option>";
                                     foreach ($db->query($quer) as $noticia) {
                                     if($noticia['db_productID']==@$db_productID){echo "<option selected value='$noticia[db_productID]'>$noticia[db_productName]</option>";}
                                     else{echo  "<option value='$noticia[db_productID]'>$noticia[db_productName]</option>";}
                                     }
                                     echo "</select>";
+                                    echo "<br>";
                                     //////////////////  This will end the second drop down list ///////////
 
 
                                     //////////        Starting of third drop downlist /////////
+                                    echo "<label style='margin-right: 20px;'>Select The Quantity Broken:</label>";
                                     foreach ($db->query($quer3) as $noticia) {
                                       $max_q = $noticia['db_quantityOrdered'];
                                     }
@@ -405,8 +412,8 @@ function reload3(form)
                                     //////////////////  This will end the third drop down list ///////////
 
 
-                                    echo "<input type=submit name = 'submit' value='Submit the form data'></form>";
-
+                                    echo "<br><input class='btn btn-success' style='margin-top:20px; margin-bottom:20px' type=submit name = 'submit' value='Submit the form data'></form>";
+                                    echo "<br>" , "$success_message";
 
 
                                     ?>
@@ -426,12 +433,7 @@ function reload3(form)
                               <div class="card-body">
 
                                 <?php
-                                      echo "Employee ID: ", $employee_ID, "<br>";
-                                      echo "Name: ", $employee_name, "<br>";
-                                      echo "Job Title: ", $job_title, "<br>";
-                                      echo  " x ",$db_orderID;
-                                      echo  " y ",$db_productID;
-
+      
 
                                  ?>
                             </div>
