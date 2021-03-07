@@ -2,6 +2,54 @@
 session_start();
 include('inc/detail.php');
 
+$employee = "employee";
+
+$employeeID = $_SESSION['db_employeeID'];
+
+
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+        if(isset($_SESSION['db_employeeID']) && $_SESSION['db_jobTitle'] = $employee ){
+
+          if(isset($_POST['ClockIn'])){
+
+              $employeeID = $_SESSION['db_employeeID'];
+              $clock_in_time = date("Y-m-d H:i:s");
+
+              $q  = "INSERT INTO employee_timesheets (";
+              $q .= "db_employeeID, db_startDatetime";
+              $q .= ") VALUES (";
+              $q .= "'$employeeID', '$clock_in_time')";
+
+              $result = $db->query($q);
+              $clocked_in_successful = "You have clocked in";
+          }
+
+          if(isset($_POST['ClockOut'])){
+
+              $employeeID = $_SESSION['db_employeeID'];
+              $clock_out_time = date("Y-m-d H:i:s");
+
+              $query = "SELECT db_timesheetID FROM employee_timesheets WHERE db_employeeID = '$employeeID' ORDER  BY db_startDatetime DESC LIMIT  1";
+
+              $result1 = $db->query($query);
+              $row = mysqli_fetch_assoc($result1);
+              $timesheetID = $row['db_timesheetID'];
+
+              $query1 = "UPDATE employee_timesheets SET db_endDatetime = '$clock_out_time' WHERE db_timesheetID = '$timesheetID'";
+              $result = $db->query($query1);
+              echo "You have clocked out";
+
+          }
+
+        }
+    }
+
+
+
+
+
 ?>
 
 
@@ -299,113 +347,100 @@ function reload3(form)
                             <!-- Project Card Example -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Delivery Pickup/Schedule:</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Clock In/Clock Out:</h6>
+                                </div>
+                                  <div class="card-body">
+                                    <form method="post" action="">
+
+                                            <input class="btn btn-success"type="submit" value = "Clock In" name="ClockIn">
+                                            <input class="btn btn-danger"type="submit" name="ClockOut" value="Clock Out">
+                                            <?php echo "$clocked_in_successful"; ?>
+                                    </form>
+
+
+
+                                </div>
+                            </div>
+
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Current Status:</h6>
                                 </div>
                                   <div class="card-body">
 
+                                        <?php
+                                          $status_query = "SELECT db_timesheetID, db_startDatetime, db_endDatetime FROM employee_timesheets WHERE db_employeeID = '$employeeID' ORDER  BY db_timesheetID DESC LIMIT  1";
+
+                                          $employee_status = $db->query($status_query);
+                                          $row1 = mysqli_fetch_assoc($employee_status);
+                                          $start_time = $row1['db_startDatetime'];
+                                          $end_time = $row1['db_endDatetime'];
+
+
+                                          if ($end_time == "0000-00-00 00:00:00") {
+                                            echo "You are clocked in since : ", $start_time;
+                                          }
+                                          else if ($end_time !== "0000-00-00 00:00:00") {
+                                            echo "You are clocked out";
+                                          }
+                                         ?>
+                                         <?php
+                                         $details_query = "SELECT db_employeeID, db_employeeName, db_jobTitle FROM `employees`
+                                                                 WHERE db_employeeID = '$employeeID'";
+                                         $employee_details = $db->query($details_query);
+                                         $row2 = mysqli_fetch_assoc($employee_details);
+                                         $employee_id = $row2['db_employeeID'] ;
+                                         $employee_name = $row2['db_employeeName'] ;
+                                         $employee_job_title = $row2['db_jobTitle'] ;
+
+
+
+                                          ?>
+
+
+
+                                </div>
+                            </div>
+
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Current Status:</h6>
+                                </div>
+                                  <div class="card-body">
 
                                     <?php
-
-                                    ///////// Getting the data from Mysql table for first list box//////////
-                                    $quer2="SELECT db_orderID FROM orders WHERE db_collectionDatetime<='$today'";
-                                    ///////////// End of query for first list box////////////
-
-                                    /////// for second drop down list we will check if category is selected else we will display all the subcategory/////
-                                    $db_orderID=$_GET['db_orderID']; // This line is added to take care if your global variable is off
-                                    if(isset($db_orderID) and strlen($db_orderID) > 0){
-                                    $quer="SELECT product_orders.db_productID, products.db_productName, product_orders.db_productOrderID, product_orders.db_quantityOrdered FROM product_orders,products where product_orders.db_orderID = '$db_orderID' AND product_orders.db_productID = products.db_productID";
-                                    }else{$quer="SELECT * FROM product_orders"; }
-                                    ////////// end of query for second subcategory drop down list box ///////////////////////////
-
-
-                                    /////// for Third drop down list we will check if sub category is selected else we will display all the subcategory3/////
-                                    $db_productID=$_GET['db_productID']; // This line is added to take care if your global variable is off
-                                    if(isset($db_productID) and strlen($db_productID) > 0){
-                                    $quer3="SELECT product_orders.db_quantityOrdered FROM product_orders,products where product_orders.db_orderID = '$db_orderID' AND product_orders.db_productID = '$db_productID'";
-                                    }else{$quer3="SELECT * FROM products"; }
-                                    ////////// end of query for third subcategory drop down list box ///////////////////////////
-
-                                    $orderErr="";
-                                    $productErr = "";
-                                    $quantityErr = "";
-                                    $valid=true;
-                                    if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
-                                      if (empty($_POST["db_orderID"])) {
-                                          $orderErr = "Order is required";
-                                          $valid=false;
-                                      }
-                                      if (empty($_POST["db_productID"])) {
-                                          $productErr = "Product Name is required";
-                                          $valid=false;
-                                      }
-                                      if (empty($_POST["db_quantityOrdered"])) {
-                                        $quantityErr = "Quantity is required";
-                                        $valid=false;
+                                    $time_query = "SELECT db_timesheetID, db_startDatetime, db_endDatetime
+                                                          FROM `employee_timesheets`
+                                                          WHERE db_employeeID = '$employeeID'";
+                                    $time_details = $db->query($time_query);
+                                    echo '<table border="2">';
+                                    echo '<tr class="first-row-database">';
+                                        echo "<td>Timesheet ID</td>";
+                                        echo "<td>Start Time</td>";
+                                        echo "<td>End Time</td>";
+                                        echo "<td>Hours Worked</td>";
+                                      echo "</tr>";
+                                    $total_hours_worked = 0;
+                                    while($row3 = mysqli_fetch_row($time_details))
+                                    {
+                                        echo "<tr>";
+                                        echo "<td>$row3[0]</td>";
+                                        echo "<td>$row3[1]</td>"; $timestamp_start = strtotime($row3[1]);
+                                        echo "<td>$row3[2]</td>"; $timestamp_end = strtotime($row3[2]);
+                                        echo "<td>", round(abs($timestamp_end - $timestamp_start) / (60*60), 2) ,"</td>";
+                                        echo "</tr>";
+                                        $total_hours_worked += round(abs($timestamp_end - $timestamp_start) / (60*60), 2);
                                     }
+                                    echo "<tr>";
+                                    echo "<td> </td>";
+                                    echo "<td> </td>";
+                                    echo "<td><strong>TOTAL HOURS</strong></td>";
+                                    echo "<td>$total_hours_worked </td>";
+                                    echo "</tr>";
 
-                                      #Problem is with this if statement
-                                      if($valid!=false)
-                                      {
-                                          $db_orderID =$_POST['db_orderID'];
-                                          $db_productID=$_POST['db_productID'];
-                                          $db_quantity=$_POST['db_quantityOrdered'];
-                                          $query1 = "SELECT db_customerID FROM orders WHERE db_orderID ='$db_orderID'";
-                                          $customer_query = $db->query($query1);
-                                          $row = mysqli_fetch_assoc($customer_query);
-                                          $db_customerID = $row['db_customerID'];
-
-                                          $query2 = "INSERT INTO breakages (db_customerID, db_orderID, db_productID, db_quantity) VALUES ('$db_customerID','$db_orderID','$db_productID','$db_quantity')";
-                                          $add_breakages = $db->query($query2);
-
-                                          $query3 = "SELECT db_quantity FROM products WHERE db_productID ='$db_productID'";
-                                          $get_product = $db->query($query3);
-                                          $row1 = mysqli_fetch_assoc($get_product);
-                                          $db_quantityProduct = $row1['db_quantity'];
-                                          $db_quantityProduct =$db_quantityProduct-$db_quantity;
-
-                                          $query4 = "UPDATE products SET db_quantity = '$db_quantityProduct' WHERE db_productID = '$db_productID'";
-                                          $reduce = $db->query($query4);
-                                          header('Location: admindashboard.php');
-                                      }
-
-                                    }
-
-
-                                    echo "<form method=post name=f1 action=''>";
-                                    //////////        Starting of first drop downlist /////////
-                                    echo "<select name='db_orderID' onchange=\"reload(this.form)\"><option value=''>Select one</option>";
-                                    foreach ($db->query($quer2) as $noticia2) {
-                                    if($noticia2['db_orderID']==@$db_orderID){echo "<option selected value='$noticia2[db_orderID]'>$noticia2[db_orderID]</option>";}
-                                    else{echo  "<option value='$noticia2[db_orderID]'>$noticia2[db_orderID]</option>";}
-                                    }
-                                    echo "</select> <span class='error'>$orderErr<span>";
-                                    //////////////////  This will end the first drop down list ///////////
-
-                                    //////////        Starting of second drop downlist /////////
-                                    echo "<select name='db_productID' onchange=\"reload3(this.form)\"><option value=''>Select one</option>";
-                                    foreach ($db->query($quer) as $noticia) {
-                                    if($noticia['db_productID']==@$db_productID){echo "<option selected value='$noticia[db_productID]'>$noticia[db_productName]</option>";}
-                                    else{echo  "<option value='$noticia[db_productID]'>$noticia[db_productName]</option>";}
-                                    }
-                                    echo "</select>";
-                                    //////////////////  This will end the second drop down list ///////////
-
-
-                                    //////////        Starting of third drop downlist /////////
-                                    foreach ($db->query($quer3) as $noticia) {
-                                      $max_q = $noticia['db_quantityOrdered'];
-                                    }
-                                    echo  "<input type='number' name='db_quantityOrdered' value='1' min='1' max='$max_q' placeholder='Quantity Ordered' required>";
-
-                                    //////////////////  This will end the third drop down list ///////////
-
-
-                                    echo "<input type=submit name = 'submit' value='Submit the form data'></form>";
-
-
+                                    echo '</table>';
 
                                     ?>
-
 
 
 
@@ -421,14 +456,68 @@ function reload3(form)
                               <div class="card-body">
 
                                 <?php
-                                      echo "Employee ID: ", $employee_ID, "<br>";
+                                echo "Employee ID: ", $employee_id, "<br>";
                                       echo "Name: ", $employee_name, "<br>";
-                                      echo "Job Title: ", $job_title, "<br>";
-                                      echo  " x ",$db_orderID;
-                                      echo  " y ",$db_productID;
-
+                                      echo "Job Title: ", $employee_job_title, "<br>";
 
                                  ?>
+                            </div>
+                          </div>
+
+                          <div class="card shadow mb-4">
+                              <div class="card-header py-3">
+                                  <h6 class="m-0 font-weight-bold text-primary">Print Delivery Dockets:</h6>
+                              </div>
+                              <div class="card-body">
+
+                                <?php
+                                $current_time = date("Y-m-d H:i:s");
+                                $orders_in_future_query = "SELECT * FROM orders where db_deliveryDatetime >= '$current_time' ORDER BY db_deliveryDatetime ASC";
+                                $orders_in_future = $db->query($orders_in_future_query);
+                                $num_results = mysqli_num_rows($orders_in_future);
+
+                                 ?>
+                                 <form class="" action="print_docket.php" method="post" name="docket" id="docket">
+
+                                 <table class="">
+
+                                 <tr>
+                                   <td><label for="order_id" style="width: 100px;">Select an Order ID:</label></td>
+                                   <td style="width: 618px; height: 38px;" class="auto-style2">
+                                   <select name="order_id" style="width: 399px" class="auto-style1" required>
+                                   <option value= "select">--Select an Order--</option>
+                                   <?php
+                                     for($i = 0;$i<$num_results;$i++)
+                                     {
+                                       $row = mysqli_fetch_assoc($orders_in_future);
+                                       $q = 'select * from orders where '.$row['db_orderID'].'= orders.db_orderID';
+                                       $result2 = $db->query($q);
+                                       $row2 = mysqli_fetch_assoc($result2);
+
+                                       echo '<<option value ="'.$row['db_orderID'].'">Order ID: '.$row['db_orderID']." On ".$row['db_deliveryDatetime'].'</option>';
+                                     }
+                                   ?>
+
+
+                                 </tr>
+
+                                 <tr>
+                                   <td></td>
+                                   <td><input class="btn btn-success" type="submit" value="Submit"><input style="margin-left: 4px;"class="btn btn-danger" type="reset" value="Reset"></td>
+                                 </tr>
+                                 </table>
+
+                                 </form>
+                            </div>
+                          </div>
+
+                          <div class="card shadow mb-4">
+                              <div class="card-header py-3">
+                                  <h6 class="m-0 font-weight-bold text-primary">My Transits Today:</h6>
+                              </div>
+                              <div class="card-body">
+
+
                             </div>
                           </div>
 
