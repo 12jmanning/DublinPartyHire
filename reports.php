@@ -1,6 +1,4 @@
 <?php
-include('inc/detail.php');
-include('inc/navbar.php');
 
 // delivery pick / up schedule by date
 // order check - JACK
@@ -12,29 +10,39 @@ include('inc/navbar.php');
 
 // working hours - JACK
 
-
-
- ?>
-
-<?php
 session_start();
+include('inc/detail.php');
+include('inc/navbar.php');
 
 $requestedDateErr ="";
-//$db_deliveryDatetime = $db_collectionDatetime = "";
+$db_deliveryDatetime = $db_collectionDatetime = "";
 $grand=true;
 $todayDate = date("Y/m/d");
+$requested_date = $_SESSION['requested_date'];
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+function isValidDate($date,$dateFormat){
+
+   $date = trim($date);
+   $time = strtotime($date);
+
+   	if(date($dateFormat, $time) < date('Y-m-d')){
+	   return true;
+	}
+    else {
+        return false;
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
   if (empty($_POST['requested_date'])) {
     $requestedDateErr = "Date is required";
     $grand=false;
   }
-  
-  if($_POST['requested_date']<=$todayDate)
+  else if (isValidDate($_POST['requested_date'],'Y-m-d')) 
   {
-    $requestedDateErr =  "Please Enter Valid Future Date";
-    $grand=false;
-  }
+    $requestedDateErr =  "Please Enter Valid Future Dates";
+    $grand=false;    
+  }  
   if($grand==true)
   {
     $_SESSION['requested_date'] = $_POST['requested_date'];
@@ -54,15 +62,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </form>
 
 <?php
-	$requested_date_orders_query = "select orders.db_orderID, transit.db_transitType, transit.db_transitID from orders,transit where orders.db_orderID = transit.db_orderID AND db_deliveryPreference = '$yes' AND ((orders.db_deliveryDatetime= '$requested_date' AND orders.db_deliveryID = transit.db_transitID ) OR (orders.db_collectionDatetime= '$requested_date' AND orders.db_collectionID = transit.db_transitID))";
-	$orders_details = $db->query($orders_query);
+	include('inc/detail.php');
+	$requested_date_orders_query = "select orders.db_orderID, transit.db_transitID, transit.db_transitType, customers.db_customerName, customers.db_customerAddress, customers.db_county, customers.db_customerEircode, customers.db_customerPhone from orders,transit,customers where orders.db_customerID = customers.db_customerID AND orders.db_orderID = transit.db_orderID AND db_deliveryPreference = '$yes' AND ((orders.db_deliveryDatetime= '$requested_date' AND orders.db_deliveryID = transit.db_transitID ) OR (orders.db_collectionDatetime= '$requested_date' AND orders.db_collectionID = transit.db_transitID))";
+	$orders_details = $db->query($requested_date_orders_query);
 	$num_orders_requested_date = mysqli_num_rows($orders_details);
 
 	echo '<table border="2" style="width: -webkit-fill-available;">';
 	echo '<tr class="first-row-database">';
 		echo "<td>Order ID</td>";
-		echo "<td>Type</td>";
 		echo "<td>Transit ID</td>";
+		echo "<td>Type</td>";
+		echo "<td>Customer Name</td>";
+		echo "<td>Customer Address</td>";
+		echo "<td>Customer County</td>";
+		echo "<td>Customer Eircode</td>";
+		echo "<td>Customer Phone</td>";
 		echo "</tr>";
 	while($row_orders = mysqli_fetch_row($orders_details))
 	{
@@ -70,6 +84,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		echo "<td>$row_orders[0]</td>";
 		echo "<td>$row_orders[1]</td>";
 		echo "<td>$row_orders[2]</td>";
+		echo "<td>$row_orders[3]</td>";
+		echo "<td>$row_orders[4]</td>";
+		echo "<td>$row_orders[5]</td>";
+		echo "<td>$row_orders[6]</td>";
+		echo "<td>$row_orders[7]</td>";
 		echo "</tr>";
 	}
 		echo '</table>';

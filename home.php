@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
         <div class="carousel-item active">
           <img src="img/party.jpg" height="500"class="d-block w-100" alt="..." style="object-fit: cover; opacity: 0.8;">
           <div class="carousel-caption d-none d-md-block">
-            <h1 style="color: #fff">Welcome to DublinPartyHire</h1>
+            <h1 style="color: #fff">Welcome to Dublin Party Hire</h1>
               <p>Make your event special.</p>
           </div>
         </div>
