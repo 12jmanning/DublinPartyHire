@@ -125,10 +125,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manage Products:</h6>
-                        <a class="collapse-item" href="alter_products.php">Manage Prices</a>
+                        <a class="collapse-item" href="alter_products.php">Manage Prices/Quantities</a>
                         <a class="collapse-item" href="add_new_products.php">Add Products</a>
                         <a class="collapse-item" href="special_offers.php">Manage Special Offers</a>
-
                     </div>
                 </div>
             </li>

@@ -138,8 +138,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manage Products:</h6>
-                        <a class="collapse-item" href="alter_products.php">Manage Prices</a>
-                        <a class="collapse-item" href="add_new_products.php">Add New Product</a>
+                        <a class="collapse-item" href="alter_products.php">Manage Prices/Quantities</a>
+                        <a class="collapse-item" href="add_new_products.php">Add Products</a>
                         <a class="collapse-item" href="special_offers.php">Manage Special Offers</a>
 
                     </div>
@@ -393,7 +393,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
                         <div class="col-lg-6 mb-4">
                           <div class="card shadow mb-4">
                               <div class="card-header py-3">
-                                  <h6 class="m-0 font-weight-bold text-primary">Delete Employees::</h6>
+                                  <h6 class="m-0 font-weight-bold text-primary">Delete Employees:</h6>
                               </div>
                               <div class="card-body">
                                 <form class="dd" action="" method="post" >
