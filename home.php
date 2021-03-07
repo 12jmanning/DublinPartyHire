@@ -42,11 +42,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
     $deliveryDateErr =  "Please Enter Valid Future Dates";
     $grand=false;
   }*/
-  else if (isValidDate($_POST['delivery_date'],'Y-m-d')) 
+  else if (isValidDate($_POST['delivery_date'],'Y-m-d'))
   {
     $deliveryDateErr =  "Please Enter Valid Future Dates";
-    $grand=false;    
-  }  
+    $grand=false;
+  }
   if($grand==true)
   {
 

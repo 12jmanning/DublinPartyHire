@@ -149,3 +149,11 @@ $set_up_pref = $row1['db_setUpPreference'];
 <div class="row" >
   <p style="margin-left:auto; margin-right: auto;"><strong>THANK YOU</strong></p>
 </div>
+
+<div class="row" >
+  <p style="margin-left:auto; margin-right: auto;"><strong>Signed By: </strong></p>
+</div>
+
+<div class="row" >
+  <p style="margin-left:auto; margin-right: auto;"><strong>_________________ </strong></p>
+</div>

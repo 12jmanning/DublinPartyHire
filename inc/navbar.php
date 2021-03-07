@@ -21,12 +21,12 @@
 <!-- Navbar -->
 <header>
     <div class="content-wrapper">
-    <img src="img/logo.png" width="55" height="55" alt="" style="margin-top: auto; margin-bottom: auto;">
-        <h1 style= "padding-left:10px;">Dublin Party Hire</h1>
-        <nav>
-            <a href="index.php">Home</a>
-            <a href="index.php?page=products">Products</a>
-        </nav>
+      <a href="index.php" style="margin-top: auto; margin-bottom: auto;"><img src="img/logo.png" width="55" height="55" alt="" > </a>
+          <h1 style= "padding-left:10px;">Dublin Party Hire</h1>
+          <nav>
+              <a href="index.php">Home</a>
+              <a href="index.php?page=products">Products</a>
+          </nav>
         <div class="link-icons">
 
              <a href="customerdashboard.php">
