@@ -446,10 +446,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
 
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Revenue Breakdown by Service:</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Breakages</h6>
                                 </div>
                                   <div class="card-body">
-                                      // put table/queries etc in here
+                                  <table id="table">
+                                    	<tr>
+                                    		<th class="auto-style1"><strong>Breakage ID</strong></th>
+                                    		<th class="auto-style1"><strong>Customer ID</strong></th>
+                                            <th class="auto-style1"><strong>Customer Name</strong></th>
+                                            <th class="auto-style1"><strong>Order ID</strong></th>
+                                    		<th class="auto-style1"><strong>Collection Date</strong></th>
+                                            <th class="auto-style1"><strong>Product Name</strong></th>
+                                            <th class="auto-style1"><strong>Quantity</strong></th>
+                                    	</tr>
+                                    	<?php
+                                    	include('inc/detail.php');
+                                    	$sql = "Select breakages.db_breakageID AS 'Breakage ID', breakages.db_customerID AS 'Customer ID', customers.db_customerName AS 'Customer Name', breakages.db_orderID AS 'Order ID', cast(orders.db_collectionDatetime as date) AS 'Date', products.db_productName AS 'Product Name', breakages.db_quantity AS 'Quantity'
+                                        From breakages, customers, products, orders
+                                        Where breakages.db_customerID = customers.db_customerID AND breakages.db_productID = products.db_productID AND breakages.db_orderID = orders.db_orderID";
+                                    		$result = $db->query($sql);
+
+                                    		$num_results = mysqli_num_rows($result);
+                                    		for($i=0; $i < $num_results; $i++)
+                                    		{
+                                    			$row = mysqli_fetch_assoc($result);
+                                    			echo "<tr>";
+                                    		                   echo "<td>".$row['Breakage ID']."</td>";
+                                    		                   echo "<td>".$row['Customer ID']."</td>";
+                                                               echo "<td>".$row['Customer Name']."</td>";
+                                                               echo "<td>".$row['Order ID']."</td>";
+                                    		                   echo "<td>".$row['Date']."</td>";
+                                                               echo "<td>".$row['Product Name']."</td>";
+                                                               echo "<td>".$row['Quantity']."</td>";
+                                    		                   echo "</tr>";
+                                    		}
+                                    		mysqli_close($db);
+                                    ?>
+
+                                    </table>
 
 
                                 </div>
