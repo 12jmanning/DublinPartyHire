@@ -3,6 +3,9 @@ session_start();
 include('inc/detail.php');
 include('inc/navbar.php');
 
+if (!isset($_SESSION['db_customerID'])) {
+    header('location: existingcustomers.php');
+}
 
 $customer_ID = $_SESSION['db_customerID'];
 $query = "SELECT * FROM orders where db_customerID = $customer_ID";

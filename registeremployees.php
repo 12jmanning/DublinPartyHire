@@ -89,7 +89,7 @@ include('inc/navbar.php');
         $_SESSION['db_jobTitle'] = $db_jobTitle;
 
 
-        header('Location: new_employee_info.php');
+        header('Location: non_registered_employee.php');
       }
 
     }

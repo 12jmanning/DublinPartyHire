@@ -7,6 +7,20 @@ $employee = "employee";
 $employeeID = $_SESSION['db_employeeID'];
 $employee_name1 = $_SESSION['db_employeeName'];
 
+$details_query = "SELECT db_employeeID, db_employeeName, db_jobTitle FROM `employees`
+                        WHERE db_employeeID = '$employeeID'";
+$employee_details = $db->query($details_query);
+$row2 = mysqli_fetch_assoc($employee_details);
+$employee_id = $row2['db_employeeID'] ;
+$employee_name = $row2['db_employeeName'] ;
+$employee_job_title = $row2['db_jobTitle'] ;
+
+if($employee_job_title == "")
+{
+  header('location: non_registered_employee.php');
+
+}
+
 
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
