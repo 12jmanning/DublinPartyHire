@@ -361,7 +361,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                             $earnings_results = $db->query($earnings_query);
                                             $row = mysqli_fetch_row($earnings_results);
-                                            echo "$row[0]" ; ?></div>
+                                            $x = $row[0];
+                                            $x= round($x,2);
+                                            echo "$x" ; ?></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
