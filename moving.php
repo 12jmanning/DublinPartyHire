@@ -3,117 +3,85 @@ session_start();
 include('inc/detail.php');
 
 
+
 if($_SESSION['db_jobTitle']=="admin"){
     $employee_ID = $_SESSION['db_employeeID'];
     $employee_name = $_SESSION['db_employeeName'];
     $job_title = $_SESSION['db_jobTitle'];
 
-    $product_query = "SELECT * FROM products";
-    $product_results = $db->query($product_query);
-    $num_product_results = mysqli_num_rows($product_results);
+    $delivery_query = "SELECT * FROM delivery_costs";
+    $delivery_results = $db->query($delivery_query);
+    $num_delivery_results = mysqli_num_rows($delivery_results);
+
+
 }
 
-$productNameErr= "";
-$productPriceErr="";
-$quantityErr="";
-$volumeSizeErr= "";
-$setUpPriceErr="";
-$imageLinkErr="";
+$countyErr= "";
+$priceErr="";
+$vatRateErr="";
 $valid= true;
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (empty($_POST["db_productName"])) {
-        $productNameErr = "Product name is required";
+if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
+    if (empty($_POST["db_countyID"])) {
+        $countyErr = "County is required";
         $valid=false;
     }
-
-    if (empty($_POST["db_productPrice"])) {
-        $productPriceErr = "Product Price is required";
+    if (empty($_POST["db_countyPrice"])) {
+        $priceErr = "County Price is required";
         $valid=false;
     }
-    else
+    if($valid)
     {
-        if (!is_numeric($_POST["db_productPrice"])) {
-            $productPriceErr = "product Price must be numeric";
+        if (!is_numeric($_POST["db_countyPrice"])) {
+            $priceErr = "county Price must be numeric";
             $valid=false;
         }
-        else if ($_POST["db_productPrice"]<=0) {
-            $productPriceErr = "product Price must be greater than 0";
-            $valid=false;
-        }
-    }
-    if (empty($_POST["db_volumeSize"])) {
-        $volumeSizeErr = "Volume is required";
-        $valid=false;
-    }
-    else
-    {
-        if (!is_numeric($_POST["db_volumeSize"])) {
-            $volumeSizeErr = "Volume must be numeric";
-            $valid=false;
-        }
-        else if ($_POST["db_volumeSize"]<=0) {
-            $volumeSizeErr = "Volume must be greater than 0";
+        else if ($_POST["db_countyPrice"]<=0) {
+            $priceErr = "County Price must be greater than 0";
             $valid=false;
         }
     }
-
-    if (empty($_POST["db_setUpPrice"])) {
-        $setUpPriceErr = "Set Up Price is required";
-        $valid=false;
-    }
-    else
-    {
-        if (!is_numeric($_POST["db_setUpPrice"])) {
-            $setUpPriceErr = "Set Up Price must be numeric";
-            $valid=false;
-        }
-        else if ($_POST["db_setUpPrice"]<=0) {
-            $setUpPriceErr = "Set Up Price must be greater than 0";
-            $valid=false;
-        }
-    }
-
-    if (empty($_POST["db_imageLink"])) {
-        $imageLinkErr = "Product imageLink is required";
-        $valid=false;
-    }
-    if (empty($_POST["db_quantity"])) {
-        $quantityErr = "Product quantity is required";
-        $valid=false;
-    }
-    else
-    {
-        if (!is_numeric($_POST["db_quantity"])) {
-            $quantityErr = "Quantity must be numeric";
-            $valid=false;
-        }
-        else if ($_POST["db_quantity"]<=0) {
-            $quantityErr = "Quantity must be greater than 0";
-            $valid=false;
-        }
-    }
-
     #Problem is with this if statement
     if($valid!=false)
     {
-        $db_productName =$_POST['db_productName'];
-        $db_productPrice=$_POST['db_productPrice'];
-        $db_quantity =$_POST['db_quantity'];
-        $db_setUpPrice =$_POST['db_setUpPrice'];
-        $db_volumeSize =$_POST['db_volumeSize'];
-        $db_imageLink =$_POST['db_imageLink'];
-        $query = "INSERT INTO products (db_productName, db_productPrice, db_quantity,db_setUpPrice ,db_volumeSize ,db_imageLink) VALUES ('$db_productName','$db_productPrice','$db_quantity','$db_setUpPrice','$db_volumeSize', '$db_imageLink')";
-        $add_product = $db->query($query);
-        header('Location: admindashboard.php');
+        $db_countyID =$_POST['db_countyID'];
+        $db_countyPrice=$_POST['db_countyPrice'];
+        $query = "UPDATE delivery_costs SET db_countyPrice = '$db_countyPrice' WHERE db_countyID = '$db_countyID'";
+        $edit_county = $db->query($query);
+    }
 
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
+
+    if (empty($_POST["dv_vatRate"])) {
+        $vatRateErr = "VAT Rate is required";
+        $valid=false;
+    }
+    if($valid)
+    {
+        if (!is_numeric($_POST["dv_vatRate"])) {
+            $vatRateErr = "VAT Rate must be numeric";
+            $valid=false;
+        }
+        else if ($_POST["dv_vatRate"]<=0) {
+            $vatRateErr = "VAT Rate must be greater than 0";
+            $valid=false;
+        }
+    }
+    #Problem is with this if statement
+    if($valid!=false)
+    {
+        $dv_vatRate =$_POST['dv_vatRate'];
+        $db_vatID=1;
+        $query2 = "UPDATE vat SET dv_vatRate = '$dv_vatRate' WHERE db_vatID = '$db_vatID'";
+        $vat_county = $db->query($query2);
     }
 
 }
 
 
+
 ?>
-
-
 
 
 
@@ -393,44 +361,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <!-- Project Card Example -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Add a New Product:</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Alter Delivery Prices:</h6>
                                 </div>
                                 <div class="card-body">
-                                  <form class="" action="" method="post" >
+                                  <form class="dd" action="" method="post" >
 
-                                  <table class="">
+                                  <table class="dd">
+
                                   <tr>
-                                      <td><label for ="members">Product Name:</label></td>
-                                      <td><input type="text" name="db_productName" id="db_productName" size = 40><span class='error'> <?php echo $productNameErr ?> <span></td>
+                                    <td><label for="order_id">County:</label></td>
+                                    <td style="width: 399px; height: 38px;" class="auto-style2">
+                                    <select name="db_countyID" style="width: 399px" class="auto-style1" required>
+                                    <option value= "select">--Select a County--</option>
+                                    <?php
+                                      for($i = 0;$i<$num_delivery_results;$i++)
+                                      {
+                                        //Move query up top and iterate through results here with an if statement
+                                        $row = mysqli_fetch_assoc($delivery_results);
+                                        echo '<option value = "'.$row['db_countyID'].'"> County Name: '.$row['db_county']." Delivery Price: ".$row['db_countyPrice'].' </option>';
+
+                                      }
+                                    ?>
                                   </tr>
                                   <tr>
-                                      <td><label for ="members">Price:</label></td>
-                                      <td><input type="double" name="db_productPrice" id="db_productPrice" size = 20><span class='error'> <?php echo $productPriceErr ?> <span></td>
-                                  </tr>
-                                  <tr>
-                                      <td><label for ="members">Set-Up Price:</label></td>
-                                      <td><input type="double" name="db_setUpPrice" id="db_setUpPrice" size = 20><span class='error'> <?php echo $setUpPriceErr ?> <span></td>
-                                  </tr>
-                                  <tr>
-                                      <td><label for ="members">Quantity:</label></td>
-                                      <td><input type="number" name="db_quantity" id="db_quantity" size = 20><span class='error'> <?php echo $quantityErr ?> <span></td>
-                                  </tr>
-                                  <tr>
-                                      <td><label for ="members">Volume Size:</label></td>
-                                      <td><input type="double" name="db_volumeSize" id="db_volumeSize" size = 20><span class='error'> <?php echo $volumeSizeErr ?> <span></td>
-                                  </tr>
-                                  <tr>
-                                      <td><label for ="members">Image Link:</label></td>
-                                      <td><input type="text" name="db_imageLink" id="db_imageLink" size = 20><span class='error'> <?php echo $imageLinkErr ?> <span></td>
+                                      <td><label for ="members" style="margin-right:20px;">New Price:</label></td>
+                                      <td><input type="text" name="db_countyPrice" id="db_countyPrice" size = 20><span class='error'> <?php echo $priceErr ?> </span></td>
                                   </tr>
                                   <tr>
                                     <td></td>
-                                    <td><input class="btn btn-success" style="margin-top:20px;" type="submit" value="Submit" name ="submit"><input style="margin-top:20px;margin-left: 4px;"class="btn btn-danger" type="reset" value="Reset"></td>
+                                    <td><input class="btn btn-success" style="margin-top:20px;" type="submit" value="Submit" name ="submit"><input style="margin-left: 4px;margin-top:20px;"class="btn btn-danger" type="reset" value="Reset"></td>
                                   </tr>
                                   </table>
 
                                   </form>
-
                                 </div>
                             </div>
 
@@ -441,8 +404,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
 
                         <div class="col-lg-6 mb-4">
+                          <div class="card shadow mb-4">
+                              <div class="card-header py-3">
+                                  <h6 class="m-0 font-weight-bold text-primary">Alter VAT Rate:</h6>
+                              </div>
+                              <div class="card-body">
+                                <form class="dd" action="" method="post" >
 
+                                <table class="dd">
+                                <tr>
+                                    <td><label for ="members" style="margin-right: 20px;">New VAT Rate:</label></td>
+                                    <td><input type="text" name="dv_vatRate" id="dv_vatRate" size = 20><span class='error'> <?php echo $vatRateErr ?> <span></td>
+                                </tr>
+                                <tr>
+                                  <td></td>
+                                  <td><input class="btn btn-success" style="margin-top: 20px;" type="submit" value="Submit" name ="submit2"><input style="margin-left: 4px; margin-top: 20px;"class="btn btn-danger" type="reset" value="Reset"></td>
+                                </tr>
+                                </table>
 
+                                </form>
+
+                            </div>
+                          </div>
 
 
                         </div>
