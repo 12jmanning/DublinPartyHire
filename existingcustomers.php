@@ -53,7 +53,20 @@ $db_customerEmailErr = $password_err = "";
                             // Bind result variables
                             mysqli_stmt_bind_result($stmt, $id, $db_customerEmail, $hashed_password);
                             if(mysqli_stmt_fetch($stmt)){
-                                if(password_verify($password, $hashed_password)){
+                                if(password_verify($password, $hashed_password)&&isset($_SESSION['link'])){
+                                    // Password is correct, so start a new session
+                                    session_start();
+
+                                    // Store data in session variables
+
+                                    $_SESSION["db_customerID"] = $id;
+
+
+                                    // Redirect user to welcome page
+                                    header($_SESSION['link']);
+                                } 
+                                else if(password_verify($password, $hashed_password)&&!isset($_SESSION['link']))
+                                {
                                     // Password is correct, so start a new session
                                     session_start();
 
@@ -64,7 +77,8 @@ $db_customerEmailErr = $password_err = "";
 
                                     // Redirect user to welcome page
                                     header("location: customerdashboard.php");
-                                } else{
+                                }
+                                else{
                                     // Display an error message if password is not valid
                                     $password_err = "The password you entered was not valid.";
                                 }
