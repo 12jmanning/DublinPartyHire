@@ -119,9 +119,11 @@ if (isset($_SESSION['db_customerID'])) {
     unset($_SESSION['rental_price']);
     unset($_SESSION['delivery_price']);
     unset($_SESSION['cart']);
+    unset($_SESSION['link']);
     header('location: customerdashboard.php');
 }
 else{
+    $_SESSION['link'] = "location: index.php?page=cart";
     header('location: existingcustomers.php');
 }
 

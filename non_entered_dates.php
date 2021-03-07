@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
     }
     $_SESSION['delivery_date'] = $_POST['delivery_date'];
     $_SESSION['collection_date'] = $_POST['collection_date'];
-    header('location: products.php');
+    header('location: index.php?page=products');
   }
 }
 
