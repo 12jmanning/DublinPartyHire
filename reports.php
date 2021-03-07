@@ -16,6 +16,65 @@ include('inc/navbar.php');
 
  ?>
 
+<?php
+session_start();
+
+$requestedDateErr ="";
+//$db_deliveryDatetime = $db_collectionDatetime = "";
+$grand=true;
+$todayDate = date("Y/m/d");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  if (empty($_POST['requested_date'])) {
+    $requestedDateErr = "Date is required";
+    $grand=false;
+  }
+  
+  if($_POST['requested_date']<=$todayDate)
+  {
+    $requestedDateErr =  "Please Enter Valid Future Date";
+    $grand=false;
+  }
+  if($grand==true)
+  {
+    $_SESSION['requested_date'] = $_POST['requested_date'];
+  }
+}
+
+?>
+
+<h2 class="auto-style1">Delivery/Pickup Schedule</h2>
+
+<form method="post" action = ""  name="order_form" id="order_form" style="text-align: -webkit-center;">
+      <tr>
+        <td><label for="requested_date" style="padding-right: 20px;">Date:</label></td>
+        <td ><input type="date" name="requested_date" id="requested_date" style="width: 150px;"><?php echo $requestedDateErr ?> <span></td>
+          <td><input class="btn" type="submit" value="Select Date" name="update" style="background-color: #C46BAE; color: #fff; margin:auto; margin-left: 20px;"></td>
+      </tr>
+</form>
+
+<?php
+	$requested_date_orders_query = "select orders.db_orderID, transit.db_transitType, transit.db_transitID from orders,transit where orders.db_orderID = transit.db_orderID AND db_deliveryPreference = '$yes' AND ((orders.db_deliveryDatetime= '$requested_date' AND orders.db_deliveryID = transit.db_transitID ) OR (orders.db_collectionDatetime= '$requested_date' AND orders.db_collectionID = transit.db_transitID))";
+	$orders_details = $db->query($orders_query);
+	$num_orders_requested_date = mysqli_num_rows($orders_details);
+
+	echo '<table border="2" style="width: -webkit-fill-available;">';
+	echo '<tr class="first-row-database">';
+		echo "<td>Order ID</td>";
+		echo "<td>Type</td>";
+		echo "<td>Transit ID</td>";
+		echo "</tr>";
+	while($row_orders = mysqli_fetch_row($orders_details))
+	{
+		echo "<tr>";
+		echo "<td>$row_orders[0]</td>";
+		echo "<td>$row_orders[1]</td>";
+		echo "<td>$row_orders[2]</td>";
+		echo "</tr>";
+	}
+		echo '</table>';
+?>
+
 <h2 class="auto-style1">Rental Frequency</h2>
 <p>List of products and the number of times they have been rented.</p>
 
