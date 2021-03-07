@@ -587,7 +587,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                   <tr>
                                     <td><label for="order_id">Order ID:</label></td>
                                     <td style="width: 399px; height: 38px;" class="auto-style2">
-                                    <select name="transit_id" style="width: 399px" class="auto-style1" required>
+                                    <select name="transit_id" style="width: 300px" class="auto-style1" required>
                                     <option value= "select">--Select an Order--</option>
                                     <?php
                                       for($i = 0;$i<$num_results;$i++)
@@ -602,7 +602,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                   <tr>
                                     <td><label for="order_id">Van ID:</label></td>
                                     <td style="width: 399px; height: 38px;" class="auto-style2">
-                                    <select name="van_id" style="width: 399px" class="auto-style1" required>
+                                    <select name="van_id" style="width: 300px" class="auto-style1" required>
                                     <option value= "select">--Select a Van--</option>
                                     <?php
                                       for($i = 0;$i<$num_van_results;$i++)
@@ -618,7 +618,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                   <tr>
                                     <td><label for="order_id">Employee ID:</label></td>
                                     <td style="width: 399px; height: 38px;" class="auto-style2">
-                                    <select name="employee_id" style="width: 399px" class="auto-style1" required>
+                                    <select name="employee_id" style="width: 300px" class="auto-style1" required>
                                     <option value= "select">--Select an Employee--</option>
                                     <?php
                                       for($i = 0;$i<$num_employee_results;$i++)
