@@ -40,7 +40,7 @@ $employee_name1 = $_SESSION['db_employeeName'];
 
               $query1 = "UPDATE employee_timesheets SET db_endDatetime = '$clock_out_time' WHERE db_timesheetID = '$timesheetID'";
               $result = $db->query($query1);
-              echo "You have clocked out";
+              $clocked_out_successful = "You have clocked out";
 
           }
 
@@ -227,7 +227,7 @@ function reload3(form)
 
                                             <input class="btn btn-success"type="submit" value = "Clock In" name="ClockIn">
                                             <input class="btn btn-danger"type="submit" name="ClockOut" value="Clock Out">
-                                            <?php echo "$clocked_in_successful"; ?>
+                                            <?php echo "$clocked_in_successful"; echo "$clocked_out_successful" ;?>
                                     </form>
 
 
@@ -277,7 +277,7 @@ function reload3(form)
 
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Current Status:</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">My Timesheets:</h6>
                                 </div>
                                   <div class="card-body">
 
@@ -390,7 +390,42 @@ function reload3(form)
                               </div>
                               <div class="card-body">
 
+                                <?php
+                                                                    include('inc/detail.php');
+                                                                    $yes = "yes";
+                                                                    $today_date = date("Y-m-d");
 
+                                                                    $my_transits_query = "select orders.db_orderID, transit.db_transitID, transit.db_transitType, customers.db_customerName, customers.db_customerAddress, customers.db_county, customers.db_customerEircode, customers.db_customerPhone from orders,transit,customers, employee_work_records where orders.db_customerID = customers.db_customerID AND orders.db_orderID = transit.db_orderID AND transit.db_transitID = employee_work_records.db_transitID AND db_deliveryPreference = 'yes' AND db_employeeID = $employeeID AND ((orders.db_deliveryDatetime= '$today_date' AND orders.db_deliveryID = transit.db_transitID ) OR (orders.db_collectionDatetime= '$today_date' AND orders.db_collectionID = transit.db_transitID))";
+                                                                    $transit_details = $db->query($my_transits_query);
+                                                                    $num_transits_today = mysqli_num_rows($transit_details);
+
+                                                                    echo '<table border="2" style="width: -webkit-fill-available;">';
+                                                                    echo '<tr class="first-row-database">';
+                                                                      echo "<td>Order ID</td>";
+                                                                      echo "<td>Transit ID</td>";
+                                                                      echo "<td>Type</td>";
+                                                                      echo "<td>Customer Name</td>";
+                                                                      echo "<td>Customer Address</td>";
+                                                                      echo "<td>Customer County</td>";
+                                                                      echo "<td>Customer Eircode</td>";
+                                                                      echo "<td>Customer Phone</td>";
+                                                                      echo "</tr>";
+                                                                    while($row_orders = mysqli_fetch_row($transit_details))
+                                                                    {
+                                                                      echo "<tr>";
+                                                                      echo "<td>$row_orders[0]</td>";
+                                                                      echo "<td>$row_orders[1]</td>";
+                                                                      echo "<td>$row_orders[2]</td>";
+                                                                      echo "<td>$row_orders[3]</td>";
+                                                                      echo "<td>$row_orders[4]</td>";
+                                                                      echo "<td>$row_orders[5]</td>";
+                                                                      echo "<td>$row_orders[6]</td>";
+                                                                      echo "<td>$row_orders[7]</td>";
+                                                                      echo "</tr>";
+                                                                    }
+                                                                      echo '</table>';
+
+                                ?>
                             </div>
                           </div>
 

@@ -156,8 +156,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manage Products:</h6>
-                        <a class="collapse-item" href="alter_products.php">Manage Prices</a>
-                        <a class="collapse-item" href="add_new_products.php">Manage Quantities</a>
+                        <a class="collapse-item" href="alter_products.php">Manage Prices/Quantities</a>
+                        <a class="collapse-item" href="add_new_products.php">Add Product</a>
                         <a class="collapse-item" href="special_offers.php">Manage Special Offers</a>
 
                     </div>
@@ -450,100 +450,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         <!-- Area Chart -->
                         <div class="col-xl-8 col-lg-7">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                            aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="chart-area">
-                                        <canvas id="myChart"></canvas>
-                                    </div>
-                                    <?php
-                                    $sqlQuery = "SELECT SUM(orders.db_setUpPrice)+SUM(orders.db_deliveryPrice)+SUM(orders.db_rentalPrice) AS 'Month' FROM orders
-                                    GROUP By MONTH(orders.db_orderCreatedAt)";
+                          <div class="card shadow mb-4">
+                              <div class="card-header py-3">
+                                  <h6 class="m-0 font-weight-bold text-primary">Transits Today:</h6>
+                              </div>
+                              <div class="card-body">
+                                <?php
 
-                                    $result = $db->query($sqlQuery);
+                                  include('inc/detail.php');
+                                  $yes = "yes";
+                                  $today_date = date("Y-m-d");
 
-                                    $data = array();
+                                  $my_transits_query = "select orders.db_orderID, transit.db_transitID, transit.db_transitType, customers.db_customerName, customers.db_customerAddress, customers.db_county, customers.db_customerEircode, customers.db_customerPhone, employees.db_employeeName, employee_work_records.db_vanID from orders,transit,customers, employee_work_records, employees where orders.db_customerID = customers.db_customerID AND orders.db_orderID = transit.db_orderID AND transit.db_transitID = employee_work_records.db_transitID AND employees.db_employeeID = employee_work_records.db_employeeID AND db_deliveryPreference = 'yes' AND ((orders.db_deliveryDatetime= '$today_date' AND orders.db_deliveryID = transit.db_transitID ) OR (orders.db_collectionDatetime= '$today_date' AND orders.db_collectionID = transit.db_transitID))";
+                                  $transit_details = $db->query($my_transits_query);
+                                  $num_transits_today = mysqli_num_rows($transit_details);
 
-                                    foreach ($result as $row) {
-                                        $data[] = $row;
-                                    }
+                                  echo '<table border="2" style="width: -webkit-fill-available;">';
+                                  echo '<tr class="first-row-database">';
+                                    echo "<td>Order ID</td>";
+                                    echo "<td>Transit ID</td>";
+                                    echo "<td>Type</td>";
+                                    echo "<td>Customer Name</td>";
+                                    echo "<td>Customer Address</td>";
+                                    echo "<td>Customer County</td>";
+                                    echo "<td>Customer Eircode</td>";
+                                    echo "<td>Customer Phone</td>";
+                                    echo "<td>Employee Name</td>";
+                                    echo "<td>Van</td>";
+                                    echo "</tr>";
+                                  while($row_orders = mysqli_fetch_row($transit_details))
+                                  {
+                                    echo "<tr>";
+                                    echo "<td>$row_orders[0]</td>";
+                                    echo "<td>$row_orders[1]</td>";
+                                    echo "<td>$row_orders[2]</td>";
+                                    echo "<td>$row_orders[3]</td>";
+                                    echo "<td>$row_orders[4]</td>";
+                                    echo "<td>$row_orders[5]</td>";
+                                    echo "<td>$row_orders[6]</td>";
+                                    echo "<td>$row_orders[7]</td>";
+                                    echo "<td>$row_orders[8]</td>";
+                                    echo "<td>$row_orders[9]</td>";
+                                    echo "</tr>";
+                                  }
+                                    echo '</table>';
+                                ?>
 
-                                    echo json_encode($data);
-                                    ?>
-                                    <script>
-                                    $(document).ready(function () {
-                                        showGraph();
-                                    });
 
 
-                                    function showGraph()
-                                    {
-                                        {
-                                            $.post("data.php",
-                                            function (data)
-                                            {
-                                                console.log(data);
-                                                var name = [];
-                                                var marks = [];
+                              </div>
+                          </div>
 
-                                                marks.push(data[0].Month);
-                                                name.push('Jan 21');
-                                                marks.push(data[1].Month);
-                                                name.push('Feb 21');
-                                                marks.push(0);
-                                                name.push('Mar 21');
-                                                marks.push(0);
-                                                name.push('Apr 21');
-                                                marks.push(0);
-                                                name.push('May 21');
-                                                marks.push(0);
-                                                name.push('Jun 21');
-
-                                                var chartdata = {
-                                                    labels: name,
-                                                    datasets: [
-                                                        {
-                                                            label: 'Monthly Revenue',
-                                                            backgroundColor: '#49e2ff',
-                                                            borderColor: '#46d5f1',
-                                                            hoverBackgroundColor: '#CCCCCC',
-                                                            hoverBorderColor: '#666666',
-                                                            data: marks
-                                                        }
-                                                    ]
-                                                };
-
-                                                var graphTarget = $("#myChart");
-
-                                                var barGraph = new Chart(graphTarget, {
-                                                    type: 'bar',
-                                                    data: chartdata
-                                                });
-                                            });
-                                        }
-                                    }
-                                    </script>
-                                </div>
-                            </div>
                         </div>
 
                         <!-- Pie Chart -->
@@ -718,39 +675,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                             </div>
 
-                            <!-- Project Card Example -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Transits Today:</h6>
-                                </div>
-                                <div class="card-body">
-                                  <?php
-                                  $orders_today_query = "select orders.db_orderID, transit.db_transitType, transit.db_transitID from orders,transit where orders.db_orderID = transit.db_orderID AND db_deliveryPreference = '$yes' AND ((orders.db_deliveryDatetime= '$today_date' AND orders.db_deliveryID = transit.db_transitID ) OR (orders.db_collectionDatetime= '$today_date' AND orders.db_collectionID = transit.db_transitID))";
-                                  $orders_today_details = $db->query($orders_today_query);
-                                  $num_orders_today = mysqli_num_rows($orders_today_details);
-
-                                  echo '<table border="2" style="width: -webkit-fill-available;">';
-                                  echo '<tr class="first-row-database">';
-                                      echo "<td>Order ID</td>";
-                                      echo "<td>Type</td>";
-                                      echo "<td>Transit ID</td>";
-                                    echo "</tr>";
-                                  while($row_orders_today = mysqli_fetch_row($orders_today_details))
-                                  {
-                                      echo "<tr>";
-                                      echo "<td>$row_orders_today[0]</td>";
-                                      echo "<td>$row_orders_today[1]</td>";
-                                      echo "<td>$row_orders_today[2]</td>";
-                                      echo "</tr>";
-                                  }
-                                    echo '</table>';
-                                  ?>
-
-
-
-                                </div>
-                            </div>
-
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">Your Details:</h6>
@@ -780,6 +704,101 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
+                                </div>
+                            </div>
+
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownMenuLink">
+                                            <div class="dropdown-header">Dropdown Header:</div>
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas id="myChart"></canvas>
+                                    </div>
+                                    <?php
+                                    $sqlQuery = "SELECT SUM(orders.db_setUpPrice)+SUM(orders.db_deliveryPrice)+SUM(orders.db_rentalPrice) AS 'Month' FROM orders
+                                    GROUP By MONTH(orders.db_orderCreatedAt)";
+
+                                    $result = $db->query($sqlQuery);
+
+                                    $data = array();
+
+                                    foreach ($result as $row) {
+                                        $data[] = $row;
+                                    }
+
+                                    echo json_encode($data);
+                                    ?>
+                                    <script>
+                                    $(document).ready(function () {
+                                        showGraph();
+                                    });
+
+
+                                    function showGraph()
+                                    {
+                                        {
+                                            $.post("data.php",
+                                            function (data)
+                                            {
+                                                console.log(data);
+                                                var name = [];
+                                                var marks = [];
+
+                                                marks.push(data[0].Month);
+                                                name.push('Jan 21');
+                                                marks.push(data[1].Month);
+                                                name.push('Feb 21');
+                                                marks.push(0);
+                                                name.push('Mar 21');
+                                                marks.push(0);
+                                                name.push('Apr 21');
+                                                marks.push(0);
+                                                name.push('May 21');
+                                                marks.push(0);
+                                                name.push('Jun 21');
+
+                                                var chartdata = {
+                                                    labels: name,
+                                                    datasets: [
+                                                        {
+                                                            label: 'Monthly Revenue',
+                                                            backgroundColor: '#49e2ff',
+                                                            borderColor: '#46d5f1',
+                                                            hoverBackgroundColor: '#CCCCCC',
+                                                            hoverBorderColor: '#666666',
+                                                            data: marks
+                                                        }
+                                                    ]
+                                                };
+
+                                                var graphTarget = $("#myChart");
+
+                                                var barGraph = new Chart(graphTarget, {
+                                                    type: 'bar',
+                                                    data: chartdata
+                                                });
+                                            });
+                                        }
+                                    }
+                                    </script>
                                 </div>
                             </div>
 
