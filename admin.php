@@ -100,9 +100,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Charts.js/2.7.2/Chart.bundle.min.js"></script>
-    <script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/Chart.min.js"></script>
-<script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="vendor/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="vendor/chart.js/Chart.min.js"></script>
+
 
 </head>
 
@@ -467,7 +467,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-area">
-                                        <canvas id="myAreaChart"></canvas>
+                                        <canvas id="myChart"></canvas>
                                     </div>
                                     <?php 
                                     $sqlQuery = "SELECT SUM(orders.db_setUpPrice)+SUM(orders.db_deliveryPrice)+SUM(orders.db_rentalPrice) AS 'Month' FROM orders 
@@ -476,7 +476,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     $result = $db->query($sqlQuery);
 
                                     $data = array();
-                                    $data = array();
+
                                     foreach ($result as $row) {
                                         $data[] = $row;
                                     }
@@ -526,7 +526,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                     ]
                                                 };
 
-                                                var graphTarget = $("#myAreaChart");
+                                                var graphTarget = $("#myChart");
 
                                                 var barGraph = new Chart(graphTarget, {
                                                     type: 'bar',
