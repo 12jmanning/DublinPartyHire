@@ -16,50 +16,24 @@ $requestedDateErr ="";
 $db_deliveryDatetime = $db_collectionDatetime = "";
 $grand=true;
 $todayDate = date("Y/m/d");
+$yes = 'yes';
 
-//function isValidDate($date,$dateFormat){
 
-   // $date = trim($date);
-   // $time = strtotime($date);
 
-   // if(date($dateFormat, $time) < date('Y-m-d')){
-  //      return true;
-  //  }
-  //  else {
-  //      return false;
-   // }
-//}
-
-//if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
- // if (empty($_POST['requested_date'])) {
-  //  $requestedDateErr = "Date is required";
-  //  $grand=false;
- // }
-  //else if($_POST['delivery_date']>$_POST['collection_date'])
-  //{
-  //  $deliveryDateErr = $collectionDateErr = "Please Enter Valid Dates";
-  //  $grand=false;
-  //}
-  /*else if($_POST['delivery_date']>$todayDate)
-  {
-    $deliveryDateErr =  "Please Enter Valid Future Dates";
+if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
+  if (empty($_POST['requested_date'])) {
+    $requestedDateErr = "Date is required";
     $grand=false;
-  }*/
-  //else if (isValidDate($_POST['requested_date'],'Y-m-d'))
-  //{
-  //  $requestedDateErr =  "Please Enter Valid Future Dates";
-  //  $grand=false;
-  //}
-  //if($grand==true)
-  //{
-    //$_SESSION['requested_date'] = $_POST['requested_date'];
-  //}
-  // $requested_date = $_SESSION['requested_date'];
-//}
+  }
+
+  if($grand = true)
+  {
+    $requested_date = $_POST['requested_date'];
+  }
+}
 
 
 
-// hello
 ?>
 
 
@@ -345,14 +319,16 @@ $todayDate = date("Y/m/d");
                                   <div class="card-body">
                                     <form method="post" action = ""  name="order_form" id="order_form" style="text-align: -webkit-center;">
                                           <tr>
-                                            <td><label for="requested_date" style="padding-right: 20px;">Date:</label></td>
+                                            <td><label for="requested_date" style="padding-right: 20px; margin-bottom:20px;">Date:</label></td>
                                             <td ><input type="date" name="requested_date" id="requested_date" style="width: 150px;"><?php echo $requestedDateErr ?> <span></td>
-                                            <td><input class="btn" type="submit" value="Select Date" name="update" style="background-color: #C46BAE; color: #fff; margin:auto; margin-left: 20px;"></td>
+                                            <td><input class="btn" type="submit" value="Select Date" name="update" style="background-color: #C46BAE; color: #fff; margin:auto; margin-left: 20px; margin-bottom:15px;"></td>
                                           </tr>
                                     </form>
 
                                   <?php
                                   	include('inc/detail.php');
+
+
                                   	$requested_date_orders_query = "select orders.db_orderID, transit.db_transitID, transit.db_transitType, customers.db_customerName, customers.db_customerAddress, customers.db_county, customers.db_customerEircode, customers.db_customerPhone from orders,transit,customers where orders.db_customerID = customers.db_customerID AND orders.db_orderID = transit.db_orderID AND db_deliveryPreference = '$yes' AND ((orders.db_deliveryDatetime= '$requested_date' AND orders.db_deliveryID = transit.db_transitID ) OR (orders.db_collectionDatetime= '$requested_date' AND orders.db_collectionID = transit.db_transitID))";
                                   	$orders_details = $db->query($requested_date_orders_query);
                                   	$num_orders_requested_date = mysqli_num_rows($orders_details);
@@ -468,6 +444,17 @@ $todayDate = date("Y/m/d");
                                 </div>
                             </div>
 
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Revenue Breakdown by Service:</h6>
+                                </div>
+                                  <div class="card-body">
+                                      // put table/queries etc in here
+
+
+                                </div>
+                            </div>
+
 
                         </div>
 
@@ -539,8 +526,8 @@ $todayDate = date("Y/m/d");
                                 			echo "<tr>";
                                 		                   echo "<td>".$row['Last Name']."</td>";
                                 		                   echo "<td>".$row['First Name']."</td>";
-                                						   echo "<td>".$row['Email']."</td>";
-                                		                   echo "<td> €".$row['Total Spent']."</td>";
+                                      						   echo "<td>".$row['Email']."</td>";
+                                		                   echo "<td> €".round($row['Total Spent'])."</td>";
                                 		                   echo "</tr>";
                                 		}
                                 		mysqli_close($db);
