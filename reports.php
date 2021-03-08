@@ -12,11 +12,12 @@ include('inc/detail.php');
 
 // working hours - JACK
 
-$requestedDateErr ="";
+$requestedDateErr = $startDateErr = $endDateErr = "";
 $db_deliveryDatetime = $db_collectionDatetime = "";
 $grand=true;
 $todayDate = date("Y/m/d");
 $yes = 'yes';
+$startDate = $endDate = "";
 
 
 
@@ -316,6 +317,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
                                     <h6 class="m-0 font-weight-bold text-primary">Delivery Pickup/Schedule:</h6>
                                 </div>
                                   <div class="card-body">
+
                                     <form method="post" action = ""  name="order_form" id="order_form" style="text-align: -webkit-center;">
                                           <tr>
                                             <td><label for="requested_date" style="padding-right: 20px; margin-bottom:20px;">Date:</label></td>
@@ -371,29 +373,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
                                   <div class="card-body">
 
                                     <table id="table">
-                                    	<tr>
-                                    		<th class="auto-style1"><strong>Product Name</strong></th>
-                                    		<th class="auto-style1"><strong>Revenue</strong></th>
-                                    	</tr>
-                                    	<?php
-                                    	include('inc/detail.php');
-                                    	$sql = "SELECT db_productName AS 'Product', db_productPrice * sum(db_quantityOrdered) * count(*) AS 'Revenue'
-                                    	FROM product_orders, products
-                                    	WHERE product_orders.db_productID = products.db_productID
-                                    	GROUP BY db_productName
-                                    	ORDER BY products.db_productID";
-                                    		$result = $db->query($sql);
+                                        <tr>
+                                            <th class="auto-style1"><strong>Product Name</strong></th>
+                                            <th class="auto-style1"><strong>Revenue</strong></th>
+                                        </tr>
+                                        <?php
+                                        include('inc/detail.php');
+                                        $sql = "SELECT db_productName AS 'Product', db_productPrice * sum(db_quantityOrdered) AS 'Revenue'
+                                        FROM product_orders, products
+                                        WHERE product_orders.db_productID = products.db_productID
+                                        GROUP BY db_productName
+                                        ORDER BY products.db_productID";
+                                            $result = $db->query($sql);
 
-                                    		$num_results = mysqli_num_rows($result);
-                                    		for($i=0; $i < $num_results; $i++)
-                                    		{
-                                    			$row = mysqli_fetch_assoc($result);
-                                    			echo "<tr>";
-                                    		                   echo "<td>".$row[Product]."</td>";
-                                    		                   echo "<td> €".$row[Revenue]."</td>";
-                                    		                   echo "</tr>";
-                                    		}
-                                    		mysqli_close($db);
+                                            $num_results = mysqli_num_rows($result);
+                                            for($i=0; $i < $num_results; $i++)
+                                            {
+                                                $row = mysqli_fetch_assoc($result);
+                                                echo "<tr>";
+                                                               echo "<td>".$row[Product]."</td>";
+                                                               echo "<td> €".$row[Revenue]."</td>";
+                                                               echo "</tr>";
+                                            }
+                                            mysqli_close($db);
                                     ?>
 
                                     </table>
@@ -402,6 +404,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
 
                                 </div>
                             </div>
+
+
 
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
