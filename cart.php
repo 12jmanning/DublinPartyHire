@@ -66,7 +66,7 @@ if (isset($_POST['update']) && isset($_SESSION['cart'])) {
     $deliveryErr=$setUpErr="";
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // // ATtemping delivery costs:
-        
+
         $valid=true;
         $setUpErr=$deliveryErr="";
         if (empty($_POST["set_up"])) {
@@ -92,7 +92,7 @@ if (isset($_POST['update']) && isset($_SESSION['cart'])) {
 
 
     }
-    
+
     // Prevent form resubmission...
     header('location: index.php?page=cart');
     exit;
@@ -169,6 +169,22 @@ function dateDiffInDays($date1, $date2)
 
 <div class="cart content-wrapper">
     <h1>Shopping Cart</h1>
+
+    <div class="row">
+      <div class="col-lg-2">
+        <a class="btn" style="color: #fff; background-color: #373F51; margin:auto;margin-left: 6px;" role="button" href="index.php?page=products">Go Back to Products</a>
+
+      </div>
+
+      <div class="col-lg-8">
+
+      </div>
+
+      <div class="col-lg-2">
+        <a class="btn" style="color: #fff; background-color: #373F51; margin:auto;margin-left: 6px;" role="button" href="">Change Dates</a>
+
+      </div>
+    </div>
     <form method="post" action = "index.php?page=cart#bottomOfPage"  name="order_form" id="order_form">
         <table>
             <thead>
@@ -185,41 +201,41 @@ function dateDiffInDays($date1, $date2)
                     <td colspan="5" style="text-align:center;">You have no products added in your Shopping Cart</td>
                 </tr>
                 <?php else: ?>
-                <?php foreach ($products as $product): 
+                <?php foreach ($products as $product):
                     $start= new DateTime($_SESSION['delivery_date']);
                     $end = new DateTime($_SESSION['collection_date']);
                     $product_ID = $product['db_productID'];
                     $max_quantity =$product['db_quantity'];
                     $min_quantity = $max_quantity;
-                    
+
                     $i= new DateTime();
                     for($i = $start; $i <= $end; $i->modify('+1 day')){
-                    
+
                         $sum_quantity_ordered=0;
                         $query = "SELECT product_orders.db_quantityOrdered, orders.db_deliveryDatetime, orders.db_collectionDatetime FROM product_orders, orders WHERE product_orders.db_productID= '$product_ID' AND product_orders.db_orderID =orders.db_orderID";
                         $result_query = $db->query($query);
                         $num_results = mysqli_num_rows($result_query);
-                    
+
                         for($j= 0;$j<$num_results;$j++)
                         {
                             $row = mysqli_fetch_assoc($result_query);
                             $delivery= new DateTime($row['db_deliveryDatetime']);
-                            $collection = new DateTime($row['db_collectionDatetime']);  
+                            $collection = new DateTime($row['db_collectionDatetime']);
                             if($i>=$delivery && $i <=$collection )
                             {
                                 $sum_quantity_ordered=$sum_quantity_ordered+$row['db_quantityOrdered'];
                             }
-                            
+
                         }
                         $Q=$max_quantity-$sum_quantity_ordered;
                         if($Q<$min_quantity)
                         {
                             $min_quantity=$Q;
                         }
-                    
+
                     }
                     $product_quantity = $min_quantity;
-                    
+
                     ?>
                 <tr>
                     <td class="img">
