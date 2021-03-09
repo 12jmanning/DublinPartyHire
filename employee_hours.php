@@ -379,8 +379,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit_start_time'])) {
                                       echo "<tr>";
                                       echo "<td>$row3[0]</td>";
                                       echo "<td>$row3[3]</td>";
-                                      echo "<td>$row3[1]</td>";
-                                      echo "<td>$row3[2]</td>";
+                                      echo "<td>", date("H:i:s D, d M Y", $timestamp_start), "</td>";
+                                      echo "<td>", date("H:i:s D, d M Y", $timestamp_end), "</td>";
                                       echo "<td>", $hours_worked_per_shift ,"</td>";
                                       echo "</tr>";
                                       $total_hours_worked += $hours_worked_per_shift;
