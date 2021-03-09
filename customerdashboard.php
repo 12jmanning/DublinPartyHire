@@ -12,6 +12,10 @@ $query = "SELECT * FROM orders where db_customerID = $customer_ID";
 $customer_orders = $db->query($query);
 $num_results = mysqli_num_rows($customer_orders);
 
+$delivery_query = "SELECT * FROM delivery_costs";
+$delivery_results = $db->query($delivery_query);
+$num_delivery_results = mysqli_num_rows($delivery_results);
+
 
 $details_query = "SELECT db_customerName, db_customerAddress, db_county, db_customerEircode, db_customerPhone FROM `customers`
                         WHERE db_customerID = '$customer_ID'";
@@ -22,6 +26,39 @@ $customer_address = $row['db_customerAddress'] ;
 $customer_county = $row['db_county'] ;
 $customer_eircode = $row['db_customerEircode'] ;
 $customer_phone = $row['db_customerPhone'] ;
+
+$addressErr = $countyErr = $eircodeErr = "";
+$db_customerAddress = $db_county = $db_customerEircode = "";
+$valid=true;
+if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
+  
+  if (empty($_POST["db_customerAddress"])) {
+    $addressErr = "Address is required";
+    $valid=false;
+  }
+  if ($_POST["db_county"] == "select") {
+    $countyErr = "County is required";
+    $valid=false;
+  }
+  if (empty($_POST["db_customerEircode"])) {
+    $eircodeErr = "Eircode is required";
+    $valid=false;
+  }
+
+  if($valid)
+  {
+    $db_customerAddress=$_POST["db_customerAddress"];
+    $db_county = $_POST["db_county"];
+    $db_customerEircode=$_POST["db_customerEircode"];
+
+    $query1 = "UPDATE customers SET db_customerAddress = '$db_customerAddress', db_county = '$db_county' ,db_customerEircode='$db_customerEircode'  where db_customerID = '$customer_ID'";
+    $customer_orders1 = $db->query($query1);
+  }
+
+}
+
+
+
 ?>
 
 <div class="row" style="padding-top:25px;">
@@ -76,7 +113,46 @@ $customer_phone = $row['db_customerPhone'] ;
 
   </form>
 
+<br>
 
+<h2 style="padding-top:25px;">Edit Your Details:</h2>
+  <form class="" action="" method="post" name="invoice" id="invoice">
+
+  <table class="">
+
+  <tr>
+    <td><label for ="members">Address:</label></td>
+    <td><input type="text" name="db_customerAddress" size = 30><br><span class="error"> <?php echo $addressErr ?> </span></td>
+  </tr>
+
+  <tr>
+    <td><label for="members">County:</label></td>
+    <td><select name="db_county" id="db_county">
+      <option value= "select">--Select a County--</option>
+      <?php
+        for($i = 0;$i<$num_delivery_results;$i++)
+        {
+          //Move query up top and iterate through results here with an if statement
+          $rowX = mysqli_fetch_assoc($delivery_results);
+          echo '<option value = "'.$rowX['db_county'].'">'.$rowX['db_county'].' </option>';
+
+        }
+      ?><br>
+    </select><br><span class='error'><?php echo $countyErr ?> </span> </td>
+  </tr>
+
+  <tr>
+    <td><label for ="members">Eircode:</label></td>
+    <td><input type="text" name="db_customerEircode" id="db_customerEircode" size = 20><br><span class='error'> <?php echo $eircodeErr ?> </span></td>
+  </tr>
+
+  <tr>
+    <td></td>
+    <td><input class="btn btn-success" type="submit" name = "submit2" value="Submit"><input style="margin-left: 4px;"class="btn btn-danger" type="reset" value="Reset"></td>
+  </tr>
+  </table>
+
+  </form>
 
 </div>
 

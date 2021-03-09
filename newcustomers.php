@@ -100,6 +100,10 @@ select:hover {
     $delivery_results = $db->query($delivery_query);
     $num_delivery_results = mysqli_num_rows($delivery_results);
 
+    $q1 = "SELECT db_customerEmail FROM customers";
+    $c1 = $db->query($q1);
+    $num_c1_results = mysqli_num_rows($c1);
+
     // define variables and set to empty values
     $nameErr = $addressErr = $countyErr = $db_customerEmailErr = $eircodeErr = $phoneErr = $password_err = $confirm_password_err ="";
     $db_customerName = $db_customerAddress = $db_county = $db_customerEmail = $db_customerEircode = $db_customerPhone = $password = $confirm_password ="";
@@ -142,6 +146,22 @@ select:hover {
           $valid=false;
         }
       }
+      
+      $db_customerEmail = test_input($_POST["db_customerEmail"]);
+      $found1=false;
+      while($i<$num_c1_results&&$found1<>true)
+      {
+          $rowX = mysqli_fetch_assoc($c1);
+          if($rowX['db_customerEmail']==$db_customerEmail)
+          {
+            $db_customerEmailErr = "This email is already taken";
+            $valid=false;
+            $found=true;
+          }
+          $i++;
+      }
+
+
 
       if (empty($_POST["db_customerPhone"])) {
         $phoneErr = "Phone number is required";
@@ -249,12 +269,12 @@ select:hover {
 
           <tr>
             <td><label for ="members">Eircode:</label></td>
-            <td><input type="text" name="db_customerEircode" id="db_customerEircode" size = 20><br><span class='error'> <?php echo $eircodeErr ?> <span/></td>
+            <td><input type="text" name="db_customerEircode" id="db_customerEircode" size = 20><br><span class='error'> <?php echo $eircodeErr ?> </span></td>
           </tr>
 
           <tr>
             <td><label for ="members">Email:</label></td>
-            <td><input type="text" name="db_customerEmail" id="db_customerEmail" size = 20><br><span class='error'> <?php echo $db_customerEmailErr ?> <span/></td>
+            <td><input type="text" name="db_customerEmail" id="db_customerEmail" size = 20><br><span class='error'> <?php echo $db_customerEmailErr ?> </span></td>
           </tr>
 
           <tr>
