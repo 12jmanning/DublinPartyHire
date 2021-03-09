@@ -636,7 +636,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <h6 class="m-0 font-weight-bold text-primary">Customers Collecting Orders Today</h6>
                                     <?php 
                                     include('inc/detail.php');
-                                    $query_new = "SELECT orders.db_orderID,customers.db_customerName,orders.db_rentalPrice,orders.db_setUpPrice FROM orders,customers WHERE orders.db_customerID=customers.db_customerID AND orders.db_deliveryPreference = 'No' AND orders.db_deliveryDatetime='$today_date'";
+                                    $query_new = "SELECT orders.db_orderID,customers.db_customerName,orders.db_rentalPrice,orders.db_setUpPrice ,customers.db_customerPhone FROM orders,customers WHERE orders.db_customerID=customers.db_customerID AND orders.db_deliveryPreference = 'No' AND orders.db_deliveryDatetime='$today_date'";
                                     $result_new = $db->query($query_new);
                                     $num_new_results = mysqli_num_rows($result_new);
 
@@ -646,7 +646,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                   		echo "<td>Order ID</td>";
                                   		echo "<td>Customer Name</td>";
                                   		echo "<td>Rental Price</td>";
-                                  		echo "<td>Set Up price</td>";
+                                          echo "<td>Set Up price</td>";
+                                          echo "<td>Phone Number</td>";
                                         echo "</tr>";
 
                                         while($row_ordersZ = mysqli_fetch_row($result_new))
@@ -654,8 +655,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             echo "<tr>";
                                             echo "<td>$row_ordersZ[0]</td>";
                                             echo "<td>$row_ordersZ[1]</td>";
-                                            echo "<td>$row_ordersZ[2]</td>";
-                                            echo "<td>$row_ordersZ[3]</td>";
+                                            echo "<td>€$row_ordersZ[2]</td>";
+                                            echo "<td>€$row_ordersZ[3]</td>";
+                                            echo "<td>$row_ordersZ[4]</td>";
                                             echo "</tr>";
                                         }
                                             echo '</table>';
@@ -675,7 +677,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <h6 class="m-0 font-weight-bold text-primary">Customers Returning Orders Today</h6>
                                     <?php 
                                     include('inc/detail.php');
-                                    $query_new1 = "SELECT orders.db_orderID,customers.db_customerName,orders.db_rentalPrice,orders.db_setUpPrice FROM orders,customers WHERE orders.db_customerID=customers.db_customerID AND orders.db_deliveryPreference = 'No' AND orders.db_collectionDatetime='$today_date'";
+                                    $query_new1 = "SELECT orders.db_orderID,customers.db_customerName,orders.db_rentalPrice,orders.db_setUpPrice FROM orders,customers, customers.db_customerPhone WHERE orders.db_customerID=customers.db_customerID AND orders.db_deliveryPreference = 'No' AND orders.db_collectionDatetime='$today_date'";
                                     $result_new1 = $db->query($query_new1);
                                     $num_new_results1 = mysqli_num_rows($result_new1);
 
@@ -685,7 +687,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                   		echo "<td>Order ID</td>";
                                   		echo "<td>Customer Name</td>";
                                   		echo "<td>Rental Price</td>";
-                                  		echo "<td>Set Up price</td>";
+                                          echo "<td>Set Up price</td>";
+                                          echo "<td>Phone Number</td>";
                                         echo "</tr>";
 
                                         while($row_ordersZ1 = mysqli_fetch_row($result_new1))
@@ -693,8 +696,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             echo "<tr>";
                                             echo "<td>$row_ordersZ1[0]</td>";
                                             echo "<td>$row_ordersZ1[1]</td>";
-                                            echo "<td>$row_ordersZ1[2]</td>";
-                                            echo "<td>$row_ordersZ1[3]</td>";
+                                            echo "<td>€$row_ordersZ1[2]</td>";
+                                            echo "<td>€$row_ordersZ1[3]</td>";
+                                            echo "<td>$row_ordersZ1[4]</td>";
                                             echo "</tr>";
                                         }
                                             echo '</table>';
