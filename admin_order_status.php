@@ -16,9 +16,9 @@ if($_SESSION['db_jobTitle']=="admin"){
 
 }
 
-$query = "SELECT * FROM orders";
-$customer_orders = $db->query($query);
-$num_results = mysqli_num_rows($customer_orders);
+$queryz = "SELECT * FROM orders";
+$customer_ordersx = $db->query($queryz);
+$num_resultsx = mysqli_num_rows($customer_ordersx);
 $orderErr="";
 $valid=true;
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit3'])) {
@@ -34,13 +34,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit3'])) {
     if($valid){
 
         $db_orderID = $_POST["order_id"];
-        $query1 = "SELECT * FROM orders where db_orderID = $db_orderID";
-        $customer_orders1 = $db->query($query1);
+        $queryx = "SELECT * FROM orders where db_orderID = $db_orderID";
+        $customer_orders1 = $db->query($queryx);
         $num_results1 = mysqli_num_rows($customer_orders1);
-        $row2 = mysqli_fetch_assoc($customer_orders1);
-        $delivery_date = $row2['db_deliveryDatetime'];
-        $collection_date = $row2['db_collectionDatetime'];
-        $deliveryPreference = $row2['db_deliveryPreference'];
+        $rowx = mysqli_fetch_assoc($customer_orders1);
+        $delivery_date = $rowx['db_deliveryDatetime'];
+        $collection_date = $rowx['db_collectionDatetime'];
+        $deliveryPreference = $rowx['db_deliveryPreference'];
         $Yes='Yes';
         $No='No';
 
@@ -121,14 +121,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit3'])) {
                 <select name="order_id" style="width: 300px" class="auto-style1" required>
                 <option value= "select">--Select an Order--</option>
                 <?php
-                for($i = 0;$i<$num_results;$i++)
+                for($i = 0;$i<$num_resultsx;$i++)
                 {
-                    $row = mysqli_fetch_assoc($customer_orders);
-                    $q = 'select * from orders where '.$row['db_orderID'].'= orders.db_orderID';
+                    $rowy = mysqli_fetch_assoc($customer_ordersx);
+                    $q = 'select * from orders where '.$rowy['db_orderID'].'= orders.db_orderID';
                     $result2 = $db->query($q);
                     $row2 = mysqli_fetch_assoc($result2);
 
-                    echo '<<option value ="'.$row['db_orderID'].'">Order ID: '.$row['db_orderID']." On ".$row['db_deliveryDatetime'].'</option>';
+                    echo '<<option value ="'.$rowy['db_orderID'].'">Order ID: '.$rowy['db_orderID']." On ".$rowy['db_deliveryDatetime'].'</option>';
                 }
                 ?>
 

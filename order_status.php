@@ -47,12 +47,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit3'])) {
         $deliveryPreference = $row2['db_deliveryPreference'];
         $Yes='Yes';
         $No='No';
-        
         $during = "You currently have your rented items. They are due to be returned by $collection_date";
         $before = "Will be delivered on $delivery_date";
-        $after = "Was collected on $collection_date";
-        $before1 = "You are due to collect your order on $delivery_date";
-        $after1 = "You have returned your rented items $collection_date";
+        $after = "Was collected on $collection_date'.";
+        $before1 = "You are due to collect your order on .'$delivery_date'.";
+        $after1 = "You have returned your rented items .'$collection_date'.";
         $deliver_today = "Your order is to be delivered today";
         $deliver_today1 = "You are due to collect your order today";
         $collect_today = "Your order is to be collected today" ;
@@ -156,12 +155,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit3'])) {
   </table>
 
   </form>
-  <br><br>
-
   <?php 
   if(isset($string_output))
   {
-      
       echo $string_output;
   }
   ?>
