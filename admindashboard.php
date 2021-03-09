@@ -627,21 +627,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                             </div>
 
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Order Status:</h6>
-                                </div>
-                                <div class="card-body">
-                                  <?php
-                                  echo "Employee ID: ", $admin_ID, "<br>";
-                                  echo "Name: ", $employee_name, "<br>";
-                                  echo "Job Title: ", $job_title, "<br>";
-                                  ?>
-
-
-
-                                </div>
-                            </div>
+                            
 
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
