@@ -24,12 +24,16 @@ function isValidDate($date,$dateFormat){
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
+  if (empty($_POST['delivery_date']) && empty($_POST['collection_date'])) {
+    $deliveryDateErr = "Delivery Date and Colletion Date are required";
+    $grand=false;
+  }
   if (empty($_POST['delivery_date'])) {
     $deliveryDateErr = "Delivery Date is required";
     $grand=false;
   }
   else if (empty($_POST['collection_date'])) {
-    $deliveryDateErr = "Collection Date is required";
+    $collectionDateErr = "Collection Date is required";
     $grand=false;
   }
   else if($_POST['delivery_date']>$_POST['collection_date'])
@@ -82,20 +86,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
 <div class="recentlyadded content-wrapper">
     <h2>Special Offer Products</h2>
     <form method="post" action = ""  name="order_form" id="order_form" style="text-align: -webkit-center;">
-      <tr>
-        <td><label for="delivery_date" style="padding-right: 20px;">Delivery Date:</label></td>
-        <td ><input type="date" name="delivery_date" id="delivery_date" style="width: 150px;"><?php echo $deliveryDateErr ?> <span></td>
-          <td><label for="collection_date" style="padding-right: 20px; padding-left: 20px;">Collection Date:</label></td>
-          <td><input type="date" name="collection_date" id="collection_date" style="width:150px;" ><?php echo $collectionDateErr ?> <span></td>
-          <td><input class="btn" type="submit" value="Filter Products" name="update" style="background-color: #C46BAE; color: #fff; margin:auto; margin-left: 20px;"></td>
-      </tr>
+      <table>
+        <tr>
+          <td><label for="delivery_date" style="padding-right: 20px;">Delivery Date:</label></td>
+          <td ><input type="date" name="delivery_date" id="delivery_date" style="width: 150px;"></td>
+            <td><label for="collection_date" style="padding-right: 20px; padding-left: 20px;">Collection Date:</label></td>
+            <td><input type="date" name="collection_date" id="collection_date" style="width:150px;" ></td>
+            <td><input class="btn" type="submit" value="Filter Products" name="update" style="background-color: #C46BAE; color: #fff; margin:auto; margin-left: 20px;"></td>
+        </tr>
 
-      <!-- <tr>
+        <tr>
+          <td></td>
+          <td><?php echo "<p class='my-error'>", $deliveryDateErr, "</p>" ?></td>
+          <td></td>
+          <td><?php echo "<p class='my-error'>", $collectionDateErr, "</p>" ?></td>
+          <td></td>
+        </tr>
 
-      </tr>
-      <div class="buttons">
-            <input type="submit" value="Update" name="update">
-      </div> -->
+      </table>
 
     </form>
     <div class="products">

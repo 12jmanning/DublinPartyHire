@@ -71,8 +71,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
     <h2 style="text-align: -webkit-center; margin-top:20px;">Enter Delivery and Collection Dates:</h2>
     <?php
         if(isset($_SESSION['delivery_date'])&&isset($_SESSION['collection_date'])){
-            echo "Order Start Date: ", $_SESSION['delivery_date'], "<br>";
-            echo "Order End Date: ", $_SESSION['collection_date'], "<br>";
+          echo "<p style='text-align: -webkit-center;'>
+            Changing dates from the dates below will delete all items in your cart!
+          </p>";
+            echo "<p style='text-align: -webkit-center;'> Order Start Date: ", $_SESSION['delivery_date'], "</p>";
+            echo "<p style='text-align: -webkit-center;'> Order End Date: ", $_SESSION['collection_date'], "</p>";
         }
         else{
             echo "<p style='text-align: -webkit-center;'>
@@ -96,9 +99,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
 
          <tr>
            <td></td>
-           <td><?php echo $deliveryDateErr ?></td>
+           <td><?php echo "<p class='my-error'>", $deliveryDateErr, "</p>" ?></td>
            <td></td>
-           <td><?php echo $collectionDateErr ?></td>
+           <td><?php echo "<p class='my-error'>", $collectionDateErr, "</p>" ?></td>
            <td></td>
          </tr>
 
