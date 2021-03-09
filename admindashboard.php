@@ -509,7 +509,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Order Status</h6>
                                     <div class="dropdown no-arrow">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -527,72 +527,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    <div class="chart-pie pt-4 pb-2">
-                                        <?php
-                                        $rental_query = "SELECT SUM(db_rentalPrice) FROM `orders`;";
-                                        $rental_results = $db->query($rental_query);
-                                        $row3 = mysqli_fetch_row($rental_results);
+                                  <?php include('admin_order_status.php'); ?>
 
-                                        $delivery_query = "SELECT SUM(db_deliveryPrice) FROM `orders`;";
-                                        $delivery_results = $db->query($delivery_query);
-                                        $row4 = mysqli_fetch_row($delivery_results);
-
-                                        $setup_query = "SELECT SUM(db_deliveryPrice) FROM `orders`;";
-                                        $setup_results = $db->query($setup_query);
-                                        $row5 = mysqli_fetch_row($setup_results);
-
-                                        $rental_total = $row3[0];
-                                        $delivery_total = $row4[0];
-                                        $setup_total = $row5[0];
-                                         ?>
-
-                                        <canvas id="chart"></canvas>
-                                        <script>
-
-                                        var ctx = document.getElementById("chart");
-                                        var my_chart = new Chart(ctx, {
-                                          type: 'doughnut',
-                                          data: {
-                                            labels: ["Direct", "Referral", "Social"],
-                                            datasets: [{
-                                              data: [80, 30, 15],
-                                              backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-                                              hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-                                              hoverBorderColor: "rgba(234, 236, 244, 1)",
-                                            }],
-                                          },
-                                          options: {
-                                            maintainAspectRatio: false,
-                                            tooltips: {
-                                              backgroundColor: "rgb(255,255,255)",
-                                              bodyFontColor: "#858796",
-                                              borderColor: '#dddfeb',
-                                              borderWidth: 1,
-                                              xPadding: 15,
-                                              yPadding: 15,
-                                              displayColors: false,
-                                              caretPadding: 10,
-                                            },
-                                            legend: {
-                                              display: false
-                                            },
-                                            cutoutPercentage: 80,
-                                          },
-                                        });
-
-                                        </script>
-                                    </div>
-                                    <div class="mt-4 text-center small">
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-primary"></i> Direct
-                                        </span>
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-success"></i> Social
-                                        </span>
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-info"></i> Referral
-                                        </span>
-                                    </div>
                                 </div>
                             </div>
                         </div>
