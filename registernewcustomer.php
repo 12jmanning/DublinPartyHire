@@ -19,7 +19,6 @@ $q .= "db_customerName, db_customerAddress, db_county, db_customerEircode, db_cu
 $q .= ") VALUES (";
 $q .= "'$db_customerName', '$db_customerAddress', '$db_county', '$db_customerEircode','$db_customerEmail','$db_customerPhone', '$db_customerPW')";
 
-echo $q;
 $result = $db->query($q);
 
 ?>
