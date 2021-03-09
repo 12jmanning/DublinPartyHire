@@ -1,7 +1,7 @@
 <?php
 session_start();
 include('inc/detail.php');
-include('inc/navbar.php');
+
 
 if (!isset($_SESSION['db_customerID'])) {
     header('location: existingcustomers.php');
@@ -110,18 +110,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit3'])) {
 
 </div>
 <div class="col-lg-4">
-  <h2>My Details:</h2>
-  <?php echo "Customer ID: ", $customer_ID, "<br>";
-        echo "Name: ", $customer_name, "<br>";
-        echo "Address: ", $customer_address, "<br>";
-        echo "County: ", $customer_county, "<br>";
-        echo "Eircode: ", $customer_eircode, "<br>";
-        echo "Phone: " , $customer_phone;
-
-
-
-
-  ?>
 
   <h2 style="padding-top:25px;">Order Status:</h2>
   <form class="" action="" method="post" name="invoice" id="invoice">

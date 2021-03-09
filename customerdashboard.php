@@ -41,10 +41,7 @@ $customer_phone = $row['db_customerPhone'] ;
 
 
   ?>
-  <div class="col-lg-2">
-        <a class="btn" style="color: #fff; background-color: #373F51; margin:auto;margin-left: 6px;" role="button" href="order_status.php">Check Order Status</a>
 
-      </div>
 
   <h2 style="padding-top:25px;">Print Invoices:</h2>
   <form class="" action="print_invoice.php" method="post" name="invoice" id="invoice">
@@ -117,5 +114,10 @@ $customer_phone = $row['db_customerPhone'] ;
       echo "</tr>";
   }
   echo '</table>';?>
+</div>
+
+<div class="card-body">
+  <?php include('order_status.php'); ?>
+
 </div>
 </div>
