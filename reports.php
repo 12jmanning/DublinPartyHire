@@ -32,7 +32,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
     $requested_date = $_POST['requested_date'];
   }
 }
-
+if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
+    if (empty($_POST['start_date'])) {
+      $startDateErr = "Date is required";
+      $grand=false;
+    }
+    if (empty($_POST['end_date'])) {
+        $endDateErr = "Date is required";
+        $grand=false;
+    }
+    else if($_POST['start_date']>$_POST['end_date'])
+    {
+        $startDateErr = $endDateErr = "Please Enter Valid Dates";
+        $grand=false;
+    }
+  
+    if($grand = true)
+    {
+      $start_date = $_POST['start_date'];
+      $end_date = $_POST['end_date'];
+    }
+  }
 
 
 ?>
@@ -529,6 +549,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
                                 </table>
                                 </div>
                             </div>
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Breakdown of Revenue:</h6>
+                                </div>
+                                  <div class="card-body">
+                                  <?php
+                                  include('inc/detail.php');
+                                   $queryY = "SELECT sum(orders.db_rentalPrice) AS 'Rental_Revenue', sum(orders.db_setUpPrice) AS 'Set_Up_Revenue', sum(db_deliveryPrice) AS 'Delivery_Revenue',(sum(orders.db_rentalPrice)+sum(orders.db_setUpPrice)+sum(db_deliveryPrice)) AS 'Total_Revenue'
+                                   FROM orders";
+                                   $resultY = $db->query($queryY);
+                                   $num_resultsY = mysqli_num_rows($resultY);
+                                  ?>
+                                  <table id="table">
+                                	<tr>
+                                		<th class="auto-style1"><strong>Revenue Source</strong></th>
+                                		<th class="auto-style1"><strong>Amount</strong></th>
+                                        <th class="auto-style1"><strong> % </strong></th>
+                                	</tr>
+                                	<?php
+                                    $rowY = mysqli_fetch_assoc($resultY);
+                                    $rental = round($rowY['Rental_Revenue'],2);
+                                    $set_up = round($rowY['Set_Up_Revenue'],2);
+                                    $delivery = round($rowY['Delivery_Revenue'],2);
+                                    $total = round($rowY['Total_Revenue'],2);
+                                    $rentalP = round((($rowY['Rental_Revenue']/$total)*100),2);
+                                    $set_upP = round((($rowY['Set_Up_Revenue']/$total)*100),2);
+                                    $deliveryP = round((($rowY['Delivery_Revenue']/$total)*100),2);
+
+                                    echo "<tr>";
+                                    echo "<td>Rental Revenue</td>";
+                                    echo "<td> €".$rental."</td>";
+                                    echo "<td>".$rentalP."%</td>";
+                                    echo "</tr>";
+                                    echo "<tr>";
+                                    echo "<td>Delivery Revenue</td>";
+                                    echo "<td> €".$set_up."</td>";
+                                    echo "<td>".$set_upP."%</td>";
+                                    echo "</tr>";
+                                    echo "<tr>";
+                                    echo "<td>Set-Up Revenue</td>";
+                                    echo "<td> €".$delivery."</td>";
+                                    echo "<td>".$deliveryP."%</td>";
+                                    echo "</tr>";
+                                    mysqli_close($db);
+                                     ?>
+
+                                </table>
+                                </div>
+                            </div>
 
 
                         </div>
@@ -648,7 +717,61 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
                                 </table>
                             </div>
                           </div>
+                          <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Orders Placed Between Two Dates:</h6>
+                                </div>
+                                  <div class="card-body">
 
+                                    <form method="post" action = ""  name="order_form" id="order_form" style="text-align: -webkit-center;">
+                                          <tr>
+                                            <td><label for="requested_date" style="padding-right: 20px; margin-bottom:20px;">Start Date:</label></td>
+
+                                            <td ><input type="date" name="start_date" id="requested_date" style="width: 150px;"><?php echo $startDateErr ?> <span></td>
+
+                                            <td><label for="requested_date" style="padding-right: 20px; margin-bottom:20px;">End Date:</label></td>
+
+                                            <td ><input type="date" name="end_date" id="requested_date" style="width: 150px;"><?php echo $endDateErr ?> <span></td>
+
+                                            <td><input class="btn" type="submit" value="Select Date" name="submit" style="background-color: #C46BAE; color: #fff; margin:auto; margin-left: 20px; margin-bottom:15px;"></td>
+                                          </tr>
+                                    </form>
+
+                                  <?php
+                                    include('inc/detail.php');
+                                    if(isset($start_date)&&isset($end_date))
+                                    {
+                                        $orders_placed_between_query = "select orders.db_orderID, customers.db_customerName, orders.db_rentalPrice,orders.db_setUpPrice,orders.db_deliveryPrice  from orders,customers where orders.db_customerID=customers.db_customerID AND orders.db_orderCreatedAt BETWEEN '$start_date' AND '$end_date'";
+                                        $orders_detailsX = $db->query($orders_placed_between_query);
+                                        $num_orders_requested_dateX = mysqli_num_rows($orders_detailsX);
+
+                                        echo '<table border="2" style="width: -webkit-fill-available;">';
+                                        echo '<tr class="first-row-database">';
+                                            echo "<td>Order ID</td>";
+                                            echo "<td>Customer Name</td>";
+                                            echo "<td>Rental Price</td>";
+                                            echo "<td>Set-Up Price</td>";
+                                            echo "<td>Delivery Price</td>";
+                                            echo "</tr>";
+                                        while($row_ordersX = mysqli_fetch_row($orders_detailsX))
+                                        {
+                                            echo "<tr>";
+                                            echo "<td>$row_ordersX[0]</td>";
+                                            echo "<td>$row_ordersX[1]</td>";
+                                            echo "<td>€$row_ordersX[2]</td>";
+                                            echo "<td>€$row_ordersX[3]</td>";
+                                            echo "<td>€$row_ordersX[4]</td>";
+                                            echo "</tr>";
+                                        }
+                                            echo '</table>';
+                                    }
+
+                                  ?>
+
+
+
+                                </div>
+
+                                        
                         </div>
                     </div>
 
