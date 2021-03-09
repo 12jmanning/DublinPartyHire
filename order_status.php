@@ -107,12 +107,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit3'])) {
 }
 ?>
 
-<div class="row" style="padding-top:25px;">
-<div class="col-lg-1">
-
-</div>
-<div class="col-lg-4">
-
   <h2 style="padding-top:25px;">Order Status:</h2>
   <form class="" action="" method="post" name="invoice" id="invoice">
 
@@ -130,8 +124,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit3'])) {
         $q = 'select * from orders where '.$row['db_orderID'].'= orders.db_orderID';
         $result2 = $db->query($q);
         $row2 = mysqli_fetch_assoc($result2);
-
-        echo '<<option value ="'.$row['db_orderID'].'">Order ID: '.$row['db_orderID']." On ".$row['db_deliveryDatetime'].'</option>';
+        
+        echo '<<option value ="'.$row['db_orderID'].'">Order ID: '.$row['db_orderID']." Rented From ".date("D, d M Y", strtotime($row['db_deliveryDatetime'])) .'</option>';
       }
     ?>
 
@@ -145,17 +139,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit3'])) {
   </table>
 
   </form>
-  <?php 
+  <?php
   if(isset($string_output))
   {
       echo "<div class='alert alert-success' role='alert'>", $string_output, "</div>";
   }
   ?>
-
-
-
-</div>
-
-
-
-</div>

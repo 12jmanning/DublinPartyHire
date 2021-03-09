@@ -61,7 +61,7 @@ $customer_phone = $row['db_customerPhone'] ;
         $result2 = $db->query($q);
         $row2 = mysqli_fetch_assoc($result2);
 
-        echo '<<option value ="'.$row['db_orderID'].'">Order ID: '.$row['db_orderID']." On ".$row['db_deliveryDatetime'].'</option>';
+        echo '<<option value ="'.$row['db_orderID'].'">Order ID: '.$row['db_orderID']." Rent Start: ".date("D, d M Y", strtotime($row['db_deliveryDatetime'])).'</option>';
       }
     ?>
 
@@ -75,6 +75,10 @@ $customer_phone = $row['db_customerPhone'] ;
   </table>
 
   </form>
+
+
+    <?php include('order_status.php'); ?>
+
 
 
 
@@ -92,8 +96,8 @@ $customer_phone = $row['db_customerPhone'] ;
   echo '<table border="2">';
   echo '<tr class="first-row-database">';
       echo "<td>Order ID</td>";
-      echo "<td>Delivery Time</td>";
-      echo "<td>Collection Time</td>";
+      echo "<td>Rental Start</td>";
+      echo "<td>Rental End</td>";
       echo "<td>Set Up Preference</td>";
       echo "<td>Delivery Preference</td>";
       echo "<td>Set Up Price</td>";
@@ -104,20 +108,17 @@ $customer_phone = $row['db_customerPhone'] ;
   {
       echo "<tr>";
       echo "<td>$row[0]</td>";
-      echo "<td>$row[1]</td>";
-      echo "<td>$row[2]</td>";
+      echo "<td>", date("D, d M Y", strtotime( $row[1])) , "</td>";
+      echo "<td>", date("D, d M Y", strtotime( $row[2])) , "</td>";
       echo "<td>$row[3]</td>";
       echo "<td>$row[4]</td>";
-      echo "<td>$row[5]</td>";
-      echo "<td>$row[6]</td>";
-      echo "<td>$row[7]</td>";
+      echo "<td>€" , $row[5], "</td>";
+      echo "<td>€" , $row[6], "</td>";
+      echo "<td>€" , $row[7], "</td>";
       echo "</tr>";
   }
   echo '</table>';?>
 </div>
 
-<div class="card-body">
-  <?php include('order_status.php'); ?>
 
-</div>
 </div>
