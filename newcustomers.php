@@ -131,7 +131,7 @@ $(document).ready(function() {
               $('#password-strength').addClass('progress-bar-warning');
               $('#result').addClass('text-warning').text('Week')
               $('#password-strength').css('width', '60%');
-              return 'Week'
+              return 'Weak'
           } else if (strength == 4) {
               $('#result').removeClass()
               $('#result').addClass('strong');
@@ -343,37 +343,9 @@ select:hover {
     // If the validation is accepted then this if statement is executed which will firstly call the register_members php file
       if($valid<>false)
       {
-        include 'registernewcustomer.php';
+        include('registernewcustomer.php');
       //Here, a query is run to obtain the member_id of the newly added member and this will be stored as a session varibale which is a super global variable
-        $found=false;
-        $query ="select * from customers";
-        $result = $db->query($query);
-        $num_results = mysqli_num_rows($result);
-        $i=0;
-        $found_member_id="";
-        while($i<$num_results&&$found<>true)
-        {
-            $row = mysqli_fetch_assoc($result);
-            if($row['db_customerEmail']==$db_customerEmail&&$row['db_customerName']==$db_customerName)
-            {
-                $found_customer_id=$row['db_customerID'];
-                $found=true;
-            }
-            $i++;
-        }
-        if($found==true)
-        {
-            $_SESSION['db_customerID']=$found_customer_id;
-        }
-        //This will then move the user to the mai menu where they have accesss to the member section and the admin section
-
-        if(isset($_SESSION['link']))
-        {
-          header($_SESSION['link']);
-        }
-
-        header('location: index.php');
-      }
+       }
 
     }
     //This function is called to test the input, trim the whitespace characters and return the formatted data
@@ -390,7 +362,7 @@ select:hover {
   <!-- This is the member form where they input their information and it calls itself in the action attribute in order to perform the validations -->
 <div class="boxed">
 <h2 class="form-heading">Become a customer!</h2>
-<form class="table-forms" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+<form class="table-forms" method="post" action="">
 
         <table class="table-forms">
           <tr>
