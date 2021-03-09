@@ -20,5 +20,38 @@ $q .= ") VALUES (";
 $q .= "'$db_customerName', '$db_customerAddress', '$db_county', '$db_customerEircode','$db_customerEmail','$db_customerPhone', '$db_customerPW')";
 
 $result = $db->query($q);
+<<<<<<< HEAD
  // hello
+=======
+
+$found=false;
+$query ="select * from customers";
+$result = $db->query($query);
+$num_results = mysqli_num_rows($result);
+$i=0;
+$found_member_id="";
+while($i<$num_results&&$found<>true)
+{
+    $row = mysqli_fetch_assoc($result);
+    if($row['db_customerEmail']==$db_customerEmail&&$row['db_customerName']==$db_customerName)
+    {
+        $found_customer_id=$row['db_customerID'];
+        $found=true;
+    }
+    $i++;
+}
+if($found==true)
+{
+    $_SESSION['db_customerID']=$found_customer_id;
+    if(isset($_SESSION['link']))
+    {
+        header($_SESSION['link']);
+    }
+
+    header('Location: index.php');
+    }
+//This will then move the user to the mai menu where they have accesss to the member section and the admin section
+
+
+>>>>>>> 0c6a9ab695eb4ee90d975519b5eebbd351c88d77
 ?>
