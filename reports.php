@@ -495,13 +495,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
 
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Extra Report:</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Revenue By County:</h6>
                                 </div>
                                   <div class="card-body">
+                                  <?php
+                                  include('inc/detail.php');
+                                   $queryX = "SELECT customers.db_county AS 'County', (sum(orders.db_rentalPrice)+sum(orders.db_setUpPrice)+sum(db_deliveryPrice)) AS 'Revenue'
+                                   FROM customers,orders 
+                                   WHERE orders.db_customerID = customers.db_customerID
+                                   GROUP BY customers.db_county
+                                   ORDER BY (sum(orders.db_rentalPrice)+sum(orders.db_setUpPrice)+sum(db_deliveryPrice)) DESC";
+                                   $resultX = $db->query($queryX);
+                                   $num_resultsX = mysqli_num_rows($resultX);
+                                  ?>
+                                  <table id="table">
+                                	<tr>
+                                		<th class="auto-style1"><strong>County</strong></th>
+                                		<th class="auto-style1"><strong>Revenue per County</strong></th>
+                                	</tr>
+                                	<?php
+                                    for($i=0; $i < $num_resultsX; $i++)
+                                    {
+                                        $rowX = mysqli_fetch_assoc($resultX);
+                                        $Y = round($rowX['Revenue'],2);
+                                        echo "<tr>";
+                                        echo "<td>".$rowX['County']."</td>";
+                                        echo "<td> €".$Y."</td>";
+                                        echo "</tr>";
+                                    }
+                                    mysqli_close($db);
+                                     ?>
 
-                                    <!-- put report in here -->
-
-
+                                </table>
                                 </div>
                             </div>
 
