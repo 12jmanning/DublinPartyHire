@@ -186,7 +186,7 @@ function dateDiffInDays($date1, $date2)
       </div>
 
       <div class="col-lg-2">
-        <a class="btn" style="color: #fff; background-color: #373F51; margin:auto;margin-left: 6px;" role="button" href="">Change Dates</a>
+        <a class="btn" style="color: #fff; background-color: #373F51; margin:auto;margin-left: 6px;" role="button" href="non_entered_dates.php">Change Dates</a>
 
       </div>
     </div>

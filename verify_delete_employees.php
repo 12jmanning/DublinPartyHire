@@ -451,7 +451,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit3'])) {
                         <div class="col-lg-6 mb-4">
                           <div class="card shadow mb-4">
                               <div class="card-header py-3">
-                                  <h6 class="m-0 font-weight-bold text-primary">Delete Employees:</h6>
+                                  <h6 class="m-0 font-weight-bold text-primary">Edit Employees:</h6>
                               </div>
                               <div class="card-body">
                                 <form class="dd" action="" method="post" >
