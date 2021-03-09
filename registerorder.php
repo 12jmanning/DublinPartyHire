@@ -120,6 +120,8 @@ if (isset($_SESSION['db_customerID'])) {
     unset($_SESSION['delivery_price']);
     unset($_SESSION['cart']);
     unset($_SESSION['link']);
+    unset($_SESSION['setUpErr']);
+    unset($_SESSION['deliveryErr']);
     header('location: customerdashboard.php');
 }
 else{

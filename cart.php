@@ -68,24 +68,29 @@ if (isset($_POST['update']) && isset($_SESSION['cart'])) {
         // // ATtemping delivery costs:
 
         $valid=true;
-        $setUpErr=$deliveryErr="";
+        $_SESSION['setUpErr']= $_SESSION['deliveryErr'] = "";
+        //$setUpErr=$deliveryErr="";
         if (empty($_POST["set_up"])) {
-            $setUpErr = "Set Up is required";
+            $_SESSION['setUpErr'] = "Set Up is required";
             $valid=false;
         }
         if (empty($_POST["delivery_and_collection"])) {
-            $deliveryErr = "Delivery Preference is required";
+            $_SESSION['deliveryErr'] = "Delivery Preference is required";
             $valid=false;
         }
         if($_POST["set_up"]=="Yes"&&$_POST["delivery_and_collection"]=="No")
         {
-            $deliveryErr=$setUpErr = "Set up can only be selected if delivery is chosen";
+            $_SESSION['deliveryErr']=$_SESSION['setUpErr'] = "Set up can only be selected if delivery is chosen";
             $valid=false;
         }
         if($valid)
         {
+            unset($_SESSION['setUpErr']);
+            unset($_SESSION['deliveryErr']);
             $_SESSION['set_up_preference'] = $_POST['set_up'];
             $_SESSION['delivery_preference'] = $_POST['delivery_and_collection'];
+            header('location: index.php?page=cart');
+            exit;
         }
     //$_SESSION['set_up_preference'] = $_POST['set_up'];
     //$_SESSION['delivery_preference'] = $_POST['delivery_and_collection'];
@@ -181,7 +186,7 @@ function dateDiffInDays($date1, $date2)
       </div>
 
       <div class="col-lg-2">
-        <a class="btn" style="color: #fff; background-color: #373F51; margin:auto;margin-left: 6px;" role="button" href="">Change Dates</a>
+        <a class="btn" style="color: #fff; background-color: #373F51; margin:auto;margin-left: 6px;" role="button" href="non_entered_dates.php">Change Dates</a>
 
       </div>
     </div>
@@ -271,7 +276,7 @@ function dateDiffInDays($date1, $date2)
                   <td><select name="delivery_and_collection" id = "delivery_and_collection">
                     <option value = "Yes">Yes</option>
                     <option value = "No">No</option>
-                </select><br><br></td>
+                </select><span class='error'> <?php echo $_SESSION['deliveryErr'] ?> <span><br><br></td>
                 </tr>
 
                 <tr>
@@ -279,7 +284,7 @@ function dateDiffInDays($date1, $date2)
                   <td><select name = "set_up" id = "set_up">
                     <option value = "Yes">Yes</option>
                     <option value = "No">No</option>
-                </select><br><br></td>
+                </select><span class='error'> <?php echo $_SESSION['setUpErr'] ?> <span><br><br></td>
                 </tr>
 
             </tbody>
@@ -298,8 +303,11 @@ function dateDiffInDays($date1, $date2)
           <h5>Start Date:</h5> <?php echo $_SESSION['delivery_date'] ?>
           <h5>End Date:</h5> <?php echo $_SESSION['collection_date'] ?>
           <h5>Delivery:</h5> <?php echo $_SESSION['delivery_preference'] ?>
+          <span class='error'> <?php echo $_SESSION['deliveryErr'] ?> </span>
           <h5>Setup Preference:</h5> <?php echo $_SESSION['set_up_preference'] ?>
+          <span class='error'> <?php echo $_SESSION['setUpErr'] ?> </span>
           <br>
+          
         <label for ="register-order"><h5>Comment or Special Instructions:</h5></label><br>
         <input type="text" name="db_orderComment" size = 80>
 

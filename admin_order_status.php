@@ -4,89 +4,104 @@ include('inc/detail.php');
 
 
 
-
 if($_SESSION['db_jobTitle']=="admin"){
-    $no_job="";
-    $admin ="admin";
-    $employee = "employee";
     $employee_ID = $_SESSION['db_employeeID'];
     $employee_name = $_SESSION['db_employeeName'];
     $job_title = $_SESSION['db_jobTitle'];
 
-    $employee_query = "SELECT * FROM employees WHERE db_jobTitle != '$admin' AND db_jobTitle != '$employee'";
-    $employee_results = $db->query($employee_query);
-    $num_employee_results = mysqli_num_rows($employee_results);
+    $delivery_query = "SELECT * FROM delivery_costs";
+    $delivery_results = $db->query($delivery_query);
+    $num_delivery_results = mysqli_num_rows($delivery_results);
 
-    $employee_query1 = "SELECT * FROM employees";
-    $employee_results1 = $db->query($employee_query1);
-    $num_employee_results1 = mysqli_num_rows($employee_results1);
-
-    $employee_query2 = "SELECT * FROM employees WHERE db_jobTitle = '$admin' OR db_jobTitle = '$employee'";
-    $employee_results2 = $db->query($employee_query2);
-    $num_employee_results2 = mysqli_num_rows($employee_results2);
-}
-
-$employeeErr= "";
-$priceErr="";
-$quantityErr="";
-$jobTitleErr="";
-$valid= true;
-if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
-    if (empty($_POST["db_employeeID"])) {
-        $employeeErr = "Employee is required";
-        $valid=false;
-    }
-    if (empty($_POST["db_jobTitle"])) {
-        $jobTitleErr = "Job Title is required";
-        $valid=false;
-    }
-
-    #Problem is with this if statement
-    if($valid!=false)
-    {
-        $db_employeeID =$_POST['db_employeeID'];
-        $db_jobTitle=$_POST['db_jobTitle'];
-        $query = "UPDATE employees SET db_jobTitle = '$db_jobTitle' WHERE db_employeeID = '$db_employeeID'";
-        $edit_employee = $db->query($query);
-    }
 
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
-    if (empty($_POST["db_employeeID"])) {
-        $employeeErr = "Employee is required";
+$query = "SELECT * FROM orders";
+$customer_orders = $db->query($query);
+$num_results = mysqli_num_rows($customer_orders);
+$orderErr="";
+$valid=true;
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit3'])) {
+    if (empty($_POST["order_id"])) {
+        $orderErr = "Order is required";
+        $valid=false;
+    }
+    else if ($_POST["order_id"]=='select') {
+        $orderErr = "Order is required";
         $valid=false;
     }
 
-    #Problem is with this if statement
-    if($valid!=false)
-    {
-        $db_employeeID =$_POST['db_employeeID'];
-        $query1 = "DELETE FROM employees WHERE db_employeeID = '$db_employeeID'";
-        $edit_product1 = $db->query($query1);
-    }
+    if($valid){
 
+        $db_orderID = $_POST["order_id"];
+        $query1 = "SELECT * FROM orders where db_orderID = $db_orderID";
+        $customer_orders1 = $db->query($query1);
+        $num_results1 = mysqli_num_rows($customer_orders1);
+        $row2 = mysqli_fetch_assoc($customer_orders1);
+        $delivery_date = $row2['db_deliveryDatetime'];
+        $collection_date = $row2['db_collectionDatetime'];
+        $deliveryPreference = $row2['db_deliveryPreference'];
+        $Yes='Yes';
+        $No='No';
+        
+        $during = "The customer currently has the rented items. They are due to be returned by $collection_date";
+        $before = "The order will be delivered on $delivery_date";
+        $after = "The order was collected on $collection_date";
+        $before1 = "The customer is due to collect the order on $delivery_date";
+        $after1 = "The customer has returned the rented items $collection_date";
+        $deliver_today = "The order is to be delivered today";
+        $deliver_today1 = "The customer is due to have their order collected today";
+        $collect_today = "The customer is due to collect their order today" ;
+        $collect_today1 = "The customer is due to return their rented items today";
+
+        $dateFormat= 'Y-m-d';
+        $date = trim($delivery_date);
+        $time = strtotime($date);
+        $date1 = trim($collection_date);
+        $time1 = strtotime($date1);
+
+        if(date($dateFormat, $time) == date('Y-m-d') && $deliveryPreference==$Yes)
+        {
+            $string_output = $deliver_today;
+        }
+        else if(date($dateFormat, $time) == date('Y-m-d') && $deliveryPreference==$No)
+        {
+            $string_output = $deliver_today1;
+        }
+        else if(date($dateFormat, $time1) > date('Y-m-d') && date($dateFormat, $time) < date('Y-m-d'))
+        {
+            $string_output = $during;
+        }
+
+        else if(date($dateFormat, $time1) == date('Y-m-d') && $deliveryPreference==$Yes)
+        {
+            $string_output = $collect_today;
+        }
+        else if(date($dateFormat, $time1) == date('Y-m-d') && $deliveryPreference==$No)
+        {
+            $string_output = $collect_today1;
+        }
+
+        else if(date($dateFormat, $time) > date('Y-m-d') && $deliveryPreference==$Yes)
+        {
+            $string_output = $before ;
+        }
+        else if(date($dateFormat, $time1) < date('Y-m-d') && $deliveryPreference==$Yes)
+        {
+            $string_output = $after;
+        }
+        else if(date($dateFormat, $time) > date('Y-m-d') && $deliveryPreference==$No)
+        {
+            $string_output = $before1 ;
+        }
+        else if(date($dateFormat, $time1) < date('Y-m-d') && $deliveryPreference==$No)
+        {
+            $string_output = $after1;
+        }
+    }
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit3'])) {
-    if (empty($_POST["db_employeeID"])) {
-        $employeeErr = "Employee is required";
-        $valid=false;
-    }
-    if (empty($_POST["db_jobTitle"])) {
-        $jobTitleErr = "Job Title is required";
-        $valid=false;
-    }
 
-    #Problem is with this if statement
-    if($valid!=false)
-    {
-        $db_employeeID =$_POST['db_employeeID'];
-        $query1 = "UPDATE employees SET db_jobTitle = '$db_jobTitle' WHERE db_employeeID = '$db_employeeID'";
-        $edit_product1 = $db->query($query1);
-    }
-
-}
 
 ?>
 
@@ -164,7 +179,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit3'])) {
                         <a class="collapse-item" href="alter_products.php">Manage Prices/Quantities</a>
                         <a class="collapse-item" href="add_new_products.php">Add Products</a>
                         <a class="collapse-item" href="special_offers.php">Manage Special Offers</a>
-
                     </div>
                 </div>
             </li>
@@ -362,138 +376,59 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit3'])) {
                     <!-- Content Row -->
                     <div class="row">
 
-                        <!-- Content Column -->
+
                         <div class="col-lg-6 mb-4">
+                          <div class="card shadow mb-4">
+                              <div class="card-header py-3">
+                                  <h6 class="m-0 font-weight-bold text-primary">Order Status:</h6>
+                              </div>
+                              <div class="card-body">
+                                <form class="dd" action="" method="post" >
 
-                            <!-- Project Card Example -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Verify Employees and Assign Title:</h6>
-                                </div>
-                                <div class="card-body">
-                                  <form class="dd" action="" method="post" >
+                                <table class="dd">
 
-                                  <table class="dd">
-
-                                  <tr>
-                                    <td><label for="order_id" style="margin-right:20px;">Employee Name:</label></td>
-                                    <td style="width: 399px; height: 38px;" class="auto-style2">
-                                    <select name="db_employeeID" style="width: 399px" class="auto-style1" required>
-                                    <option value= "select">--Select an Employee--</option>
+                                <tr>
+                                    <td><label for="order_id" style="width: 100px;">Select an Order ID:</label></td>
+                                    <td style="width: 618px; height: 38px;" class="auto-style2">
+                                    <select name="order_id" style="width: 300px" class="auto-style1" required>
+                                    <option value= "select">--Select an Order--</option>
                                     <?php
-                                      for($i = 0;$i<$num_employee_results;$i++)
-                                      {
-                                        //Move query up top and iterate through results here with an if statement
-                                        $row = mysqli_fetch_assoc($employee_results);
-                                        echo '<option value = "'.$row['db_employeeID'].'"> Employee Name: '.$row['db_employeeName']." Employee ID: ".$row['db_employeeID'].' </option>';
+                                    for($i = 0;$i<$num_results;$i++)
+                                    {
+                                        $row = mysqli_fetch_assoc($customer_orders);
+                                        $q = 'select * from orders where '.$row['db_orderID'].'= orders.db_orderID';
+                                        $result2 = $db->query($q);
+                                        $row2 = mysqli_fetch_assoc($result2);
 
-                                      }
+                                        echo '<<option value ="'.$row['db_orderID'].'">Order ID: '.$row['db_orderID']." On ".$row['db_deliveryDatetime'].'</option>';
+                                    }
                                     ?>
-                                  </tr>
-                                  <tr>
-                                      <td><label for ="members">Job Title:</label></td>
-                                      <td><select name="db_jobTitle" id="db_jobTitle">
-                                        <option value="admin">Admin</option>
-                                        <option value="employee">Employee</option>
-                                        </select><span class='error'> <?php echo $jobTitleErr ?> <span></td>
-                                  </tr>
-                                  <tr>
+
+
+                                </tr>
+
+                                <tr>
                                     <td></td>
-                                    <td><input class="btn btn-success" style="margin-top: 20px;"type="submit" value="Submit" name ="submit"><input style="margin-left: 4px;margin-top: 20px;"class="btn btn-danger" type="reset" value="Reset"></td>
-                                  </tr>
-                                  </table>
+                                    <td><input class="btn btn-success" type="submit" name ="submit3" value="Submit"><input style="margin-left: 4px;"class="btn btn-danger" type="reset" value="Reset"></td>
+                                </tr>
+                                </table>
 
-                                  </form>
-                                </div>
+                                </form>
+                                <br><br>
+
+                                <?php 
+                                if(isset($string_output))
+                                {
+                                    
+                                    echo $string_output;
+                                }
+                                ?>
+
                             </div>
-
-                        </div>
-
-                        <div class="col-lg-6 mb-4">
-                          <div class="card shadow mb-4">
-                              <div class="card-header py-3">
-                                  <h6 class="m-0 font-weight-bold text-primary">Delete Employees:</h6>
-                              </div>
-                              <div class="card-body">
-                                <form class="dd" action="" method="post" >
-
-                                <table class="dd">
-
-                                <tr>
-                                  <td><label for="order_id" style="margin-right: 20px;">Employee Name:</label></td>
-                                  <td style="width: 399px; height: 38px;" class="auto-style2">
-                                  <select name="db_employeeID" style="width: 399px" class="auto-style1" required>
-                                  <option value= "select">--Select an Employee--</option>
-                                  <?php
-                                    for($i = 0;$i<$num_employee_results1;$i++)
-                                    {
-                                      //Move query up top and iterate through results here with an if statement
-                                      $row1 = mysqli_fetch_assoc($employee_results1);
-                                      echo '<option value = "'.$row1['db_employeeID'].'"> Employee Name: '.$row1['db_employeeName']." Employee ID: ".$row1['db_employeeID'].' </option>';
-
-                                    }
-                                  ?>
-                                </tr>
-                                <tr>
-                                  <td></td>
-                                  <td><input class="btn btn-success" style="margin-top: 20px;"type="submit" value="Submit" name ="submit2"><input style="margin-left: 4px; margin-top: 20px;"class="btn btn-danger" type="reset" value="Reset"></td>
-                                </tr>
-                                </table>
-
-                                </form>
-                              </div>
                           </div>
 
 
                         </div>
-
-
-                        <div class="col-lg-6 mb-4">
-                          <div class="card shadow mb-4">
-                              <div class="card-header py-3">
-                                  <h6 class="m-0 font-weight-bold text-primary">Edit Employees:</h6>
-                              </div>
-                              <div class="card-body">
-                                <form class="dd" action="" method="post" >
-
-                                <table class="dd">
-
-                                <tr>
-                                  <td><label for="order_id" style="margin-right: 20px;">Employee Name:</label></td>
-                                  <td style="width: 399px; height: 38px;" class="auto-style2">
-                                  <select name="db_employeeID" style="width: 399px" class="auto-style1" required>
-                                  <option value= "select">--Select an Employee--</option>
-                                  <?php
-                                    for($i = 0;$i<$num_employee_results2;$i++)
-                                    {
-                                      //Move query up top and iterate through results here with an if statement
-                                      $row2 = mysqli_fetch_assoc($employee_results2);
-                                      echo '<option value = "'.$row2['db_employeeID'].'"> Employee Name: '.$row2['db_employeeName']." Employee ID: ".$row2['db_employeeID'].' </option>';
-
-                                    }
-                                  ?>
-                                </tr>
-                                <tr>
-                                    <td><label for ="members">Job Title:</label></td>
-                                    <td><select name="db_jobTitle" id="db_jobTitle">
-                                    <option value="admin">Admin</option>
-                                    <option value="employee">Employee</option>
-                                    </select><span class='error'> <?php echo $jobTitleErr ?> <span></td>
-                                </tr>
-                                <tr>
-                                  <td></td>
-                                  <td><input class="btn btn-success" style="margin-top: 20px;"type="submit" value="Submit" name ="submit3"><input style="margin-left: 4px; margin-top: 20px;"class="btn btn-danger" type="reset" value="Reset"></td>
-                                </tr>
-                                </table>
-
-                                </form>
-                              </div>
-                          </div>
-
-
-                        </div>
-
-
                     </div>
 
                 </div>
