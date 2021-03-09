@@ -392,7 +392,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             $earnings_query = "SELECT SUM(db_rentalPrice) FROM `orders` WHERE db_orderCreatedAt >= '$last_week';";
                                             $earnings_weekly_results = $db->query($earnings_query);
                                             $row1 = mysqli_fetch_row($earnings_weekly_results);
-                                            echo "$row1[0]" ; ?> </div>
+                                            echo round($row1[0],2) ; ?> </div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
