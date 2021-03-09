@@ -366,6 +366,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
                                 </div>
                             </div>
 
+
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">Sales Revenue by Product:</h6>
@@ -487,6 +488,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
                                     ?>
 
                                     </table>
+
+
+                                </div>
+                            </div>
+
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Extra Report:</h6>
+                                </div>
+                                  <div class="card-body">
+
+                                    <!-- put report in here -->
 
 
                                 </div>
