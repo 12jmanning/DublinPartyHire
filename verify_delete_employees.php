@@ -20,6 +20,10 @@ if($_SESSION['db_jobTitle']=="admin"){
     $employee_query1 = "SELECT * FROM employees";
     $employee_results1 = $db->query($employee_query1);
     $num_employee_results1 = mysqli_num_rows($employee_results1);
+
+    $employee_query2 = "SELECT * FROM employees WHERE db_jobTitle = '$admin' OR db_jobTitle = '$employee'";
+    $employee_results2 = $db->query($employee_query2);
+    $num_employee_results2 = mysqli_num_rows($employee_results2);
 }
 
 $employeeErr= "";
@@ -64,6 +68,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
 
 }
 
+if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit3'])) {
+    if (empty($_POST["db_employeeID"])) {
+        $employeeErr = "Employee is required";
+        $valid=false;
+    }
+    if (empty($_POST["db_jobTitle"])) {
+        $jobTitleErr = "Job Title is required";
+        $valid=false;
+    }
+
+    #Problem is with this if statement
+    if($valid!=false)
+    {
+        $db_employeeID =$_POST['db_employeeID'];
+        $query1 = "UPDATE employees SET db_jobTitle = '$db_jobTitle' WHERE db_employeeID = '$db_employeeID'";
+        $edit_product1 = $db->query($query1);
+    }
+
+}
 
 ?>
 
@@ -384,10 +407,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
                                 </div>
                             </div>
 
-
-
-
-
                         </div>
 
                         <div class="col-lg-6 mb-4">
@@ -427,6 +446,54 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
 
 
                         </div>
+
+
+                        <div class="col-lg-6 mb-4">
+                          <div class="card shadow mb-4">
+                              <div class="card-header py-3">
+                                  <h6 class="m-0 font-weight-bold text-primary">Delete Employees:</h6>
+                              </div>
+                              <div class="card-body">
+                                <form class="dd" action="" method="post" >
+
+                                <table class="dd">
+
+                                <tr>
+                                  <td><label for="order_id" style="margin-right: 20px;">Employee Name:</label></td>
+                                  <td style="width: 399px; height: 38px;" class="auto-style2">
+                                  <select name="db_employeeID" style="width: 399px" class="auto-style1" required>
+                                  <option value= "select">--Select an Employee--</option>
+                                  <?php
+                                    for($i = 0;$i<$num_employee_results2;$i++)
+                                    {
+                                      //Move query up top and iterate through results here with an if statement
+                                      $row2 = mysqli_fetch_assoc($employee_results2);
+                                      echo '<option value = "'.$row2['db_employeeID'].'"> Employee Name: '.$row2['db_employeeName']." Employee ID: ".$row2['db_employeeID'].' </option>';
+
+                                    }
+                                  ?>
+                                </tr>
+                                <tr>
+                                    <td><label for ="members">Job Title:</label></td>
+                                    <td><select name="db_jobTitle" id="db_jobTitle">
+                                    <option value="admin">Admin</option>
+                                    <option value="employee">Employee</option>
+                                    </select><span class='error'> <?php echo $jobTitleErr ?> <span></td>
+                                </tr>
+                                <tr>
+                                  <td></td>
+                                  <td><input class="btn btn-success" style="margin-top: 20px;"type="submit" value="Submit" name ="submit3"><input style="margin-left: 4px; margin-top: 20px;"class="btn btn-danger" type="reset" value="Reset"></td>
+                                </tr>
+                                </table>
+
+                                </form>
+                              </div>
+                          </div>
+
+
+                        </div>
+
+
                     </div>
 
                 </div>
