@@ -335,7 +335,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
                                 </div>
                                 <div class="card-body">
                                   <?php
-
+                                  $hours_worked_per_shift = 0;
                                   $last_week = date("Y-m-d H:i:s", strtotime("-1 week"));
 
                                   $time_query = "SELECT employee_timesheets.db_timesheetID, employee_timesheets.db_startDatetime, employee_timesheets.db_endDatetime, employees.db_employeeName
@@ -355,14 +355,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
                                   $total_hours_worked = 0;
                                   while($row3 = mysqli_fetch_row($time_details))
                                   {
+                                    $timestamp_start = strtotime($row3[1]);
+                                    $timestamp_end = strtotime($row3[2]);
+                                    if($timestamp_end == strtotime("0000-00-00 00:00:00")){
+                                        $hours_worked_per_shift = 0;
+                                    }
+                                    else if($timestamp_end != strtotime("0000-00-00 00:00:00")){
+                                      $hours_worked_per_shift = round(abs($timestamp_end - $timestamp_start) / (60*60), 2);
+                                    }
+
                                       echo "<tr>";
                                       echo "<td>$row3[0]</td>";
                                       echo "<td>$row3[3]</td>";
-                                      echo "<td>$row3[1]</td>"; $timestamp_start = strtotime($row3[1]);
-                                      echo "<td>$row3[2]</td>"; $timestamp_end = strtotime($row3[2]);
-                                      echo "<td>", round(abs($timestamp_end - $timestamp_start) / (60*60), 2) ,"</td>";
+                                      echo "<td>$row3[1]</td>";
+                                      echo "<td>$row3[2]</td>";
+                                      echo "<td>", $hours_worked_per_shift ,"</td>";
                                       echo "</tr>";
-                                      $total_hours_worked += round(abs($timestamp_end - $timestamp_start) / (60*60), 2);
+                                      $total_hours_worked += $hours_worked_per_shift;
                                   }
                                   echo "<tr>";
                                   echo "<td> </td>";
