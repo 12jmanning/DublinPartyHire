@@ -99,9 +99,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
 
          <tr>
            <td></td>
-           <td><?php echo $deliveryDateErr ?></td>
+           <td><?php echo "<p class='my-error'>", $deliveryDateErr, "</p>" ?></td>
            <td></td>
-           <td><?php echo $collectionDateErr ?></td>
+           <td><?php echo "<p class='my-error'>", $collectionDateErr, "</p>" ?></td>
            <td></td>
          </tr>
 
