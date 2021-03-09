@@ -20,5 +20,5 @@ $q .= ") VALUES (";
 $q .= "'$db_customerName', '$db_customerAddress', '$db_county', '$db_customerEircode','$db_customerEmail','$db_customerPhone', '$db_customerPW')";
 
 $result = $db->query($q);
-
+ // hello
 ?>
