@@ -717,6 +717,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
                                 </table>
                             </div>
                           </div>
+                        <div class="card shadow mb-4">
                           <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">Orders Placed Between Two Dates:</h6>
                                 </div>
@@ -770,6 +771,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
 
 
                                 </div>
+
+                            </div>
 
                                         
                         </div>
