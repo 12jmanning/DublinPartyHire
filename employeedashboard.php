@@ -239,8 +239,31 @@ function reload3(form)
                                   <div class="card-body">
                                     <form method="post" action="">
 
-                                            <input class="btn btn-success"type="submit" value = "Clock In" name="ClockIn">
-                                            <input class="btn btn-danger"type="submit" name="ClockOut" value="Clock Out">
+
+
+                                            <?php
+                                            $status_query = "SELECT db_timesheetID, db_startDatetime, db_endDatetime FROM employee_timesheets WHERE db_employeeID = '$employeeID' ORDER  BY db_timesheetID DESC LIMIT  1";
+
+                                            $employee_status = $db->query($status_query);
+                                            $row1 = mysqli_fetch_assoc($employee_status);
+                                            $start_time = $row1['db_startDatetime'];
+                                            $end_time = $row1['db_endDatetime'];
+
+
+
+
+                                            if($end_time != "0000-00-00 00:00:00"){
+                                                // print only clock in
+                                                echo "<input class='btn btn-success btn-lg btn-block'type='submit' value = 'Clock In' name='ClockIn'>";
+                                            }
+
+                                            if($end_time == "0000-00-00 00:00:00"){
+                                                // print only clock out button clock out
+                                                echo "<input class='btn btn-danger btn-lg btn-block'type='submit' name='ClockOut' value='Clock Out'>";
+                                            }
+
+
+                                            ?>
                                             <?php echo "$clocked_in_successful"; echo "$clocked_out_successful" ;?>
                                     </form>
 
