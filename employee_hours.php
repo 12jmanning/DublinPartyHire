@@ -23,23 +23,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
         $timeErr = "End Date must be inputted";
         $valid=false;
     }
-    // if($valid)
-    // {
-    //     if (!is_numeric($_POST["db_productPrice"])) {
-    //         $priceErr = "Product Price must be numeric";
-    //         $valid=false;
-    //     }
-    //     else if ($_POST["db_productPrice"]<=0) {
-    //         $priceErr = "Product Price must be greater than 0";
-    //         $valid=false;
-    //     }
-    // }
+
 
     if($valid!=false)
     {
         $db_timesheetID =$_POST['timesheet_id'];
         $db_endDatetime=$_POST['db_endDatetime'];
         $query = "UPDATE employee_timesheets SET db_endDatetime = '$db_endDatetime' WHERE db_timesheetID = '$db_timesheetID'";
+        $edit_product = $db->query($query);
+
+    }
+
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit_start_time'])) {
+    if (($_POST["timesheet_id"])== "select") {
+        $shiftErr = "You must select a shift";
+        $valid=false;
+    }
+    if (empty($_POST["db_startDatetime"])) {
+        $timeErr = "Start Date must be inputted";
+        $valid=false;
+    }
+
+
+    if($valid!=false)
+    {
+        $db_timesheetID =$_POST['timesheet_id'];
+        $db_startDatetime=$_POST['db_startDatetime'];
+        $query = "UPDATE employee_timesheets SET db_startDatetime = '$db_startDatetime' WHERE db_timesheetID = '$db_timesheetID'";
         $edit_product = $db->query($query);
 
     }
@@ -396,7 +408,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
                         <div class="col-lg-6 mb-4">
                           <div class="card shadow mb-4">
                               <div class="card-header py-3">
-                                  <h6 class="m-0 font-weight-bold text-primary">Alter Employees Shifts:</h6>
+                                  <h6 class="m-0 font-weight-bold text-primary">Alter Employees End Time:</h6>
                               </div>
                               <div class="card-body">
                                 <form class="dd" action="" method="post" >
@@ -437,6 +449,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit'])) {
                               </div>
                           </div>
 
+                          <div class="card shadow mb-4">
+                              <div class="card-header py-3">
+                                  <h6 class="m-0 font-weight-bold text-primary">Alter Employees Start Time:</h6>
+                              </div>
+                              <div class="card-body">
+                                <form class="dd" action="" method="post" >
+
+                                <table class="dd">
+
+                                <tr>
+                                  <td><label for="order_id" >Employee Shift:</label></td>
+                                  <td style="width: 399px; height: 38px;" class="auto-style2">
+                                  <select name="timesheet_id" style="width: 399px" class="auto-style1" required>
+                                  <option value= "select">--Select a Shift--</option>
+                                  <?php
+                                  $time_query = "SELECT employee_timesheets.db_timesheetID, employee_timesheets.db_startDatetime, employee_timesheets.db_endDatetime, employees.db_employeeName
+                                                        FROM `employee_timesheets` , `employees`
+                                                        WHERE db_startDatetime >= '$last_week' AND employee_timesheets.db_employeeID = employees.db_employeeID";
+                                  $time_details = $db->query($time_query);
+                                    for($i = 0;$i<$num_time_results;$i++)
+                                    {
+                                      //Move query up top and iterate through results here with an if statement
+                                      $row1 = mysqli_fetch_assoc($time_details);
+                                      echo '<option value = "'.$row1['db_timesheetID'].'"> Staff Name: '.$row1['db_employeeName']." Current Start Time: ".$row1['db_startDatetime'].' </option>';
+
+                                    }
+                                  ?>
+                                  <td><?php echo $shiftErr ?></td>
+                                </tr>
+                                <tr>
+                                    <td><label for ="members" style="margin-right: 20px;">New Start Date Time:</label></td>
+                                    <td><input type="datetime-local" name="db_startDatetime" id="db_startDatetime" size = 20><span class='error'> <?php echo $timeErr ?> </span></td>
+                                </tr>
+                                <tr>
+                                  <td></td>
+                                  <td><input class="btn btn-success" style="margin-top: 20px;"type="submit" value="Submit" name ="submit_start_time"><input style="margin-left: 4px; margin-top: 20px;"class="btn btn-danger" type="reset" value="Reset"></td>
+                                </tr>
+                                </table>
+
+                                </form>
+                              </div>
+                          </div>
 
                         </div>
                     </div>
