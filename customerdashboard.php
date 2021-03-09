@@ -155,7 +155,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
   </form>
   <br>
   <br>
-  <?php include('order_status.php'); ?>
+  <form class="" action="" method="post" name="invoice" id="invoice">
+    <?php include('order_status.php'); ?> 
+  </form>
 
 
 
