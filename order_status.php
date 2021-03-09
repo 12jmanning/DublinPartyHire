@@ -1,7 +1,7 @@
 <?php
 session_start();
 include('inc/detail.php');
-include('inc/navbar.php');
+
 
 if (!isset($_SESSION['db_customerID'])) {
     header('location: existingcustomers.php');
@@ -47,12 +47,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit3'])) {
         $deliveryPreference = $row2['db_deliveryPreference'];
         $Yes='Yes';
         $No='No';
-        
+        $nice_collection_date = date("D, d M Y", strtotime($collection_date));
+        $nice_delivery_date = date("D, d M Y", strtotime($delivery_date));
         $during = "You currently have your rented items. They are due to be returned by $collection_date";
-        $before = "Will be delivered on $delivery_date";
-        $after = "Was collected on $collection_date";
-        $before1 = "You are due to collect your order on $delivery_date";
-        $after1 = "You have returned your rented items $collection_date";
+        $before = "Will be delivered on $nice_delivery_date";
+        $after = "Was collected on $nice_collection_date";
+        $before1 = "You are due to collect your order on $nice_delivery_date";
+        $after1 = "You have returned your rented items $nice_collection_date";
         $deliver_today = "Your order is to be delivered today";
         $deliver_today1 = "You are due to collect your order today";
         $collect_today = "Your order is to be collected today" ;
@@ -111,18 +112,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit3'])) {
 
 </div>
 <div class="col-lg-4">
-  <h2>My Details:</h2>
-  <?php echo "Customer ID: ", $customer_ID, "<br>";
-        echo "Name: ", $customer_name, "<br>";
-        echo "Address: ", $customer_address, "<br>";
-        echo "County: ", $customer_county, "<br>";
-        echo "Eircode: ", $customer_eircode, "<br>";
-        echo "Phone: " , $customer_phone;
-
-
-
-
-  ?>
 
   <h2 style="padding-top:25px;">Order Status:</h2>
   <form class="" action="" method="post" name="invoice" id="invoice">
@@ -156,13 +145,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit3'])) {
   </table>
 
   </form>
-  <br><br>
-
   <?php 
   if(isset($string_output))
   {
-      
-      echo $string_output;
+      echo "<div class='alert alert-success' role='alert'>", $string_output, "</div>";
   }
   ?>
 
