@@ -14,6 +14,8 @@ $db_deliveryDatetime= $row1['db_deliveryDatetime'];
 $db_collectionDatetime= $row1['db_collectionDatetime'];
 $db_setUpPreference= $row1['db_setUpPreference'];
 $db_deliveryPreference= $row1['db_deliveryPreference'];
+$delivery_collection_pref = $row1['db_deliveryPreference'];
+$set_up_pref = $row1['db_setUpPreference'];
 $yes="Yes";
 
 //$number_periods =ceil(dateDiffInDays($db_deliveryDatetime, $db_collectionDatetime)/2);
@@ -39,7 +41,6 @@ for($i=0; $i<$num_vat_results; $i++)
     margin-bottom: 20px;
     width: 20%;" onClick="window.print()">Print Me</button>
 </div>
-
 
 <div class="row" style="margin-left: auto;margin-right: auto;padding-left: 25%;">
   <div class="col-lg-4">
@@ -87,11 +88,34 @@ for($i=0; $i<$num_vat_results; $i++)
                               WHERE db_orderID = '$order_ID'";
       $invoice_date_details = $db->query($invoice_date_query);
       $row = mysqli_fetch_assoc($invoice_date_details);
-      $created_at = $row['db_orderCreatedAt'] ; echo $created_at, "<br>";
+      $created_at = $row['db_orderCreatedAt'] ; echo date("D, d M Y", strtotime( $created_at)), "<br>";
      ?>
 
   </div>
 
+</div>
+<br>
+<div class="row" style="margin-left: auto;margin-right: auto;padding-left: 25%;">
+  <div class="col-lg-4">
+    <p><strong>START DATE:</strong></p>
+    <?php echo date("D, d M Y", strtotime( $db_deliveryDatetime)); ?>
+  </div>
+  <div class="col-lg-4">
+    <p><strong>END DATE:</strong></p>
+    <?php echo date("D, d M Y", strtotime( $db_collectionDatetime)); ?>
+  </div>
+</div>
+<br>
+
+<div class="row" style="margin-left: auto;margin-right: auto;padding-left: 25%;">
+  <div class="col-lg-4">
+    <p><strong>DELIVERY/COLLECTION:</strong></p>
+    <?php echo "$delivery_collection_pref"; ?>
+  </div>
+  <div class="col-lg-4">
+    <p><strong>SETUP:</strong></p>
+    <?php echo "$set_up_pref"; ?>
+  </div>
 </div>
 <br>
 <div class="row" style="margin-left: auto;
@@ -123,7 +147,7 @@ for($i=0; $i<$num_vat_results; $i++)
   echo '<tr class="first-row-database">';
       echo "<td><strong>Quantity</strong></td>";
       echo "<td><strong>Description</strong></td>";
-      echo "<td><strong>Unit Price</strong></td>";
+      echo "<td><strong>Per 48hrs</strong></td>";
       echo "<td><strong>Set Up Price</strong></td>";
     echo "<td><strong>Total</strong></td>";
     echo "</tr>";
@@ -141,9 +165,9 @@ for($i=0; $i<$num_vat_results; $i++)
     echo "<tr>";
     echo "<td>$row[0]</td>";
     echo "<td>$row[1]</td>";
-    echo "<td>$row[2]</td>";
-    echo "<td>$adjusted_set_up</td>";
-    echo "<td>", (((($row[2])* $row[0])*$number_periods)+($adjusted_set_up* $row[0])) , "</td>";
+    echo "<td>€", $row[2],"</td>";
+    echo "<td>€", $adjusted_set_up, "</td>";
+    echo "<td>€", (((($row[2])* $row[0])*$number_periods)+($adjusted_set_up* $row[0])) , "</td>";
     echo "</tr>";
     $subtotal += (((($row[2])* $row[0])*$number_periods)+($adjusted_set_up* $row[0]));
     $delivery = $row[4];
@@ -153,7 +177,7 @@ for($i=0; $i<$num_vat_results; $i++)
   echo "<td> </td>";
   echo "<td> </td>";
   echo "<td> SUBTOTAL</td>";
-  echo "<td>$subtotal </td>";
+  echo "<td>€", $subtotal ,"</td>";
   echo "</tr>";
 
   echo "<tr>";
@@ -161,7 +185,7 @@ for($i=0; $i<$num_vat_results; $i++)
   echo "<td> </td>";
   echo "<td> </td>";
   echo "<td> VAT @ 23% </td>";
-  echo "<td>", $subtotal * ($dv_vatRate/100), "</td>";
+  echo "<td>€", $subtotal * ($dv_vatRate/100), "</td>";
   echo "</tr>";
 
   echo "<tr>";
@@ -169,7 +193,7 @@ for($i=0; $i<$num_vat_results; $i++)
   echo "<td> </td>";
   echo "<td> </td>";
   echo "<td> DELIVERY CHARGES</td>";
-  echo "<td>", $delivery, "</td>";
+  echo "<td>€", $delivery, "</td>";
   echo "</tr>";
 
   echo "<tr>";
@@ -177,7 +201,7 @@ for($i=0; $i<$num_vat_results; $i++)
   echo "<td> </td>";
   echo "<td></td>";
   echo "<td> TOTAL DUE </td>";
-  echo "<td>", (round($subtotal * (1+ ($dv_vatRate/100)),2)) + $row[4] +$delivery , "</td>";
+  echo "<td>€", (round($subtotal * (1+ ($dv_vatRate/100)),2)) + $row[4] +$delivery , "</td>";
   echo "</tr>";
 
 
