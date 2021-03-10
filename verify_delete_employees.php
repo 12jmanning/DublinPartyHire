@@ -8,7 +8,16 @@
 session_start();
 include('inc/detail.php');
 
+$now_today_date = date("Y-m-d H:i:s");
+$start_today_date = date("Y-m-d");
+$start_today_date = $start_today_date.''."T00:00:00.00";
+$no_time = "0000-00-00T00:00:00.00";
+$employee_title ="employee";
 
+$employee_queryX = "SELECT employees.db_employeeID, employees.db_employeeName FROM employees, employee_timesheets WHERE employees.db_employeeID=employee_timesheets.db_employeeID AND employees.db_jobTitle='$employee_title' AND (employee_timesheets.db_StartDatetime BETWEEN '$start_today_date' AND '$now_today_date') AND employee_timesheets.db_endDatetime = '0'";
+
+$employee_resultsX = $db->query($employee_queryX);
+$num_employee_resultsX = mysqli_num_rows($employee_resultsX);
 
 
 if($_SESSION['db_jobTitle']=="admin"){
@@ -290,39 +299,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit3'])) {
                                 <h6 class="dropdown-header">
                                     Alerts Center
                                 </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for your account.
-                                    </div>
-                                </a>
+                                <?php
+                                for($i = 0;$i<$num_employee_resultsX;$i++)
+                                {
+                                //Move query up top and iterate through results here with an if statement
+                                $row_employeeX = mysqli_fetch_assoc($employee_resultsX);
+
+                                echo '<a class="dropdown-item d-flex align-items-center" href="#">';
+                                echo '<div class="mr-3">';
+                                echo '<div class="icon-circle bg-primary">';
+                                echo '<i class="fas fa-file-alt text-white"></i>';
+                                echo '</div>';
+                                echo '</div>';
+                                echo '<div>';
+                                echo '<div class="small text-gray-500">Employee ID:'.$row_employeeX["db_employeeID"].' </div>';
+                                echo '<span class="font-weight-bold">Employee Name: '.$row_employeeX["db_employeeName"].'</span>';
+                                echo '</div>';
+                                echo '</a>';
+
+                                }
+                                ?>
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                             </div>
                         </li>
