@@ -81,15 +81,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $valid=false;
     }
     if ($_POST["employee_id"]==$select) {
-        $db_employeeErr = "Employee is required";
+        $db_employeeErr= $db_vanErr = "Van, Employee and Order are required";
         $valid=false;
     }
     if ($_POST["van_id"]==$select) {
-        $db_vanErr = "Van is required";
+        $db_vanErr = "Van, Employee and Order are required";
         $valid=false;
     }
     if ($_POST["transit_id"]==$select) {
-        $db_transitErr = "transit is required";
+        $db_transitErr = $db_vanErr = "Van, Employee and Order are required";
         $valid=false;
     }
     if($valid==true ){
@@ -605,12 +605,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         echo '<option value = "'.$row['db_transitID'].'"> Order ID: '.$row['db_orderID']." Type: ".$row['db_transitType'].' </option>';
 
                                       }
-                                    ?><span class='error'> <?php echo $db_transitErr ?> <span>
+                                    ?><span class='error'> <?php echo $db_transitErr ?> </span>
                                   </tr>
                                   <tr>
                                     <td><label for="order_id">Van ID:</label></td>
                                     <td style="width: 399px; height: 38px;" class="auto-style2">
                                     <select name="van_id" style="width: 300px" class="auto-style1" required>
+                                    <span class='error'> <?php echo $db_vanErr ?> </span>
                                     <option value= "select">--Select a Van--</option>
                                     <?php
                                       for($i = 0;$i<$num_van_results;$i++)
@@ -621,12 +622,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                       }
                                     ?>
-                                    <span class='error'> <?php echo $db_vanErr ?> <span></td>
+                                    <span class='error'> <?php echo $db_vanErr ?> </span></td>
                                   </tr>
                                   <tr>
                                     <td><label for="order_id">Employee ID:</label></td>
                                     <td style="width: 399px; height: 38px;" class="auto-style2">
                                     <select name="employee_id" style="width: 300px" class="auto-style1" required>
+                                    <span class='error'> <?php echo $db_employeeErr ?> </span>
                                     <option value= "select">--Select an Employee--</option>
                                     <?php
                                       for($i = 0;$i<$num_employee_results;$i++)
@@ -637,7 +639,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                       }
                                     ?>
-                                    <span class='error'> <?php echo $db_employeeErr ?> <span></td>
+                                    <span class='error'> <?php echo $db_employeeErr ?> </span></td>
                                   </tr>
 
                                   <tr>
