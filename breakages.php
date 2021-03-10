@@ -310,25 +310,17 @@ function reload3(form)
 
 
                                     <?php
-
-                                    ///////// Getting the data from Mysql table for first list box//////////
                                     $quer2="SELECT db_orderID FROM orders WHERE db_collectionDatetime<='$today'";
-                                    ///////////// End of query for first list box////////////
 
-                                    /////// for second drop down list we will check if category is selected else we will display all the subcategory/////
-                                    $db_orderID=$_GET['db_orderID']; // This line is added to take care if your global variable is off
+                                    $db_orderID=$_GET['db_orderID']; 
                                     if(isset($db_orderID) and strlen($db_orderID) > 0){
                                     $quer="SELECT product_orders.db_productID, products.db_productName, product_orders.db_productOrderID, product_orders.db_quantityOrdered FROM product_orders,products where product_orders.db_orderID = '$db_orderID' AND product_orders.db_productID = products.db_productID";
                                     }else{$quer="SELECT * FROM product_orders"; }
-                                    ////////// end of query for second subcategory drop down list box ///////////////////////////
 
-
-                                    /////// for Third drop down list we will check if sub category is selected else we will display all the subcategory3/////
-                                    $db_productID=$_GET['db_productID']; // This line is added to take care if your global variable is off
+                                    $db_productID=$_GET['db_productID']; 
                                     if(isset($db_productID) and strlen($db_productID) > 0){
                                     $quer3="SELECT product_orders.db_quantityOrdered FROM product_orders,products where product_orders.db_orderID = '$db_orderID' AND product_orders.db_productID = '$db_productID'";
                                     }else{$quer3="SELECT * FROM products"; }
-                                    ////////// end of query for third subcategory drop down list box ///////////////////////////
 
                                     $orderErr="";
                                     $productErr = "";
@@ -348,7 +340,7 @@ function reload3(form)
                                         $valid=false;
                                     }
 
-                                      #Problem is with this if statement
+
                                       if($valid!=false)
                                       {
                                           $db_orderID =$_POST['db_orderID'];
@@ -379,7 +371,7 @@ function reload3(form)
 
 
                                     echo "<form method=post name=f1 action=''>";
-                                    //////////        Starting of first drop downlist /////////
+                            
                                     echo "<label style='margin-right: 20px;'>Select an Order:</label>";
                                     echo "<select name='db_orderID' onchange=\"reload(this.form)\"><option value=''>Select one</option>";
                                     foreach ($db->query($quer2) as $noticia2) {
@@ -388,9 +380,7 @@ function reload3(form)
                                     }
                                     echo "</select> <span class='error'>$orderErr<span>";
                                     echo "<br>";
-                                    //////////////////  This will end the first drop down list ///////////
 
-                                    //////////        Starting of second drop downlist /////////
                                     echo "<label style='margin-right: 20px;'>Select an Item from The Order:</label>";
                                     echo "<select name='db_productID' onchange=\"reload3(this.form)\"><option value=''>Select one</option>";
                                     foreach ($db->query($quer) as $noticia) {
@@ -399,18 +389,12 @@ function reload3(form)
                                     }
                                     echo "</select>";
                                     echo "<br>";
-                                    //////////////////  This will end the second drop down list ///////////
 
-
-                                    //////////        Starting of third drop downlist /////////
                                     echo "<label style='margin-right: 20px;'>Select The Quantity Broken:</label>";
                                     foreach ($db->query($quer3) as $noticia) {
                                       $max_q = $noticia['db_quantityOrdered'];
                                     }
                                     echo  "<input type='number' name='db_quantityOrdered' value='1' min='1' max='$max_q' placeholder='Quantity Ordered' required>";
-
-                                    //////////////////  This will end the third drop down list ///////////
-
 
                                     echo "<br><input class='btn btn-success' style='margin-top:20px; margin-bottom:20px' type=submit name = 'submit' value='Submit the form data'></form>";
                                     echo "<br>" , "$success_message";
