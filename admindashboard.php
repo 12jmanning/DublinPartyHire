@@ -718,7 +718,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                               <div class="col-lg-6 mb-4">
                                   <a class="btn card bg-primary text-white shadow" href="alter_products.php">
                                       <div class="card-body">
-                                          Product Prices
+                                          Alter or Delete Products 
                                           <div class="text-white-50 small">Edit</div>
                                       </div>
                                   </a>

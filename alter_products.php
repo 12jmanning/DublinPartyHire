@@ -14,6 +14,8 @@ if($_SESSION['db_jobTitle']=="admin"){
 
     $product_results1 = $db->query($product_query);
     $num_product_results1 = mysqli_num_rows($product_results1);
+    $product_results2 = $db->query($product_query);
+    $num_product_results2 = mysqli_num_rows($product_results2);
 }
 
 $productErr= "";
@@ -81,7 +83,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
     }
 
 }
+if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit3'])) {
+    if (empty($_POST["product_id"])) {
+        $productErr = "Product is required";
+        $valid=false;
+    }
+    #Problem is with this if statement
+    if($valid!=false)
+    {
+        $db_productID =$_POST['product_id'];
+        $query3 = "DELETE FROM products WHERE db_productID = '$db_productID'";
+        $edit_product3 = $db->query($query3);
+    }
 
+}
 
 ?>
 
@@ -394,6 +409,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit2'])) {
                                   <tr>
                                     <td></td>
                                     <td><input class="btn btn-success" style="margin-top: 10px;" type="submit" value="Submit" name ="submit"><input style="margin-left: 4px; margin-top: 10px;"class="btn btn-danger" type="reset" value="Reset"></td>
+                                  </tr>
+                                  </table>
+
+                                  </form>
+
+                                </div>
+                            </div>
+
+
+                            <!-- Project Card Example -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Delete Products:</h6>
+                                </div>
+                                <div class="card-body">
+                                  <form class="dd" action="" method="post" >
+
+                                  <table class="dd">
+
+                                  <tr>
+                                    <td><label for="order_id">Product Name:</label></td>
+                                    <td style="width: 399px; height: 38px;" class="auto-style2">
+                                    <select name="product_id" style="width: 399px" class="auto-style1" required>
+                                    <option value= "select">--Select a Product--</option>
+                                    <?php
+                                      for($i = 0;$i<$num_product_results1;$i++)
+                                      {
+                                        //Move query up top and iterate through results here with an if statement
+                                        $row2 = mysqli_fetch_assoc($product_results2);
+                                        echo '<option value = "'.$row2['db_productID'].'"> Product Name: '.$row2['db_productName']." Current Price: ".$row2['db_productPrice'].' </option>';
+
+                                      }
+                                    ?>
+                                  </tr>
+                                  
+                                  <tr>
+                                    <td></td>
+                                    <td><input class="btn btn-success" style="margin-top: 10px;" type="submit" value="Submit" name ="submit3"><input style="margin-left: 4px; margin-top: 10px;"class="btn btn-danger" type="reset" value="Reset"></td>
                                   </tr>
                                   </table>
 
