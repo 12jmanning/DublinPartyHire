@@ -88,9 +88,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['update'])) {
     <form method="post" action = ""  name="order_form" id="order_form" style="text-align: -webkit-center;">
       <table>
         <tr>
-          <td><label for="delivery_date" style="padding-right: 20px;">Delivery Date:</label></td>
+          <td><label for="delivery_date" style="padding-right: 20px;">Start Date:</label></td>
           <td ><input type="date" name="delivery_date" id="delivery_date" style="width: 150px;"></td>
-            <td><label for="collection_date" style="padding-right: 20px; padding-left: 20px;">Collection Date:</label></td>
+            <td><label for="collection_date" style="padding-right: 20px; padding-left: 20px;">End Date:</label></td>
             <td><input type="date" name="collection_date" id="collection_date" style="width:150px;" ></td>
             <td><input class="btn" type="submit" value="Filter Products" name="update" style="background-color: #C46BAE; color: #fff; margin:auto; margin-left: 20px;"></td>
         </tr>
