@@ -1,4 +1,5 @@
 <?php
+//The frontend homepage of the website. This page has images, text, features, and the special offer products on the homepage. It also allows the customers to enter the start date and end date of their event/period of rental. This allows the products to have their quantities adjusted to the available quantity or the dates entered. From there, they can have access to the products page, cart and login pages. 
 // Get the 4 most recently added products
 session_start();
 $stmt = $pdo->prepare("SELECT * from products, special_offers WHERE products.db_productID = special_offers.db_productID");

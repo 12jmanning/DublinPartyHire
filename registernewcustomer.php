@@ -1,4 +1,5 @@
 <?PHP
+//The new customers php page allows new customers to register with their name,	address, eircode, county email, phone number and password. Extensive validations are done on this form through the registernewcustomers.php to ensure user input is valid and the passwords entered are strong. Once validated, they are redirected to the cart or the customer dashboard depending on where they were redirected from. 
 //This php script passes the values input by the user into the members table of the database
 session_start();
 

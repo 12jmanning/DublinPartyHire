@@ -1,4 +1,8 @@
 <?php
+//This script allows admins to manually edit the employee_timesheets table. The admin can alter the end time or start time of a particular record in the employee_timesheets table. For ease of access, the table which is printed is an hours worked report from the past 7 days. It then calculates the total hours worked by all staff in DPH in the previous 7 days.  
+
+//There is also a large button to access the all_timesheets.php file.  
+
 session_start();
 include('inc/detail.php');
 
@@ -8,7 +12,15 @@ include('inc/detail.php');
 // order status
 // exceeding 39 hours in a week for an employee
 
+$now_today_date = date("Y-m-d H:i:s");
+$start_today_date = date("Y-m-d");
+$start_today_date = $start_today_date.''."T00:00:00.00";
+$no_time = "0000-00-00T00:00:00.00";
+$employee_title ="employee";
+$employee_query = "SELECT employees.db_employeeID, employees.db_employeeName FROM employees, employee_timesheets WHERE employees.db_employeeID=employee_timesheets.db_employeeID AND employees.db_jobTitle='$employee_title' AND (employee_timesheets.db_StartDatetime BETWEEN '$start_today_date' AND '$now_today_date') AND employee_timesheets.db_endDatetime = '0'";
 
+$employee_results1 = $db->query($employee_query);
+$num_employee_results1 = mysqli_num_rows($employee_results1);
 
 $shiftErr= "";
 $timeErr="";
@@ -251,7 +263,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit_start_time'])) {
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw" style="color: #fff;"></i>
                                 <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
+                                <span class="badge badge-danger badge-counter"><?php echo $num_employee_results1 ?></span>
                             </a>
                             <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -259,39 +271,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"&& isset($_POST['submit_start_time'])) {
                                 <h6 class="dropdown-header">
                                     Alerts Center
                                 </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for your account.
-                                    </div>
-                                </a>
+                                <?php
+                                for($i = 0;$i<$num_employee_results1;$i++)
+                                {
+                                //Move query up top and iterate through results here with an if statement
+                                $row_employee1 = mysqli_fetch_assoc($employee_results1);
+
+                                echo '<a class="dropdown-item d-flex align-items-center" href="#">';
+                                echo '<div class="mr-3">';
+                                echo '<div class="icon-circle bg-primary">';
+                                echo '<i class="fas fa-file-alt text-white"></i>';
+                                echo '</div>';
+                                echo '</div>';
+                                echo '<div>';
+                                echo '<div class="small text-gray-500">Employee ID:'.$row_employee1["db_employeeID"].' </div>';
+                                echo '<span class="font-weight-bold">Employee Name: '.$row_employee1["db_employeeName"].'</span>';
+                                echo '</div>';
+                                echo '</a>';
+
+                                }
+                                ?>
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                             </div>
                         </li>

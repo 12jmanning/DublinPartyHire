@@ -1,4 +1,5 @@
 <?PHP
+//This page allows existing customers to login with their existing credentials, their email and password. Once these are validated, they are moved either to the cart or the customer dashboard depending on where they were redirected onto this page from. This page also contains a link to the newcustomers.php page. 
 include('inc/navbar.php');
 ?>
 

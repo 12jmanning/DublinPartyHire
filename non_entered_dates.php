@@ -1,5 +1,6 @@
 
 <?php
+//The non_entered_dates.php page allows the user to enter the start and end date of their rental. This page is the redirect for when the user tries to access products, product or the cart without entering valid dates first. This page contains a form to allow the user to enter a start and end date. Validations are run on the user input to ensure that the dates are valid future dates. Once validated, they are stored as session variables and the user is redirected to the products page. 
 session_start();
 include('inc/detail.php');
 include('inc/navbar.php');

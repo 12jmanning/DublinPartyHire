@@ -1,4 +1,5 @@
 <?php
+//This file is called in the admindashboard.php file. It is form which takes in an orderID and produces a notification based on the current status of the order. The notification can take on 9 different options depending on when the item is due to be delivered/picked up by the customer or collected/dropped back by the customer. It searches through the order table to get the results.   
 session_start();
 include('inc/detail.php');
 

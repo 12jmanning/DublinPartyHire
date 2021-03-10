@@ -1,4 +1,5 @@
 <?php
+//The order status page is called in the customer dashboard and allows them to select any of their past or future ordersitted, the status of that particular order is printed out to the customer below the form. 
 session_start();
 include('inc/detail.php');
 

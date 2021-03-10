@@ -1,4 +1,5 @@
 <?php
+//The products page displays all of the products on offer from Dublin Party Hire. It displays an image, name and price for each item. When an item is clicked, the user is redirected to the product.php page where they will be able to add the item to their cart.  
 if(isset($_SESSION['delivery_date'])&&isset($_SESSION['collection_date']))
 {
     $delivery_date = $_SESSION['delivery_date'];

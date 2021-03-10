@@ -1,4 +1,6 @@
 <?PHP
+//The registeremployees.php page allows new employees to fill out their details into a form with their name and a strong password. From there, they will be designated as a non-registered employee and so will be redirected to the non_registered_employee.php page. They will also appear on the verify_delete_employees.php script where management can verify their account and designate them a job title or delete their account.  They will not have access to the employee dashboard and related files until they have been verified. 
+
 include('inc/navbar.php');
 ?>
 
