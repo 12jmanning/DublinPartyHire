@@ -1,30 +1,4 @@
 <?php
-//The admindashboard.php is the central part of the admin backend system. On the top row the admin can see the earnings in total of DPH, the earnings in the past 7 days, the number of transits which are due to be delivered/collected by DPH staff today and the number of employees currently clocked in to the system.  
-
- 
-
-//In the second row of items the “Transits Today” box shows all the deliveries/collections from today which have been assigned a van ID and an employee ID. This is essentially a schedule of the day for the DPH admins to figure out who’s delivering what where.  
-
- 
-
-//The Order Status box in the admin dashboard calls the admin_order_status.php script which generates a notification based on when the order is scheduled for.  
-
- 
-
-//The third row of items include the “Assign employees and vans to transit orders”. This is a form which finds initially all the orders from the current date which need to be delivered or collected from customers by DPH staff. It allows admins to schedule a van to the transit and also currently clocked in employees. Once an admin has submitted this form it will populate the table above it.  
-
- 
-
-//“Your Details” section prints out the admins employee ID, Name and Job title. There is also a wide range of buttons for which the admin can select the other pages from. 
-
- 
-
-//“Customers Collecting Orders Today” section prints out a table of all the customers who have made an order which is due to be picked up in DPH HQ by the customer today.  
-
- 
-
-//“Customers Returning Orders Today” section prints out a table of all the customers who currently have items out rented and are delivering them back to the DPH HQ today. This keeps track of who DPH are expecting to arrive into the warehouse.  
-
 session_start();
 include('inc/detail.php');
 
@@ -41,11 +15,10 @@ $employee_ID = $_SESSION['db_employeeID'];
 $employee_name = $_SESSION['db_employeeName'];
 $job_title = $_SESSION['db_jobTitle'];
 $employee="employee";
-$admin = "admin";
 $yes = "Yes";
 $transit_ID = $_SESSION['transit_ID'];
 
-if($job_title!=$admin)
+if($job_title==$employee)
 {
   header('location: employeedashboard.php');
 }
@@ -59,9 +32,6 @@ $employee_query = "SELECT employees.db_employeeID, employees.db_employeeName FRO
 $employee_results = $db->query($employee_query);
 $num_employee_results = mysqli_num_rows($employee_results);
 
-$employee_results1 = $db->query($employee_query);
-$num_employee_results1 = mysqli_num_rows($employee_results1);
-
 
 $today_date = date("Y-m-d");
 $admin_ID = $_SESSION['db_employeeID'];
@@ -72,55 +42,40 @@ $yes = "Yes";
 $query1 = "select orders.db_orderID, transit.db_transitType, transit.db_transitID from orders,transit where orders.db_orderID = transit.db_orderID AND db_deliveryPreference = '$yes' AND ((orders.db_deliveryDatetime= '$today_date' AND orders.db_deliveryID = transit.db_transitID ) OR (orders.db_collectionDatetime= '$today_date' AND orders.db_collectionID = transit.db_transitID))";
 $orders_today = $db->query($query1);
 $num_results = mysqli_num_rows($orders_today);
-$select="select";
-$valid=true;
-$db_employeeErr= $db_vanErr = $db_transitErr="";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    if (empty($_POST["employee_id"])||empty($_POST["van_id"])||empty($_POST['transit_id'])) {
-        $db_employeeErr = "Both fields are required";
-        $db_vanErr = "Both fields are required";
-        $valid=false;
-    }
-    if ($_POST["employee_id"]==$select) {
-        $db_employeeErr= $db_vanErr = "Van, Employee and Order are required";
-        $valid=false;
-    }
-    if ($_POST["van_id"]==$select) {
-        $db_vanErr = "Van, Employee and Order are required";
-        $valid=false;
-    }
-    if ($_POST["transit_id"]==$select) {
-        $db_transitErr = $db_vanErr = "Van, Employee and Order are required";
-        $valid=false;
-    }
-    if($valid==true ){
-        $employee_id = $_POST["employee_id"];
-        $van_id = $_POST["van_id"];
-        $transit_ID= $_POST['transit_id'];
-        $insert_query = "INSERT INTO employee_work_records (";
-        $insert_query .= "db_transitID, db_employeeID, db_vanID";
-        $insert_query .= ") VALUES (";
-        $insert_query .= "'$transit_ID','$employee_id','$van_id')";
-        $result_insert = $db->query($insert_query);
+  if (empty($_POST["employee_id"])||empty($_POST["van_id"])||empty($_POST['transit_id'])) {
+      $db_employeeErr = "Both fields are required";
+      $db_vanErr = "Both fields are required";
+      $valid=false;
+  }
+  if($valid==true ){
+      $employee_id = $_POST["employee_id"];
+      $van_id = $_POST["van_id"];
+      $transit_ID= $_POST['transit_id'];
+      $insert_query = "INSERT INTO employee_work_records (";
+      $insert_query .= "db_transitID, db_employeeID, db_vanID";
+      $insert_query .= ") VALUES (";
+      $insert_query .= "'$transit_ID','$employee_id','$van_id')";
+      $result_insert = $db->query($insert_query);
 
-        // echo '<table border="2">';
-        // echo '<tr class="first-row-database">';
-        //     echo "<td></td>";
-        //     echo "<td><strong>Transit ID</strong></td>";
-        //     echo "<td><strong>Employee ID</strong></td>";
-        //     echo "<td><strong>Van ID</strong></td>";
-        // echo "</tr>";
-        // echo "<tr>";
-        //     echo "<td></td>";
-        //     echo "<td> $transit_ID </td>";
-        //     echo "<td> $employee_id </td>";
-        //     echo "<td> $van_id </td>";
-        // echo "</tr>";
+      // echo '<table border="2">';
+      // echo '<tr class="first-row-database">';
+      //     echo "<td></td>";
+      //     echo "<td><strong>Transit ID</strong></td>";
+      //     echo "<td><strong>Employee ID</strong></td>";
+      //     echo "<td><strong>Van ID</strong></td>";
+      // echo "</tr>";
+      // echo "<tr>";
+      //     echo "<td></td>";
+      //     echo "<td> $transit_ID </td>";
+      //     echo "<td> $employee_id </td>";
+      //     echo "<td> $van_id </td>";
+      // echo "</tr>";
 
 
-    }
+  }
 }
 
 // FOR EARNINGS CALCULATIONS
@@ -316,36 +271,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw" style="color: #fff;"></i>
                                 <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter"><?php echo $num_employee_results1 ?></span>
+                                <span class="badge badge-danger badge-counter">3+</span>
                             </a>
                             <!-- Dropdown - Alerts -->
-                            
-
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="alertsDropdown">
                                 <h6 class="dropdown-header">
                                     Alerts Center
                                 </h6>
-                                <?php
-                                for($i = 0;$i<$num_employee_results1;$i++)
-                                {
-                                //Move query up top and iterate through results here with an if statement
-                                $row_employee1 = mysqli_fetch_assoc($employee_results1);
-
-                                echo '<a class="dropdown-item d-flex align-items-center" href="#">';
-                                echo '<div class="mr-3">';
-                                echo '<div class="icon-circle bg-primary">';
-                                echo '<i class="fas fa-file-alt text-white"></i>';
-                                echo '</div>';
-                                echo '</div>';
-                                echo '<div>';
-                                echo '<div class="small text-gray-500">Employee ID:'.$row_employee1["db_employeeID"].' </div>';
-                                echo '<span class="font-weight-bold">Employee Name: '.$row_employee1["db_employeeName"].'</span>';
-                                echo '</div>';
-                                echo '</a>';
-
-                                }
-                                ?>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="mr-3">
+                                        <div class="icon-circle bg-primary">
+                                            <i class="fas fa-file-alt text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="small text-gray-500">December 12, 2019</div>
+                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                                    </div>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="mr-3">
+                                        <div class="icon-circle bg-success">
+                                            <i class="fas fa-donate text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="small text-gray-500">December 7, 2019</div>
+                                        $290.29 has been deposited into your account!
+                                    </div>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="mr-3">
+                                        <div class="icon-circle bg-warning">
+                                            <i class="fas fa-exclamation-triangle text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="small text-gray-500">December 2, 2019</div>
+                                        Spending Alert: We've noticed unusually high spending for your account.
+                                    </div>
+                                </a>
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                             </div>
                         </li>
@@ -597,13 +563,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         echo '<option value = "'.$row['db_transitID'].'"> Order ID: '.$row['db_orderID']." Type: ".$row['db_transitType'].' </option>';
 
                                       }
-                                    ?><span class='error'> <?php echo $db_transitErr ?> </span>
+                                    ?>
                                   </tr>
                                   <tr>
                                     <td><label for="order_id">Van ID:</label></td>
                                     <td style="width: 399px; height: 38px;" class="auto-style2">
                                     <select name="van_id" style="width: 300px" class="auto-style1" required>
-                                    <span class='error'> <?php echo $db_vanErr ?> </span>
                                     <option value= "select">--Select a Van--</option>
                                     <?php
                                       for($i = 0;$i<$num_van_results;$i++)
@@ -614,13 +579,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                       }
                                     ?>
-                                    <span class='error'> <?php echo $db_vanErr ?> </span></td>
+                                    <span class='error'> <?php echo $db_vanErr ?> <span></td>
                                   </tr>
                                   <tr>
                                     <td><label for="order_id">Employee ID:</label></td>
                                     <td style="width: 399px; height: 38px;" class="auto-style2">
                                     <select name="employee_id" style="width: 300px" class="auto-style1" required>
-                                    <span class='error'> <?php echo $db_employeeErr ?> </span>
                                     <option value= "select">--Select an Employee--</option>
                                     <?php
                                       for($i = 0;$i<$num_employee_results;$i++)
@@ -631,15 +595,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                       }
                                     ?>
-                                    <span class='error'> <?php echo $db_employeeErr ?> </span></td>
+                                    <span class='error'> <?php echo $db_employeeErr ?> <span></td>
                                   </tr>
 
                                   <tr>
                                     <td></td>
-                                    <td><input class="btn btn-success" type="submit" name = "submit" value="Submit"><input style="margin-left: 4px;"class="btn btn-danger" type="reset" value="Reset"></td>
+                                    <td><input class="btn btn-success" type="submit" value="Submit"><input style="margin-left: 4px;"class="btn btn-danger" type="reset" value="Reset"></td>
                                   </tr>
                                   </table>
-                                  <span class='error'> <?php echo $db_vanErr ?> <span></td>
 
                                   </form>
 
