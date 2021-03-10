@@ -5,6 +5,7 @@ session_unset();
 unset($_SESSION['db_customerID']);
 unset($_SESSION['cart']);
 unset($_SESSION['link']);
+unset($_SESSION['db_jobTitle']);
 session_destroy();
 header("Location: index.php");
 

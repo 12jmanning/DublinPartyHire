@@ -15,10 +15,11 @@ $employee_ID = $_SESSION['db_employeeID'];
 $employee_name = $_SESSION['db_employeeName'];
 $job_title = $_SESSION['db_jobTitle'];
 $employee="employee";
+$admin = "admin";
 $yes = "Yes";
 $transit_ID = $_SESSION['transit_ID'];
 
-if($job_title==$employee)
+if($job_title!=$admin)
 {
   header('location: employeedashboard.php');
 }
