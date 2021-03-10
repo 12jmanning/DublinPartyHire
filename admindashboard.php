@@ -627,14 +627,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                             </div>
 
-                            
+
 
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Customers Collecting Orders Today</h6>
-                                    <?php 
+                                    <?php
                                     include('inc/detail.php');
                                     $query_new = "SELECT orders.db_orderID,customers.db_customerName,orders.db_rentalPrice,orders.db_setUpPrice ,customers.db_customerPhone FROM orders,customers WHERE orders.db_customerID=customers.db_customerID AND orders.db_deliveryPreference = 'No' AND orders.db_deliveryDatetime='$today_date'";
                                     $result_new = $db->query($query_new);
@@ -661,12 +661,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             echo "</tr>";
                                         }
                                             echo '</table>';
-                                          
-                                    ?>
-                                    
 
-                                    
-                                        
+                                    ?>
+
+
+
+
                                 </div>
                             </div>
 
@@ -675,7 +675,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Customers Returning Orders Today</h6>
-                                    <?php 
+                                    <?php
                                     include('inc/detail.php');
                                     $query_new1 = "SELECT orders.db_orderID,customers.db_customerName,orders.db_rentalPrice,orders.db_setUpPrice FROM orders,customers, customers.db_customerPhone WHERE orders.db_customerID=customers.db_customerID AND orders.db_deliveryPreference = 'No' AND orders.db_collectionDatetime='$today_date'";
                                     $result_new1 = $db->query($query_new1);
@@ -702,12 +702,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             echo "</tr>";
                                         }
                                             echo '</table>';
-                                          
-                                    ?>
-                                    
 
-                                    
-                                        
+                                    ?>
+
+
+
+
                                 </div>
                             </div>
 
@@ -718,7 +718,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                               <div class="col-lg-6 mb-4">
                                   <a class="btn card bg-primary text-white shadow" href="alter_products.php">
                                       <div class="card-body">
-                                          Alter or Delete Products 
+                                          Alter or Delete Products
                                           <div class="text-white-50 small">Edit</div>
                                       </div>
                                   </a>
@@ -825,7 +825,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="/group_6/">Logout</a>
+                    <a class="btn btn-primary" href="log-out.php">Logout</a>
                 </div>
             </div>
         </div>
