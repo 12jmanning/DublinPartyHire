@@ -1,4 +1,7 @@
 <?php
+//The reports php script runs various queries and produces the relevant reports viewable to admins in DPH. These reports include date parameterised queries which allow DPH admins produce tailored reports to see the transits on a specific day or the revenue produced from orderes placed between two dates. There are relevant validations performed on these forms. 
+//Reports include rental frequency, delivery/pickup schedule, sales revenue by product, most ordered prosuct by quantity, location of customers, breakages, revenue by county, breaksown of revenue and orders placed between two user input dates.
+
 session_start();
 include('inc/detail.php');
 

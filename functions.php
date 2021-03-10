@@ -1,4 +1,5 @@
 <?php
+//This file makes a database connection for further use throughout the other scripts. It also holds the header and footer for the customer frontend of the website.  
 function pdo_connect_mysql() {
     // Update the details below with your MySQL details
     $DATABASE_HOST = 'localhost';

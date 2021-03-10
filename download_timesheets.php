@@ -1,4 +1,6 @@
 <?php
+//This file is called in the All_timesheets.php file. It is used to access the employee_timesheets table, store all records as an array and then download a .csv into the admins browser.  
+
 include('inc/detail.php');
      //export.php
 if(isset($_POST["export"]))

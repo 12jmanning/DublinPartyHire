@@ -1,4 +1,6 @@
 <?php
+//The employee dashboard page is where verified employees are redirected to when their login credentials are validated on the employee login page. This page allows employees to clock in and clock out. It reads directly to the employee_timesheets table of the database and records their working hours.It tells the employee their current status and displays their account details. It also runs queries and produces reports on the employee’s timesheets and transit which they have been assigned for that particular day. There is also a form which contains a dropdown list populated with orders. An order can be selected and when the user presses submit, validations are executed on the form. If the user input is validated, they are redirected to the print_docket.php page where the delivery docket for that particular order is printed on screen. 
+
 session_start();
 include('inc/detail.php');
 

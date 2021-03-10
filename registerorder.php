@@ -1,4 +1,5 @@
 <?PHP
+//This script is called when the cart page is submitted, it runs validations on the user input, reads the inputs into the relevant database tables and runs queries to correctly populate and link the rows of the various tables. It also unsets all unnecessary session variables and redirects the users to the home page. 
 //This php script passes the values input by the user into the members table of the database
 session_start();
 if (isset($_SESSION['db_customerID'])) {

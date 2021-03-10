@@ -1,4 +1,5 @@
 <?php
+//The customer dashboard page is where customers are redirected to when their login credentials are validated on the customer login page. This page allows customers to view their details and amend or update their details including address, county and eircode. It reads directly to the customers table of the database. It also runs queries and produces reports on the customers orders. There is also a form which contains a dropdown list populated with orders. An order can be selected and when the user presses submit, validations are executed on the form. If the user input is validated, they are redirected to the print_invoicephp page where the invoice for that particular order is printed on screen and there is also a button to allow the user to print the invoice. 
 session_start();
 include('inc/detail.php');
 include('inc/navbar.php');

@@ -1,4 +1,6 @@
 <?php
+//The print docket page allows employees to print out the delivery dockets related to specific orders.these delivery dockets contain the dates, order number, customer details, products, quantities and a section to allow the employee to record any breakages. There is a button to allow the employee to print the report out to obtain a physical copy. 
+
 session_start();
 include('inc/detail.php');
 include('inc/navbar.php');

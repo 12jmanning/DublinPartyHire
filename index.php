@@ -1,6 +1,7 @@
 
 
 <?php
+//PHP script which helps with the URL flow of the website. For example, the home.php page is shown when a visitor goes to https://stu33001.scss.tcd.ie/group_6/. This means we do not need to reference home.php in the URL. It is also used for the product and products page.  
 // Connecting to database.
 
 session_start();

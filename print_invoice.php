@@ -1,4 +1,5 @@
 <?php
+//On the customer dashboard, there is a form called print invoice which allows users to select one of their orders to produce a report of. Once an order is selected, and the input is validated, the customer is redirected to the print invoice page where the invoice is displayed to them. This invoice contains customer details, invoice number, dates, delivery, collection and set up preferences along with all of the products, quantities, prices and VAT. There is a button which can make this report printable. 
 session_start();
 include('inc/detail.php');
 include('inc/navbar.php');

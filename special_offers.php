@@ -1,4 +1,6 @@
 <?php
+//This file allows the admin the manually update which products appear on the homepage of the website for prominent viewing.  
+
 session_start();
 include('inc/detail.php');
 

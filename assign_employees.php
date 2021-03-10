@@ -1,4 +1,6 @@
 <?php
+//This script is called in the admindashboard.php file. This is a script which finds initially all the orders from the current date which need to be delivered to customers or collected from customers by DPH staff. It allows admins to schedule a van to the order. It also provides a list of currently clocked in employees who can be assigned to the order. Once an admin has submitted this form it will populate the employee_work_records table. This only applies for orders which have been requested to be delivered/collected by the customer. 
+
 session_start();
 include('inc/detail.php');
 include('inc/navbar.php');

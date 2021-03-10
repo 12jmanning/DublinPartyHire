@@ -1,4 +1,5 @@
 <?php
+//This file allows the admin to alter the delivery_costs table in the database. They can select a county and then change to a particular price for a flat fee delivery charge. This is then used when calculating customers carts.  
 session_start();
 include('inc/detail.php');
 

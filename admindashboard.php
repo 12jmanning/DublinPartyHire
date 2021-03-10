@@ -1,4 +1,30 @@
 <?php
+//The admindashboard.php is the central part of the admin backend system. On the top row the admin can see the earnings in total of DPH, the earnings in the past 7 days, the number of transits which are due to be delivered/collected by DPH staff today and the number of employees currently clocked in to the system.  
+
+ 
+
+//In the second row of items the “Transits Today” box shows all the deliveries/collections from today which have been assigned a van ID and an employee ID. This is essentially a schedule of the day for the DPH admins to figure out who’s delivering what where.  
+
+ 
+
+//The Order Status box in the admin dashboard calls the admin_order_status.php script which generates a notification based on when the order is scheduled for.  
+
+ 
+
+//The third row of items include the “Assign employees and vans to transit orders”. This is a form which finds initially all the orders from the current date which need to be delivered or collected from customers by DPH staff. It allows admins to schedule a van to the transit and also currently clocked in employees. Once an admin has submitted this form it will populate the table above it.  
+
+ 
+
+//“Your Details” section prints out the admins employee ID, Name and Job title. There is also a wide range of buttons for which the admin can select the other pages from. 
+
+ 
+
+//“Customers Collecting Orders Today” section prints out a table of all the customers who have made an order which is due to be picked up in DPH HQ by the customer today.  
+
+ 
+
+//“Customers Returning Orders Today” section prints out a table of all the customers who currently have items out rented and are delivering them back to the DPH HQ today. This keeps track of who DPH are expecting to arrive into the warehouse.  
+
 session_start();
 include('inc/detail.php');
 

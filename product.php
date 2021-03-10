@@ -1,5 +1,6 @@
 
 <?php
+//The product page displays an image of the product, its name, a description of the product and the rental price for 48 hours. This page also contains a form whereby customers can select a quantity of this product to add to their cart, the quantity available is restricted by the quantity available for the dates which they have selected. 
 session_start();
 include('inc/detail.php');
 // Check to make sure the id parameter is specified in the URL

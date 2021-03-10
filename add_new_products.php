@@ -1,4 +1,5 @@
 <?php
+//This file allows the admin users to add new products to the products table. It is a basic form with validations to ensure all the fields are filled in and have the correct datatypes.  
 session_start();
 include('inc/detail.php');
 

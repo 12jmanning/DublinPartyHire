@@ -1,4 +1,5 @@
 <?php
+//This file allows the admin to alter the price of a particular product in the products table. The admin can also alter the quantity of the product in the products table from here.  
 session_start();
 include('inc/detail.php');
 

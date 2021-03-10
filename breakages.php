@@ -1,4 +1,6 @@
 <?php
+//This script helps admins record products which have been collected by DPH staff or dropped back by customers which have been damaged. It gives an option to select an order from the past (removing any future orders). Using javascript, it automatically reloads the particular products from that order. The admin can then select the quantity from that order which is broken. The admin cannot enter a quantity which is greater than the quantity ordered by the customer. These are all then displayed in the breakage details table. It records a breakage in the breakages table in the database.  
+
 session_start();
 include('inc/detail.php');
 

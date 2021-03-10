@@ -1,4 +1,6 @@
 <?PHP
+//The employee login page allows current employees to log into their account by entering their username (employee ID) and password. Once verified, this will bring them to the employeedashboard.php page if they have been verified by management and designated a job title. If they have not yet been verified and do not have a job title, they will be redirected to the non_registered_employee.php page. This page also contains a link to allow new employees to access the newcustomers.php page where they can register as a new employee.  
+
 include('inc/navbar.php');
 ?>
 

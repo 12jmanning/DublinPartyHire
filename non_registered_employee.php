@@ -1,4 +1,6 @@
 <?php
+//This is the page where newly registered employees are redirected to. When they log-in they will be moved to this page until their account has been verified by management and they have been designated a job title. This page shows them their details including their new username (employee ID). 
+
 session_start();
 include('inc/detail.php');
 

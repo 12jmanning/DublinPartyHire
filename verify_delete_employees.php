@@ -1,4 +1,10 @@
 <?php
+//This section allows admins to make changes to the employees table. When an employee registers for an account they do not get immediate access to the employee dashboard. They first must be assigned a particular level of job title by an admin. The admin can either make an employee an admin or an employee. Up until this point the employee cannot access the employee dashboard.  
+
+ 
+
+//There is also a form which alters the employees table by deleting the employee should the employee be leaving DPH. There is also another form which alters the record in the employee table which corresponds to a particular employees job title i.e. making an employee an admin.  
+
 session_start();
 include('inc/detail.php');
 

@@ -1,4 +1,5 @@
 <?php
+//This file prints out all clock-in/clock-out entries from employees from the employee_timesheets table. It also provides an option for the admin to download as .csv all employee_timesheet records so the admin can import these into their payroll system.  
 session_start();
 include('inc/detail.php');
 
