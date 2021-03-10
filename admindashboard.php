@@ -42,40 +42,55 @@ $yes = "Yes";
 $query1 = "select orders.db_orderID, transit.db_transitType, transit.db_transitID from orders,transit where orders.db_orderID = transit.db_orderID AND db_deliveryPreference = '$yes' AND ((orders.db_deliveryDatetime= '$today_date' AND orders.db_deliveryID = transit.db_transitID ) OR (orders.db_collectionDatetime= '$today_date' AND orders.db_collectionID = transit.db_transitID))";
 $orders_today = $db->query($query1);
 $num_results = mysqli_num_rows($orders_today);
+$select="select";
+$valid=true;
+$db_employeeErr= $db_vanErr = $db_transitErr="";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-  if (empty($_POST["employee_id"])||empty($_POST["van_id"])||empty($_POST['transit_id'])) {
-      $db_employeeErr = "Both fields are required";
-      $db_vanErr = "Both fields are required";
-      $valid=false;
-  }
-  if($valid==true ){
-      $employee_id = $_POST["employee_id"];
-      $van_id = $_POST["van_id"];
-      $transit_ID= $_POST['transit_id'];
-      $insert_query = "INSERT INTO employee_work_records (";
-      $insert_query .= "db_transitID, db_employeeID, db_vanID";
-      $insert_query .= ") VALUES (";
-      $insert_query .= "'$transit_ID','$employee_id','$van_id')";
-      $result_insert = $db->query($insert_query);
+    if (empty($_POST["employee_id"])||empty($_POST["van_id"])||empty($_POST['transit_id'])) {
+        $db_employeeErr = "Both fields are required";
+        $db_vanErr = "Both fields are required";
+        $valid=false;
+    }
+    if ($_POST["employee_id"]==$select) {
+        $db_employeeErr = "Employee is required";
+        $valid=false;
+    }
+    if ($_POST["van_id"]==$select) {
+        $db_vanErr = "Van is required";
+        $valid=false;
+    }
+    if ($_POST["transit_id"]==$select) {
+        $db_transitErr = "transit is required";
+        $valid=false;
+    }
+    if($valid==true ){
+        $employee_id = $_POST["employee_id"];
+        $van_id = $_POST["van_id"];
+        $transit_ID= $_POST['transit_id'];
+        $insert_query = "INSERT INTO employee_work_records (";
+        $insert_query .= "db_transitID, db_employeeID, db_vanID";
+        $insert_query .= ") VALUES (";
+        $insert_query .= "'$transit_ID','$employee_id','$van_id')";
+        $result_insert = $db->query($insert_query);
 
-      // echo '<table border="2">';
-      // echo '<tr class="first-row-database">';
-      //     echo "<td></td>";
-      //     echo "<td><strong>Transit ID</strong></td>";
-      //     echo "<td><strong>Employee ID</strong></td>";
-      //     echo "<td><strong>Van ID</strong></td>";
-      // echo "</tr>";
-      // echo "<tr>";
-      //     echo "<td></td>";
-      //     echo "<td> $transit_ID </td>";
-      //     echo "<td> $employee_id </td>";
-      //     echo "<td> $van_id </td>";
-      // echo "</tr>";
+        // echo '<table border="2">';
+        // echo '<tr class="first-row-database">';
+        //     echo "<td></td>";
+        //     echo "<td><strong>Transit ID</strong></td>";
+        //     echo "<td><strong>Employee ID</strong></td>";
+        //     echo "<td><strong>Van ID</strong></td>";
+        // echo "</tr>";
+        // echo "<tr>";
+        //     echo "<td></td>";
+        //     echo "<td> $transit_ID </td>";
+        //     echo "<td> $employee_id </td>";
+        //     echo "<td> $van_id </td>";
+        // echo "</tr>";
 
 
-  }
+    }
 }
 
 // FOR EARNINGS CALCULATIONS
@@ -563,7 +578,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         echo '<option value = "'.$row['db_transitID'].'"> Order ID: '.$row['db_orderID']." Type: ".$row['db_transitType'].' </option>';
 
                                       }
-                                    ?>
+                                    ?><span class='error'> <?php echo $db_transitErr ?> <span>
                                   </tr>
                                   <tr>
                                     <td><label for="order_id">Van ID:</label></td>
@@ -600,9 +615,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                   <tr>
                                     <td></td>
-                                    <td><input class="btn btn-success" type="submit" value="Submit"><input style="margin-left: 4px;"class="btn btn-danger" type="reset" value="Reset"></td>
+                                    <td><input class="btn btn-success" type="submit" name = "submit" value="Submit"><input style="margin-left: 4px;"class="btn btn-danger" type="reset" value="Reset"></td>
                                   </tr>
                                   </table>
+                                  <span class='error'> <?php echo $db_vanErr ?> <span></td>
 
                                   </form>
 
