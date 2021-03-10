@@ -1,6 +1,8 @@
 <?php
 //This script allows admins to manually edit the employee_timesheets table. The admin can alter the end time or start time of a particular record in the employee_timesheets table. For ease of access, the table which is printed is an hours worked report from the past 7 days. It then calculates the total hours worked by all staff in DPH in the previous 7 days.  
 
+//There is also a large button to access the all_timesheets.php file.  
+
 session_start();
 include('inc/detail.php');
 
